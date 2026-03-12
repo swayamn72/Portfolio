@@ -174,7 +174,7 @@
     background-clip: text;
     line-height: 1;
     animation: ee-count-anim 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    filter: drop-shadow(0 0 30px rgba(255, 100, 100, 0.6));
+    text-shadow: 0 0 30px rgba(255, 100, 100, 0.6);
 }
 
 @keyframes ee-count-anim {
