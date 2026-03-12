@@ -1393,7 +1393,7 @@
             <div class="cp-platform-name">CODEFORCES</div>
             <div class="cp-handle" style="color:var(--red)">@swayamnsn123</div>
             <div class="cp-rating-row">
-              <span class="cp-rating" style="color:var(--red)">1405</span>
+              <span class="cp-rating" id="cfCardRating" style="color:var(--red)">1405</span>
               <span class="cp-badge"
                 style="color:var(--red);border-color:rgba(255,68,102,.3);background:rgba(255,68,102,.07)">SPECIALIST</span>
             </div>
@@ -1407,7 +1407,7 @@
             <div class="cp-platform-name">CODECHEF</div>
             <div class="cp-handle" style="color:var(--gold)">@swayamn73</div>
             <div class="cp-rating-row">
-              <span class="cp-rating" style="color:var(--gold)">1540</span>
+              <span class="cp-rating" id="ccCardRating" style="color:var(--gold)">1540</span>
               <span class="cp-badge"
                 style="color:var(--gold);border-color:rgba(255,201,71,.3);background:rgba(255,201,71,.07)">2 STAR</span>
             </div>
@@ -1879,9 +1879,15 @@
           const labels = data.map(c => fmtDate(c.ratingUpdateTimeSeconds * 1000));
           const ratings = data.map(c => c.newRating);
           const ptC = ratings.map(r => bandColor(r, CF_BANDS));
+          const maxRating = Math.max(...ratings);
           setStatus('cfStatus',
-            `${data.length} CONTESTS · MAX ${Math.max(...ratings)}`,
+            `${data.length} CONTESTS · MAX ${maxRating}`,
             bandColor(ratings.at(-1), CF_BANDS));
+          const cfCard = document.getElementById('cfCardRating');
+          if (cfCard) {
+            cfCard.textContent = maxRating;
+            cfCard.style.color = bandColor(maxRating, CF_BANDS);
+          }
           buildChart('cfChart', labels, ratings, ptC, '#ff4466',
             items => data[items[0].dataIndex].contestName,
             item => { const c = data[item.dataIndex], d = c.newRating - c.oldRating; return `  ${c.newRating}  (${d >= 0 ? '+' : ''}${d})`; }
@@ -1906,9 +1912,15 @@
           const ratings = data.map(c => c.rating);
           const labels = data.map(c => c.date ? c.date.slice(0, 7) : c.code.slice(0, 8));
           const ptC = ratings.map(r => bandColor(r, CC_BANDS));
+          const maxRating = Math.max(...ratings);
           setStatus('ccStatus',
-            `${data.length} CONTESTS · MAX ${Math.max(...ratings)}`,
+            `${data.length} CONTESTS · MAX ${maxRating}`,
             bandColor(ratings.at(-1), CC_BANDS));
+          const ccCard = document.getElementById('ccCardRating');
+          if (ccCard) {
+            ccCard.textContent = maxRating;
+            ccCard.style.color = bandColor(maxRating, CC_BANDS);
+          }
           buildChart('ccChart', labels, ratings, ptC, '#ffc947',
             items => data[items[0].dataIndex].contestName,
             item => `  ${data[item.dataIndex].rating}`
@@ -1926,7 +1938,7 @@
           const ratings = data.map(c => Math.round(c.rating));
           setStatus('lcStatus', `${data.length} CONTESTS · MAX ${Math.max(...ratings)}`, '#ff8c42');
           const lcCur = document.getElementById('lcCardRating');
-          if (lcCur) lcCur.textContent = Math.round(ratings.at(-1));
+          if (lcCur) lcCur.textContent = Math.round(Math.max(...ratings));
           buildChart('lcChart', labels, ratings, ratings.map(() => '#ff8c42'), '#ff8c42',
             items => data[items[0].dataIndex].contest.title,
             item => { const c = data[item.dataIndex]; return `  ${Math.round(c.rating)}  · RANK ${c.ranking}`; }
@@ -1953,7 +1965,7 @@
           const labels = data.map(c => c.EndTime.slice(0, 7));
           const ratings = data.map(c => c.NewRating);
           const ptC = ratings.map(r => bandColor(r, AT_BANDS));
-          const atCurRating = ratings.at(-1);
+          const atCurRating = Math.max(...ratings);
           const atCurColor = bandColor(atCurRating, AT_BANDS);
           setStatus('atStatus',
             `${data.length} CONTESTS · MAX ${Math.max(...ratings)}`,
@@ -1969,6 +1981,8 @@
 
     })();
   </script>
+  
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
 </body>
-
 </html>
