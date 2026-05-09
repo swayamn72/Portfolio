@@ -2000,7 +2000,7 @@
     <span>MUMBAI, IN</span>
   </footer>
 
-  <script>
+  <script type="module">
     /* ══════════════════════════════════════════
        SPIDER WEB CURSOR SYSTEM
     ══════════════════════════════════════════ */
@@ -2388,13 +2388,15 @@
       return bands.find(b => value >= b.min && value <= b.max) || bands[0];
     }
 
+    const API_BASE = import.meta.env.VITE_API_BASE || '';
+
     /* ── FETCH CODEFORCES ── */
     async function fetchCF() {
       try {
-        const r = await fetch('https://codeforces.com/api/user.rating?handle=swayamnsn123');
+        const r = await fetch(`${API_BASE}/api/codeforces`);
         const d = await r.json();
-        if (d.status !== 'OK') throw new Error();
-        const rows = d.result;
+        if (!d.ok) throw new Error(d.error || 'CF API error');
+        const rows = d.data;
         const labels = rows.map(r => r.contestName.length > 20 ? r.contestName.slice(0, 20) + '…' : r.contestName);
         const data = rows.map(r => r.newRating);
         const current = rows.length ? rows[rows.length - 1].newRating : null;
@@ -2413,14 +2415,14 @@
     }
     fetchCF();
 
-    /* ── FETCH CODECHEF (via proxy) ── */
+    /* ── FETCH CODECHEF (server) ── */
     async function fetchCC() {
       try {
-        const r = await fetch('https://codechef-api.vercel.app/handle/swayamn73');
+        const r = await fetch(`${API_BASE}/api/codechef`);
         const d = await r.json();
-        if (!d.ratingData) throw new Error();
-        const rows = d.ratingData;
-        const labels = rows.map(r => r.name ? r.name.slice(0, 20) : '—');
+        if (!d.ok) throw new Error(d.error || 'CC API error');
+        const rows = d.data;
+        const labels = rows.map(r => r.contestName ? r.contestName.slice(0, 20) : '—');
         const data = rows.map(r => {
           const rating = Number.parseInt(r.rating, 10);
           return Number.isFinite(rating) && rating > 0 ? rating : null;
@@ -2442,26 +2444,23 @@
     }
     fetchCC();
 
-    /* ── FETCH LEETCODE (unofficial) ── */
+    /* ── FETCH LEETCODE (server) ── */
     async function fetchLC() {
       try {
-        const r = await fetch('https://leetcode-api-faisalshohag.vercel.app/swayamn');
+        const r = await fetch(`${API_BASE}/api/leetcode`);
         const d = await r.json();
-        const rating = d.ranking || d.rating;
-        if (rating) {
-          document.getElementById('lcCardRating').textContent = Math.round(rating);
-          document.getElementById('lcStatus').textContent = 'RANKING: ' + rating;
-        } else {
-          document.getElementById('lcStatus').textContent = 'UNAVAILABLE';
-          setText('lcCardRating', 'FETCHING');
-        }
-        // contest history if available
-        if (d.contestRanking && d.contestRanking.length) {
-          const rows = d.contestRanking;
-          const labels = rows.map(r => r.contest?.title?.slice(0, 15) || '—');
-          const data = rows.map(r => Number.isFinite(r.rating) ? r.rating : null);
-          makeChart('lcChart', labels, data, 'rgba(255,109,0,1)', 1000);
-        }
+        if (!d.ok) throw new Error(d.error || 'LC API error');
+        const rows = Array.isArray(d.data) ? d.data : [];
+        if (!rows.length) throw new Error('No contest history');
+        const labels = rows.map(r => r.contest?.title?.slice(0, 15) || '—');
+        const data = rows.map(r => Number.isFinite(r.rating) ? r.rating : null);
+        const numeric = data.filter(v => typeof v === 'number');
+        if (!numeric.length) throw new Error('No ratings');
+        const current = numeric[numeric.length - 1];
+        const maxRating = Math.max(...numeric);
+        setRating('lcCardRating', Math.round(current), 'rgba(255,109,0,1)');
+        document.getElementById('lcStatus').textContent = 'MAX: ' + Math.round(maxRating) + ' | CONTESTS: ' + rows.length;
+        makeChart('lcChart', labels, data, 'rgba(255,109,0,1)', 1000);
       } catch (e) {
         document.getElementById('lcStatus').textContent = 'UNAVAILABLE';
         setText('lcCardRating', 'FETCHING');
@@ -2472,16 +2471,18 @@
     /* ── FETCH ATCODER ── */
     async function fetchAT() {
       try {
-        const r = await fetch('https://atcoder-api-peach.vercel.app/users/swayamn72/history');
+        const r = await fetch(`${API_BASE}/api/atcoder`);
         const d = await r.json();
-        if (!Array.isArray(d)) throw new Error();
-        const labels = d.map(r => r.ContestScreenName?.slice(0, 15) || '—');
-        const data = d.map(r => Number.isFinite(r.NewRating) ? r.NewRating : null);
+        if (!d.ok) throw new Error(d.error || 'AT API error');
+        const rows = d.data;
+        if (!Array.isArray(rows)) throw new Error();
+        const labels = rows.map(r => r.ContestName?.slice(0, 15) || '—');
+        const data = rows.map(r => Number.isFinite(r.NewRating) ? r.NewRating : null);
         const numeric = data.filter(v => typeof v === 'number');
         const cur = numeric.length ? numeric[numeric.length - 1] : null;
         if (cur === null) throw new Error();
         document.getElementById('atCardRating').textContent = cur;
-        document.getElementById('atStatus').textContent = 'CONTESTS: ' + d.length;
+        document.getElementById('atStatus').textContent = 'CONTESTS: ' + rows.length;
         makeChart('atChart', labels, data, 'rgba(0,230,118,1)', 0);
       } catch (e) {
         document.getElementById('atStatus').textContent = 'UNAVAILABLE';
