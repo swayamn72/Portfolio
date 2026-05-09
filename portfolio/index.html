@@ -2321,9 +2321,31 @@
       }
     };
 
-    function makeChart(id, labels, data, color, minY) {
+    function makeChart(id, labels, data, color, minY, colorForValue, bandOverlays) {
       const el = document.getElementById(id);
       if (!el) return null;
+      const useBandColors = typeof colorForValue === 'function';
+      const useBands = Array.isArray(bandOverlays) && bandOverlays.length > 0;
+      const bandPlugin = {
+        id: 'ratingBands',
+        beforeDraw(chart) {
+          if (!useBands) return;
+          const { ctx, chartArea, scales } = chart;
+          if (!chartArea || !scales?.y) return;
+          const { left, right, top, bottom } = chartArea;
+          const yScale = scales.y;
+          ctx.save();
+          bandOverlays.forEach((band) => {
+            const yTop = yScale.getPixelForValue(band.max);
+            const yBottom = yScale.getPixelForValue(band.min);
+            const bandTop = Math.min(yTop, yBottom);
+            const bandHeight = Math.abs(yBottom - yTop);
+            ctx.fillStyle = band.color.replace('1)', '0.06)');
+            ctx.fillRect(left, bandTop, right - left, bandHeight);
+          });
+          ctx.restore();
+        }
+      };
       return new Chart(el, {
         type: 'line',
         data: {
@@ -2332,12 +2354,18 @@
             data, borderColor: color,
             backgroundColor: color.replace('1)', '0.08)'),
             borderWidth: 2, pointRadius: 3,
-            pointBackgroundColor: color,
+            pointBackgroundColor: useBandColors
+              ? (ctx) => colorForValue(ctx.parsed.y)
+              : color,
             pointBorderColor: 'rgba(8,6,14,0.9)',
             pointBorderWidth: 1.5, tension: .35, fill: true
+            , segment: useBandColors
+              ? { borderColor: (ctx) => colorForValue(ctx.p1.parsed.y) }
+              : undefined
           }]
         },
-        options: { ...chartDefaults, scales: { ...chartDefaults.scales, y: { ...chartDefaults.scales.y, min: minY || undefined } } }
+        options: { ...chartDefaults, scales: { ...chartDefaults.scales, y: { ...chartDefaults.scales.y, min: minY || undefined } } },
+        plugins: useBands ? [bandPlugin] : []
       });
     }
 
@@ -2384,8 +2412,25 @@
       { min: 2500, max: 9999, label: '7 STAR', color: 'rgba(244,67,54,1)' }
     ];
 
+    const atBands = [
+      { min: 0, max: 399, label: 'GRAY', color: 'rgba(158,158,158,1)' },
+      { min: 400, max: 799, label: 'BROWN', color: 'rgba(121,85,72,1)' },
+      { min: 800, max: 1199, label: 'GREEN', color: 'rgba(76,175,80,1)' },
+      { min: 1200, max: 1599, label: 'CYAN', color: 'rgba(0,188,212,1)' },
+      { min: 1600, max: 1999, label: 'BLUE', color: 'rgba(33,150,243,1)' },
+      { min: 2000, max: 2399, label: 'YELLOW', color: 'rgba(255,214,0,1)' },
+      { min: 2400, max: 2799, label: 'ORANGE', color: 'rgba(255,152,0,1)' },
+      { min: 2800, max: 9999, label: 'RED', color: 'rgba(244,67,54,1)' }
+    ];
+
     function pickBand(value, bands) {
       return bands.find(b => value >= b.min && value <= b.max) || bands[0];
+    }
+
+    function bandColorForValue(value, bands, fallback) {
+      if (!Number.isFinite(value)) return fallback;
+      const band = pickBand(value, bands);
+      return band?.color || fallback;
     }
 
     const API_BASE = import.meta.env.VITE_API_BASE || '';
@@ -2406,7 +2451,15 @@
         document.getElementById('cfStatus').textContent = 'MAX: ' + maxRating + ' | CONTESTS: ' + rows.length;
         setRating('cfCardRating', current, band.color);
         setBadge('cfCardBadge', band.label, band.color);
-        makeChart('cfChart', labels, data, 'rgba(232,0,45,1)', 800);
+        makeChart(
+          'cfChart',
+          labels,
+          data,
+          'rgba(232,0,45,1)',
+          800,
+          (value) => bandColorForValue(value, cfBands, 'rgba(232,0,45,1)'),
+          cfBands
+        );
       } catch (e) {
         document.getElementById('cfStatus').textContent = 'UNAVAILABLE';
         setText('cfCardRating', 'FETCHING');
@@ -2435,7 +2488,15 @@
         document.getElementById('ccStatus').textContent = 'MAX: ' + maxRating + ' | CONTESTS: ' + rows.length;
         setRating('ccCardRating', current, band.color);
         setBadge('ccCardBadge', band.label, band.color);
-        makeChart('ccChart', labels, data, 'rgba(255,214,0,1)', 1000);
+        makeChart(
+          'ccChart',
+          labels,
+          data,
+          'rgba(255,214,0,1)',
+          1000,
+          (value) => bandColorForValue(value, ccBands, 'rgba(255,214,0,1)'),
+          ccBands
+        );
       } catch (e) {
         document.getElementById('ccStatus').textContent = 'UNAVAILABLE';
         setText('ccCardRating', 'FETCHING');
@@ -2483,7 +2544,15 @@
         if (cur === null) throw new Error();
         document.getElementById('atCardRating').textContent = cur;
         document.getElementById('atStatus').textContent = 'CONTESTS: ' + rows.length;
-        makeChart('atChart', labels, data, 'rgba(0,230,118,1)', 0);
+        makeChart(
+          'atChart',
+          labels,
+          data,
+          'rgba(0,230,118,1)',
+          0,
+          (value) => bandColorForValue(value, atBands, 'rgba(0,230,118,1)'),
+          atBands
+        );
       } catch (e) {
         document.getElementById('atStatus').textContent = 'UNAVAILABLE';
         setText('atCardRating', 'FETCHING');
