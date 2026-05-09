@@ -1584,7 +1584,8 @@
             Mumbai — holding an <strong>8.7 CGPA</strong> with a perfect 10 SGPA in Semester 4.</p>
           <p>I love building things end-to-end — from <strong>REST APIs and databases</strong> to <strong>React
               frontends</strong> and <strong>Flutter mobile apps</strong>, all the way to deploying on
-            <strong>AWS</strong>. I care about the whole stack.</p>
+            <strong>AWS</strong>. I care about the whole stack.
+          </p>
           <p>Competitive programming keeps my problem-solving sharp. As a <strong>Codeforces Specialist</strong> and
             active coder on multiple platforms, I enjoy applying algorithmic thinking to real engineering challenges.
           </p>
@@ -1706,9 +1707,9 @@
             <div class="cp-platform-name">CODEFORCES</div>
             <div class="cp-handle" style="color:var(--red)">@swayamnsn123</div>
             <div class="cp-rating-row">
-              <span class="cp-rating" style="color:var(--red)">1405</span>
-              <span class="cp-badge"
-                style="color:var(--red);border-color:rgba(232,0,45,.3);background:rgba(232,0,45,.07)">SPECIALIST</span>
+              <span class="cp-rating" id="cfCardRating" style="color:var(--red)">FETCHING</span>
+              <span class="cp-badge" id="cfCardBadge"
+                style="color:var(--red);border-color:rgba(232,0,45,.3);background:rgba(232,0,45,.07)">FETCHING</span>
             </div>
           </div>
         </a>
@@ -1720,9 +1721,9 @@
             <div class="cp-platform-name">CODECHEF</div>
             <div class="cp-handle" style="color:var(--gold)">@swayamn73</div>
             <div class="cp-rating-row">
-              <span class="cp-rating" style="color:var(--gold)">1540</span>
-              <span class="cp-badge"
-                style="color:var(--gold);border-color:rgba(255,214,0,.3);background:rgba(255,214,0,.07)">2 STAR</span>
+              <span class="cp-rating" id="ccCardRating" style="color:var(--gold)">FETCHING</span>
+              <span class="cp-badge" id="ccCardBadge"
+                style="color:var(--gold);border-color:rgba(255,214,0,.3);background:rgba(255,214,0,.07)">FETCHING</span>
             </div>
           </div>
         </a>
@@ -1735,7 +1736,7 @@
             <div class="cp-handle" style="color:var(--orange)">@swayamn</div>
             <div class="cp-rating-row">
               <span class="cp-rating" id="lcCardRating"
-                style="color:var(--orange);font-size:.9rem;font-family:'Share Tech Mono'">—</span>
+                style="color:var(--orange);font-size:.9rem;font-family:'Share Tech Mono'">FETCHING</span>
             </div>
           </div>
         </a>
@@ -1748,7 +1749,7 @@
             <div class="cp-handle" style="color:var(--green)">@swayamn72</div>
             <div class="cp-rating-row">
               <span class="cp-rating" id="atCardRating"
-                style="color:var(--green);font-size:.9rem;font-family:'Share Tech Mono'">—</span>
+                style="color:var(--green);font-size:.9rem;font-family:'Share Tech Mono'">FETCHING</span>
             </div>
           </div>
         </a>
@@ -2340,6 +2341,53 @@
       });
     }
 
+    function setText(id, text) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = text;
+    }
+
+    function setRating(id, value, color) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.textContent = value;
+      if (color) el.style.color = color;
+    }
+
+    function setBadge(id, text, color) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.textContent = text;
+      if (color) {
+        el.style.color = color;
+        el.style.borderColor = color.replace('1)', '0.3)');
+        el.style.backgroundColor = color.replace('1)', '0.07)');
+      }
+    }
+
+    const cfBands = [
+      { min: 0, max: 1199, label: 'NEWBIE', color: 'rgba(158,158,158,1)' },
+      { min: 1200, max: 1399, label: 'PUPIL', color: 'rgba(76,175,80,1)' },
+      { min: 1400, max: 1599, label: 'SPECIALIST', color: 'rgba(0,188,212,1)' },
+      { min: 1600, max: 1899, label: 'EXPERT', color: 'rgba(33,150,243,1)' },
+      { min: 1900, max: 2099, label: 'CANDIDATE MASTER', color: 'rgba(156,39,176,1)' },
+      { min: 2100, max: 2299, label: 'MASTER', color: 'rgba(255,152,0,1)' },
+      { min: 2300, max: 9999, label: 'GRANDMASTER', color: 'rgba(244,67,54,1)' }
+    ];
+
+    const ccBands = [
+      { min: 0, max: 1399, label: 'UNRATED', color: 'rgba(158,158,158,1)' },
+      { min: 1400, max: 1599, label: '1 STAR', color: 'rgba(76,175,80,1)' },
+      { min: 1600, max: 1799, label: '2 STAR', color: 'rgba(33,150,243,1)' },
+      { min: 1800, max: 1999, label: '3 STAR', color: 'rgba(156,39,176,1)' },
+      { min: 2000, max: 2199, label: '4 STAR', color: 'rgba(255,214,0,1)' },
+      { min: 2200, max: 2499, label: '5 STAR', color: 'rgba(255,152,0,1)' },
+      { min: 2500, max: 9999, label: '6 STAR', color: 'rgba(244,67,54,1)' }
+    ];
+
+    function pickBand(value, bands) {
+      return bands.find(b => value >= b.min && value <= b.max) || bands[0];
+    }
+
     /* ── FETCH CODEFORCES ── */
     async function fetchCF() {
       try {
@@ -2349,9 +2397,19 @@
         const rows = d.result;
         const labels = rows.map(r => r.contestName.length > 20 ? r.contestName.slice(0, 20) + '…' : r.contestName);
         const data = rows.map(r => r.newRating);
-        document.getElementById('cfStatus').textContent = 'MAX: ' + Math.max(...data) + ' | CONTESTS: ' + rows.length;
+        const current = rows.length ? rows[rows.length - 1].newRating : null;
+        const maxRating = data.length ? Math.max(...data) : null;
+        if (current === null || maxRating === null) throw new Error();
+        const band = pickBand(current, cfBands);
+        document.getElementById('cfStatus').textContent = 'MAX: ' + maxRating + ' | CONTESTS: ' + rows.length;
+        setRating('cfCardRating', current, band.color);
+        setBadge('cfCardBadge', band.label, band.color);
         makeChart('cfChart', labels, data, 'rgba(232,0,45,1)', 800);
-      } catch (e) { document.getElementById('cfStatus').textContent = 'UNAVAILABLE'; }
+      } catch (e) {
+        document.getElementById('cfStatus').textContent = 'UNAVAILABLE';
+        setText('cfCardRating', 'FETCHING');
+        setText('cfCardBadge', 'FETCHING');
+      }
     }
     fetchCF();
 
@@ -2363,10 +2421,24 @@
         if (!d.ratingData) throw new Error();
         const rows = d.ratingData;
         const labels = rows.map(r => r.name ? r.name.slice(0, 20) : '—');
-        const data = rows.map(r => parseInt(r.rating) || 0);
-        document.getElementById('ccStatus').textContent = 'MAX: ' + Math.max(...data) + ' | CONTESTS: ' + rows.length;
+        const data = rows.map(r => {
+          const rating = Number.parseInt(r.rating, 10);
+          return Number.isFinite(rating) && rating > 0 ? rating : null;
+        });
+        const numeric = data.filter(v => typeof v === 'number');
+        if (!numeric.length) throw new Error();
+        const maxRating = Math.max(...numeric);
+        const current = numeric[numeric.length - 1];
+        const band = pickBand(current, ccBands);
+        document.getElementById('ccStatus').textContent = 'MAX: ' + maxRating + ' | CONTESTS: ' + rows.length;
+        setRating('ccCardRating', current, band.color);
+        setBadge('ccCardBadge', band.label, band.color);
         makeChart('ccChart', labels, data, 'rgba(255,214,0,1)', 1000);
-      } catch (e) { document.getElementById('ccStatus').textContent = 'UNAVAILABLE'; }
+      } catch (e) {
+        document.getElementById('ccStatus').textContent = 'UNAVAILABLE';
+        setText('ccCardRating', 'FETCHING');
+        setText('ccCardBadge', 'FETCHING');
+      }
     }
     fetchCC();
 
@@ -2379,15 +2451,21 @@
         if (rating) {
           document.getElementById('lcCardRating').textContent = Math.round(rating);
           document.getElementById('lcStatus').textContent = 'RANKING: ' + rating;
-        } else { document.getElementById('lcStatus').textContent = 'UNAVAILABLE'; }
+        } else {
+          document.getElementById('lcStatus').textContent = 'UNAVAILABLE';
+          setText('lcCardRating', 'FETCHING');
+        }
         // contest history if available
         if (d.contestRanking && d.contestRanking.length) {
           const rows = d.contestRanking;
           const labels = rows.map(r => r.contest?.title?.slice(0, 15) || '—');
-          const data = rows.map(r => r.rating || 0);
+          const data = rows.map(r => Number.isFinite(r.rating) ? r.rating : null);
           makeChart('lcChart', labels, data, 'rgba(255,109,0,1)', 1000);
         }
-      } catch (e) { document.getElementById('lcStatus').textContent = 'UNAVAILABLE'; }
+      } catch (e) {
+        document.getElementById('lcStatus').textContent = 'UNAVAILABLE';
+        setText('lcCardRating', 'FETCHING');
+      }
     }
     fetchLC();
 
@@ -2398,12 +2476,17 @@
         const d = await r.json();
         if (!Array.isArray(d)) throw new Error();
         const labels = d.map(r => r.ContestScreenName?.slice(0, 15) || '—');
-        const data = d.map(r => r.NewRating || 0);
-        const cur = d.length ? d[d.length - 1].NewRating : 0;
-        document.getElementById('atCardRating').textContent = cur || '—';
+        const data = d.map(r => Number.isFinite(r.NewRating) ? r.NewRating : null);
+        const numeric = data.filter(v => typeof v === 'number');
+        const cur = numeric.length ? numeric[numeric.length - 1] : null;
+        if (cur === null) throw new Error();
+        document.getElementById('atCardRating').textContent = cur;
         document.getElementById('atStatus').textContent = 'CONTESTS: ' + d.length;
         makeChart('atChart', labels, data, 'rgba(0,230,118,1)', 0);
-      } catch (e) { document.getElementById('atStatus').textContent = 'UNAVAILABLE'; }
+      } catch (e) {
+        document.getElementById('atStatus').textContent = 'UNAVAILABLE';
+        setText('atCardRating', 'FETCHING');
+      }
     }
     fetchAT();
   </script>
