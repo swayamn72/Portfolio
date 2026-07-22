@@ -149,6 +149,8 @@
       height: 100%;
       z-index: 9997;
       pointer-events: none;
+      will-change: transform;
+      contain: strict;
     }
 
     /* web-shootable elements get a subtle tell */
@@ -173,6 +175,8 @@
       height: 100%;
       z-index: 0;
       pointer-events: none;
+      will-change: transform;
+      contain: strict;
     }
 
     /* ── PROGRESS BAR ── */
@@ -327,23 +331,27 @@
       display: block;
       color: var(--red);
       -webkit-text-stroke: 2px rgba(255, 23, 68, 0.4);
-      text-shadow:
-        4px 4px 0 #8b0000,
-        0 0 40px rgba(232, 0, 45, 0.5),
-        0 0 80px rgba(232, 0, 45, 0.2);
+      text-shadow: 4px 4px 0 #8b0000;
+      position: relative;
+    }
+
+    /* GPU-composited glow: animate opacity on a pseudo-element instead of
+       re-computing text-shadow blur every frame (huge perf win) */
+    .hero-name .accent-word::after {
+      content: attr(data-text);
+      position: absolute;
+      inset: 0;
+      color: transparent;
+      text-shadow: 4px 4px 0 #8b0000, 0 0 60px rgba(232, 0, 45, 0.9), 0 0 120px rgba(232, 0, 45, 0.5);
       animation: webPulse 3s ease-in-out infinite;
+      will-change: opacity;
+      pointer-events: none;
+      -webkit-text-stroke: 0;
     }
 
     @keyframes webPulse {
-
-      0%,
-      100% {
-        text-shadow: 4px 4px 0 #8b0000, 0 0 40px rgba(232, 0, 45, 0.5), 0 0 80px rgba(232, 0, 45, 0.2);
-      }
-
-      50% {
-        text-shadow: 4px 4px 0 #8b0000, 0 0 60px rgba(232, 0, 45, 0.8), 0 0 120px rgba(232, 0, 45, 0.4);
-      }
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
     }
 
     .hero-desc {
@@ -1549,7 +1557,7 @@
       <p class="hero-tag">COMPUTER ENGINEERING · KJSSE · MUMBAI · 8.7 CGPA</p>
       <h1 class="hero-name">
         SWAYAM<br>
-        <span class="accent-word">NAKTE</span>
+        <span class="accent-word" data-text="NAKTE">NAKTE</span>
       </h1>
       <p class="hero-desc">
         <strong>Full-stack developer</strong> and <strong>competitive programmer</strong> studying Computer Engineering
@@ -2224,9 +2232,16 @@
       });
     }
 
-    function drawFrame() {
+    let lastFrameTime = 0;
+    const FRAME_INTERVAL = 1000 / 30; // cap particle canvas at 30fps
+
+    function drawFrame(timestamp) {
+      requestAnimationFrame(drawFrame);
+      if (timestamp - lastFrameTime < FRAME_INTERVAL) return;
+      lastFrameTime = timestamp;
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      // connect nearby particles with "web threads"
+      // batch all line drawing with a single path + single stroke call per pair
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
@@ -2253,9 +2268,8 @@
         if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
         if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
       });
-      requestAnimationFrame(drawFrame);
     }
-    drawFrame();
+    requestAnimationFrame(drawFrame);
 
     /* ── PROGRESS BAR ── */
     const prog = document.getElementById('progress');
@@ -2282,13 +2296,17 @@
     }, { threshold: .15 });
     fadeEls.forEach(el => obs.observe(el));
 
-    /* ── HERO ANIMATIONS ── */
-    anime.timeline({ easing: 'easeOutExpo' })
-      .add({ targets: '.hero-tag', opacity: [0, 1], translateY: [20, 0], duration: 900 })
-      .add({ targets: '.hero-name', opacity: [0, 1], translateY: [40, 0], duration: 900 }, '-=600')
-      .add({ targets: '.hero-desc', opacity: [0, 1], translateY: [20, 0], duration: 700 }, '-=500')
-      .add({ targets: '.hero-chips', opacity: [0, 1], translateY: [20, 0], duration: 600 }, '-=400')
-      .add({ targets: '.hero-cta', opacity: [0, 1], translateY: [20, 0], duration: 600 }, '-=300');
+    /* ── HERO ANIMATIONS — deferred to after first paint ── */
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        anime.timeline({ easing: 'easeOutExpo' })
+          .add({ targets: '.hero-tag', opacity: [0, 1], translateY: [20, 0], duration: 900 })
+          .add({ targets: '.hero-name', opacity: [0, 1], translateY: [40, 0], duration: 900 }, '-=600')
+          .add({ targets: '.hero-desc', opacity: [0, 1], translateY: [20, 0], duration: 700 }, '-=500')
+          .add({ targets: '.hero-chips', opacity: [0, 1], translateY: [20, 0], duration: 600 }, '-=400')
+          .add({ targets: '.hero-cta', opacity: [0, 1], translateY: [20, 0], duration: 600 }, '-=300');
+      });
+    });
 
     /* ── CONTACT ANIM ── */
     const contactObs = new IntersectionObserver(entries => {
