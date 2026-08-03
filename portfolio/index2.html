@@ -7,23 +7,28 @@
   <title>Swayam Nakte</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link
-    href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Syne:wght@300;400;600;700;800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Bangers&family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700;800;900&family=Barlow:wght@300;400;600&display=swap"
     rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
     :root {
-      --bg: #06070d;
-      --bg2: #0a0d1a;
-      --accent: #7b5cfa;
-      --cyan: #00e5ff;
-      --green: #00ffb3;
-      --orange: #ff8c42;
-      --red: #ff4466;
-      --gold: #ffc947;
-      --white: #eef0f8;
-      --muted: rgba(238, 240, 248, 0.45);
-      --border: rgba(123, 92, 250, 0.2);
+      --bg: #08060e;
+      --bg2: #0d0a18;
+      --red: #e8002d;
+      --red2: #ff1744;
+      --blue: #0a1628;
+      --blue2: #112244;
+      --blue3: #1a3a6e;
+      --gold: #ffd600;
+      --white: #f0eeff;
+      --muted: rgba(240, 238, 255, 0.45);
+      --border: rgba(232, 0, 45, 0.18);
+      --web: rgba(232, 0, 45, 0.12);
+      --accent: #e8002d;
+      --cyan: #00c6ff;
+      --green: #00e676;
+      --orange: #ff6d00;
     }
 
     * {
@@ -40,39 +45,128 @@
     body {
       background: var(--bg);
       color: var(--white);
-      font-family: 'Syne', sans-serif;
+      font-family: 'Barlow', sans-serif;
       overflow-x: hidden;
       cursor: none;
     }
 
+    /* ── WEB PATTERN OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(10, 22, 40, 0.9) 0%, transparent 70%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cg stroke='rgba(232,0,45,0.06)' stroke-width='0.5' fill='none'%3E%3Cline x1='60' y1='0' x2='60' y2='120'/%3E%3Cline x1='0' y1='60' x2='120' y2='60'/%3E%3Cline x1='0' y1='0' x2='120' y2='120'/%3E%3Cline x1='120' y1='0' x2='0' y2='120'/%3E%3Ccircle cx='60' cy='60' r='20' stroke='rgba(232,0,45,0.05)'/%3E%3Ccircle cx='60' cy='60' r='40' stroke='rgba(232,0,45,0.04)'/%3E%3Ccircle cx='60' cy='60' r='60' stroke='rgba(232,0,45,0.03)'/%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* scanline */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(232, 0, 45, 0.008) 3px, rgba(232, 0, 45, 0.008) 4px);
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    /* ── CURSOR ── */
     #cursor {
       position: fixed;
-      width: 10px;
-      height: 10px;
-      background: var(--accent);
-      border-radius: 50%;
+      width: 14px;
+      height: 14px;
       pointer-events: none;
       z-index: 9999;
       transform: translate(-50%, -50%);
-      box-shadow: 0 0 16px var(--accent), 0 0 32px var(--accent);
-      transition: width .15s, height .15s, background .2s;
       left: -50px;
       top: -50px;
+      transition: transform .12s;
+    }
+
+    /* default: glowing red dot */
+    #cursor .cur-dot {
+      width: 14px;
+      height: 14px;
+      background: var(--red);
+      border-radius: 50%;
+      box-shadow: 0 0 16px var(--red), 0 0 32px var(--red);
+      position: absolute;
+      top: 0;
+      left: 0;
+      transition: opacity .2s, transform .2s;
+    }
+
+    /* spider SVG — shown on hover */
+    #cursor .cur-spider {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      transition: transform .2s cubic-bezier(.34, 1.56, .64, 1);
+      width: 28px;
+      height: 28px;
+      opacity: 0;
+    }
+
+    body.hovering #cursor .cur-dot {
+      opacity: 0;
+      transform: scale(0);
+    }
+
+    body.hovering #cursor .cur-spider {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
     }
 
     #cursor-trail {
       position: fixed;
-      width: 36px;
-      height: 36px;
-      border: 1px solid rgba(123, 92, 250, 0.5);
+      width: 40px;
+      height: 40px;
+      border: 1px solid rgba(232, 0, 45, 0.4);
       border-radius: 50%;
       pointer-events: none;
       z-index: 9998;
       transform: translate(-50%, -50%);
       left: -50px;
       top: -50px;
+      transition: width .2s, height .2s, border-color .2s;
     }
 
+    body.hovering #cursor-trail {
+      width: 56px;
+      height: 56px;
+      border-color: rgba(232, 0, 45, 0.7);
+    }
+
+    /* web canvas overlay — sits above everything, pointer-events off */
+    #web-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 9997;
+      pointer-events: none;
+      will-change: transform;
+      contain: strict;
+    }
+
+    /* web-shootable elements get a subtle tell */
+    a,
+    button,
+    .btn,
+    .cp-card,
+    .project-card,
+    .cert-card,
+    .info-card,
+    .achieve-card,
+    .skill-pill {
+      cursor: none;
+    }
+
+    /* Web thread canvas */
     #bg-canvas {
       position: fixed;
       top: 0;
@@ -81,35 +175,30 @@
       height: 100%;
       z-index: 0;
       pointer-events: none;
+      will-change: transform;
+      contain: strict;
     }
 
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(123, 92, 250, 0.012) 3px, rgba(123, 92, 250, 0.012) 4px);
-      pointer-events: none;
-      z-index: 1000;
-    }
-
+    /* ── PROGRESS BAR ── */
     #progress {
       position: fixed;
       top: 0;
       left: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--accent), var(--cyan));
-      box-shadow: 0 0 12px var(--accent);
+      height: 3px;
+      background: linear-gradient(90deg, var(--red), var(--red2), var(--gold));
+      box-shadow: 0 0 12px var(--red);
       z-index: 300;
       width: 0;
     }
 
+    /* ── NAV ── */
     nav {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
       z-index: 200;
-      padding: 22px 64px;
+      padding: 20px 64px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -117,61 +206,128 @@
     }
 
     nav.scrolled {
-      background: rgba(6, 7, 13, 0.95);
-      backdrop-filter: blur(16px);
+      background: rgba(8, 6, 14, 0.96);
+      backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border);
     }
 
     .nav-logo {
-      font-family: 'Orbitron', monospace;
-      font-weight: 900;
-      font-size: 1.1rem;
+      font-family: 'Bangers', cursive;
+      font-size: 1.8rem;
       letter-spacing: 4px;
       color: var(--white);
+      text-shadow: 0 0 20px rgba(232, 0, 45, 0.6);
+      position: relative;
     }
 
     .nav-logo span {
-      color: var(--accent);
+      color: var(--red);
+    }
+
+    .nav-logo::after {
+      content: '⬡';
+      position: absolute;
+      top: -4px;
+      right: -18px;
+      font-size: .6rem;
+      color: var(--red);
+      opacity: 0.7;
+      animation: spinHex 4s linear infinite;
+    }
+
+    @keyframes spinHex {
+      to {
+        transform: rotate(360deg);
+      }
     }
 
     .nav-links {
       display: flex;
-      gap: 40px;
+      gap: 36px;
       list-style: none;
     }
 
     .nav-links a {
       font-family: 'Share Tech Mono', monospace;
-      font-size: .75rem;
+      font-size: .72rem;
       letter-spacing: 2px;
       color: var(--muted);
       text-decoration: none;
-      transition: color .25s;
+      transition: color .25s, text-shadow .25s;
     }
 
     .nav-links a:hover {
-      color: var(--white);
+      color: var(--red);
+      text-shadow: 0 0 10px var(--red);
     }
 
-    /* HERO */
+    /* ── HERO ── */
     #hero {
       min-height: 100vh;
       display: flex;
       align-items: center;
-      padding: 0 64px;
+      justify-content: center;
+      padding: 0 48px;
       position: relative;
       overflow: hidden;
     }
 
+    /* big spider web behind hero */
+    #hero::before {
+      content: '';
+      position: absolute;
+      right: -200px;
+      top: -200px;
+      width: 800px;
+      height: 800px;
+      background:
+        radial-gradient(circle, transparent 60px, rgba(232, 0, 45, 0.04) 61px, transparent 62px),
+        radial-gradient(circle, transparent 120px, rgba(232, 0, 45, 0.04) 121px, transparent 122px),
+        radial-gradient(circle, transparent 180px, rgba(232, 0, 45, 0.04) 181px, transparent 182px),
+        radial-gradient(circle, transparent 240px, rgba(232, 0, 45, 0.04) 241px, transparent 242px),
+        radial-gradient(circle, transparent 300px, rgba(232, 0, 45, 0.04) 301px, transparent 302px),
+        radial-gradient(circle, transparent 360px, rgba(232, 0, 45, 0.04) 361px, transparent 362px);
+      pointer-events: none;
+      z-index: 1;
+    }
+
     .hero-inner {
-      max-width: 860px;
+      max-width: 1300px;
+      width: 100%;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 80px;
+    }
+
+    .hero-left {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .hero-right {
+      flex-shrink: 0;
+    }
+
+    .hero-right img {
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 5px solid var(--red);
+      box-shadow: 0 0 50px rgba(232,0,45,0.5), 0 0 100px rgba(232,0,45,0.15);
+      display: block;
     }
 
     .hero-tag {
       font-family: 'Share Tech Mono', monospace;
-      font-size: .75rem;
+      font-size: .72rem;
       letter-spacing: 5px;
-      color: var(--accent);
+      color: var(--red);
       margin-bottom: 24px;
       display: flex;
       align-items: center;
@@ -183,45 +339,53 @@
       content: '';
       width: 40px;
       height: 1px;
-      background: var(--accent);
-      box-shadow: 0 0 8px var(--accent);
+      background: var(--red);
+      box-shadow: 0 0 8px var(--red);
     }
 
     .hero-name {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(3.5rem, 9vw, 8rem);
-      font-weight: 800;
-      line-height: .95;
-      letter-spacing: -3px;
+      font-family: 'Bangers', cursive;
+      font-size: clamp(4rem, 10vw, 9.5rem);
+      font-weight: 400;
+      line-height: .9;
+      letter-spacing: 4px;
       color: var(--white);
       opacity: 0;
+      text-shadow: 4px 4px 0 rgba(232, 0, 45, 0.3), 8px 8px 0 rgba(10, 22, 40, 0.5);
     }
 
     .hero-name .accent-word {
       display: block;
-      background: linear-gradient(120deg, var(--accent) 0%, var(--cyan) 60%, var(--accent) 100%);
-      background-size: 200%;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: shimmer 5s linear infinite;
+      color: var(--red);
+      -webkit-text-stroke: 2px rgba(255, 23, 68, 0.4);
+      text-shadow: 4px 4px 0 #8b0000;
+      position: relative;
     }
 
-    @keyframes shimmer {
-      from {
-        background-position: 0%
-      }
+    /* GPU-composited glow: animate opacity on a pseudo-element instead of
+       re-computing text-shadow blur every frame (huge perf win) */
+    .hero-name .accent-word::after {
+      content: attr(data-text);
+      position: absolute;
+      inset: 0;
+      color: transparent;
+      text-shadow: 4px 4px 0 #8b0000, 0 0 60px rgba(232, 0, 45, 0.9), 0 0 120px rgba(232, 0, 45, 0.5);
+      animation: webPulse 3s ease-in-out infinite;
+      will-change: opacity;
+      pointer-events: none;
+      -webkit-text-stroke: 0;
+    }
 
-      to {
-        background-position: 200%
-      }
+    @keyframes webPulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
     }
 
     .hero-desc {
-      font-size: clamp(.9rem, 1.8vw, 1.1rem);
+      font-size: clamp(.9rem, 1.8vw, 1.05rem);
       font-weight: 300;
       color: var(--muted);
-      line-height: 1.8;
+      line-height: 1.9;
       max-width: 560px;
       margin-top: 28px;
       opacity: 0;
@@ -249,28 +413,28 @@
       border: 1px solid;
     }
 
-    .chip-purple {
-      color: var(--accent);
-      border-color: rgba(123, 92, 250, .35);
-      background: rgba(123, 92, 250, .07);
+    .chip-red {
+      color: var(--red);
+      border-color: rgba(232, 0, 45, .4);
+      background: rgba(232, 0, 45, .07);
     }
 
-    .chip-cyan {
+    .chip-blue {
       color: var(--cyan);
-      border-color: rgba(0, 229, 255, .3);
-      background: rgba(0, 229, 255, .06);
+      border-color: rgba(0, 198, 255, .3);
+      background: rgba(0, 198, 255, .06);
     }
 
     .chip-green {
       color: var(--green);
-      border-color: rgba(0, 255, 179, .3);
-      background: rgba(0, 255, 179, .06);
+      border-color: rgba(0, 230, 118, .3);
+      background: rgba(0, 230, 118, .06);
     }
 
-    .chip-orange {
-      color: var(--orange);
-      border-color: rgba(255, 140, 66, .3);
-      background: rgba(255, 140, 66, .06);
+    .chip-gold {
+      color: var(--gold);
+      border-color: rgba(255, 214, 0, .3);
+      background: rgba(255, 214, 0, .06);
     }
 
     .hero-cta {
@@ -307,23 +471,24 @@
     }
 
     .btn-filled {
-      background: var(--accent);
-      border-color: var(--accent);
+      background: var(--red);
+      border-color: var(--red);
       color: #fff;
+      font-weight: 700;
     }
 
     .btn-filled:hover {
-      box-shadow: 0 0 30px rgba(123, 92, 250, .5);
+      box-shadow: 0 0 30px rgba(232, 0, 45, .6), 0 0 60px rgba(232, 0, 45, .2);
     }
 
     .btn-outline {
       color: var(--muted);
-      border-color: rgba(238, 240, 248, .15);
+      border-color: rgba(240, 238, 255, .18);
     }
 
     .btn-outline:hover {
       color: var(--white);
-      border-color: rgba(238, 240, 248, .35);
+      border-color: rgba(240, 238, 255, .4);
     }
 
     .hero-scroll {
@@ -334,17 +499,18 @@
       font-family: 'Share Tech Mono', monospace;
       font-size: .65rem;
       letter-spacing: 4px;
-      color: rgba(238, 240, 248, .25);
+      color: rgba(240, 238, 255, .2);
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 10px;
+      z-index: 2;
     }
 
     .scroll-line {
       width: 1px;
       height: 50px;
-      background: linear-gradient(180deg, var(--accent), transparent);
+      background: linear-gradient(180deg, var(--red), transparent);
       animation: scrollPulse 2s ease infinite;
     }
 
@@ -364,42 +530,56 @@
       }
     }
 
-    /* SECTIONS */
+    /* ── SECTIONS ── */
     section {
       position: relative;
       z-index: 10;
     }
 
     .section-wrap {
-      max-width: 1100px;
+      max-width: 1300px;
       margin: 0 auto;
-      padding: 120px 64px;
+      padding: 100px 80px;
     }
 
     .sec-label {
       font-family: 'Share Tech Mono', monospace;
       font-size: .7rem;
       letter-spacing: 5px;
-      color: var(--accent);
+      color: var(--red);
       margin-bottom: 10px;
       display: block;
     }
 
     .sec-title {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(2rem, 4vw, 3.2rem);
-      font-weight: 800;
-      letter-spacing: -1px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+      font-weight: 900;
+      letter-spacing: 1px;
       color: var(--white);
       margin-bottom: 64px;
+      text-transform: uppercase;
     }
 
     .sec-title em {
       font-style: normal;
-      color: var(--accent);
+      color: var(--red);
     }
 
-    /* ABOUT */
+    /* comic-book section divider */
+    section::before {
+      content: '';
+      display: block;
+      height: 4px;
+      background: repeating-linear-gradient(90deg, var(--red) 0, var(--red) 20px, transparent 20px, transparent 28px);
+      opacity: 0.2;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+    }
+
+    /* ── ABOUT ── */
     .about-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -427,19 +607,39 @@
     }
 
     .info-card {
-      background: rgba(123, 92, 250, .04);
+      background: rgba(10, 22, 40, .6);
       border: 1px solid var(--border);
       border-radius: 4px;
       padding: 18px 22px;
       display: flex;
       align-items: center;
       gap: 16px;
-      transition: border-color .3s;
+      transition: border-color .3s, background .3s;
       opacity: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .info-card::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: var(--red);
+      transform: scaleY(0);
+      transform-origin: bottom;
+      transition: transform .3s;
     }
 
     .info-card:hover {
-      border-color: rgba(123, 92, 250, .5);
+      border-color: rgba(232, 0, 45, .45);
+      background: rgba(232, 0, 45, .04);
+    }
+
+    .info-card:hover::before {
+      transform: scaleY(1);
     }
 
     .info-icon {
@@ -457,7 +657,7 @@
       font-family: 'Share Tech Mono', monospace;
       font-size: .65rem;
       letter-spacing: 2px;
-      color: var(--accent);
+      color: var(--red);
     }
 
     .info-val {
@@ -467,9 +667,18 @@
       color: var(--white);
     }
 
-    /* EXPERIENCE */
+    .info-val a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .info-val a:hover {
+      color: var(--red);
+    }
+
+    /* ── EXPERIENCE ── */
     .exp-item {
-      border-left: 2px solid rgba(123, 92, 250, .25);
+      border-left: 2px solid rgba(232, 0, 45, .3);
       padding-left: 36px;
       position: relative;
       margin-bottom: 48px;
@@ -484,22 +693,25 @@
       width: 12px;
       height: 12px;
       border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 16px var(--accent);
+      background: var(--red);
+      box-shadow: 0 0 16px var(--red);
     }
 
     .exp-date {
       font-family: 'Share Tech Mono', monospace;
       font-size: .7rem;
       letter-spacing: 3px;
-      color: var(--accent);
+      color: var(--red);
       margin-bottom: 8px;
     }
 
     .exp-role {
-      font-size: 1.2rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.4rem;
       font-weight: 700;
       color: var(--white);
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     .exp-company {
@@ -516,30 +728,51 @@
     .exp-bullets li {
       font-size: .88rem;
       color: var(--muted);
-      padding: 5px 0;
-      padding-left: 16px;
+      padding: 5px 0 5px 16px;
       position: relative;
       line-height: 1.6;
     }
 
     .exp-bullets li::before {
-      content: '›';
+      content: '▸';
       position: absolute;
       left: 0;
-      color: var(--accent);
+      color: var(--red);
     }
 
-    /* PROJECTS */
+    /* ── PROJECTS ── */
     .projects-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 24px;
     }
 
-    .project-card {
-      background: rgba(10, 13, 26, .8);
+    .proj-img {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      border-radius: 4px;
+      margin-bottom: 20px;
       border: 1px solid var(--border);
-      border-radius: 6px;
+      display: block;
+    }
+
+    .proj-img-phone {
+      width: 100%;
+      aspect-ratio: 9/16;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      border: 1px solid var(--border);
+      display: block;
+      max-height: 220px;
+      object-position: top;
+    }
+
+    .project-card {
+      background: rgba(10, 22, 40, .8);
+      border: 1px solid var(--border);
+      border-radius: 4px;
       padding: 36px;
       position: relative;
       overflow: hidden;
@@ -547,8 +780,20 @@
       opacity: 0;
     }
 
+    .project-card::after {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -60px;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(232, 0, 45, 0.06), transparent 70%);
+      pointer-events: none;
+    }
+
     .project-card:hover {
-      border-color: rgba(123, 92, 250, .5);
+      border-color: rgba(232, 0, 45, .55);
       transform: translateY(-4px);
     }
 
@@ -558,8 +803,8 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--accent), var(--cyan));
+      height: 3px;
+      background: linear-gradient(90deg, var(--red), var(--red2), var(--gold));
       transform: scaleX(0);
       transform-origin: left;
       transition: transform .4s;
@@ -570,17 +815,20 @@
     }
 
     .proj-name {
-      font-size: 1.25rem;
-      font-weight: 700;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
       color: var(--white);
       margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
     }
 
     .proj-sub {
       font-family: 'Share Tech Mono', monospace;
-      font-size: .65rem;
+      font-size: .62rem;
       letter-spacing: 3px;
-      color: var(--accent);
+      color: var(--red);
       margin-bottom: 16px;
     }
 
@@ -604,9 +852,9 @@
       letter-spacing: 2px;
       padding: 4px 10px;
       border-radius: 2px;
-      border: 1px solid rgba(123, 92, 250, .25);
-      color: rgba(123, 92, 250, .8);
-      background: rgba(123, 92, 250, .06);
+      border: 1px solid rgba(232, 0, 45, .25);
+      color: rgba(232, 0, 45, .9);
+      background: rgba(232, 0, 45, .07);
     }
 
     .proj-highlights {
@@ -616,8 +864,7 @@
     .proj-highlights li {
       font-size: .83rem;
       color: var(--muted);
-      padding: 4px 0;
-      padding-left: 14px;
+      padding: 4px 0 4px 14px;
       position: relative;
       line-height: 1.5;
     }
@@ -630,7 +877,7 @@
       font-size: .75rem;
     }
 
-    /* CP */
+    /* ── CP ── */
     .cp-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -640,7 +887,7 @@
     .cp-card {
       border: 1px solid var(--border);
       border-radius: 4px;
-      padding: 28px 32px;
+      padding: 24px 28px;
       position: relative;
       overflow: hidden;
       display: flex;
@@ -649,12 +896,12 @@
       text-decoration: none;
       transition: border-color .3s, background .3s;
       opacity: 0;
-      background: rgba(10, 13, 26, .7);
+      background: rgba(10, 22, 40, .75);
     }
 
     .cp-card:hover {
-      border-color: rgba(123, 92, 250, .5);
-      background: rgba(123, 92, 250, .05);
+      border-color: rgba(232, 0, 45, .5);
+      background: rgba(232, 0, 45, .04);
     }
 
     .cp-card::after {
@@ -665,7 +912,7 @@
       transform: translateY(-50%);
       font-family: 'Share Tech Mono', monospace;
       font-size: .75rem;
-      color: var(--accent);
+      color: var(--red);
       opacity: 0;
       transition: opacity .25s, transform .25s;
     }
@@ -693,13 +940,12 @@
       object-fit: contain;
     }
 
-    /* RATING GRAPH */
     .cp-graph-section {
       margin-top: 40px;
       border: 1px solid var(--border);
-      border-radius: 6px;
+      border-radius: 4px;
       padding: 28px 32px;
-      background: rgba(10, 13, 26, .7);
+      background: rgba(10, 22, 40, .75);
       opacity: 0;
     }
 
@@ -714,7 +960,7 @@
       font-family: 'Share Tech Mono', monospace;
       font-size: .7rem;
       letter-spacing: 5px;
-      color: var(--accent);
+      color: var(--red);
     }
 
     .cp-graph-status {
@@ -788,13 +1034,12 @@
     }
 
     .band-gold {
-      color: #ffc947;
+      color: #ffd600;
     }
 
-    /* ── Graph tabs ─────────────────────────────── */
     .cp-graph-tabs {
       display: flex;
-      border-bottom: 1px solid rgba(123, 92, 250, 0.2);
+      border-bottom: 1px solid rgba(232, 0, 45, 0.2);
       margin-bottom: 0;
     }
 
@@ -823,7 +1068,7 @@
 
     .cp-graph-tab.active {
       color: var(--white);
-      border-bottom-color: var(--accent);
+      border-bottom-color: var(--red);
     }
 
     .cp-graph-tab:hover {
@@ -839,10 +1084,9 @@
     }
 
     .cp-platform-name {
-      font-family: 'Orbitron', monospace;
-      font-size: .85rem;
-      font-weight: 700;
-      letter-spacing: 2px;
+      font-family: 'Bangers', cursive;
+      font-size: 1.1rem;
+      letter-spacing: 3px;
       color: var(--white);
     }
 
@@ -861,9 +1105,9 @@
     }
 
     .cp-rating {
-      font-family: 'Orbitron', monospace;
-      font-size: 1.5rem;
-      font-weight: 900;
+      font-family: 'Bangers', cursive;
+      font-size: 1.8rem;
+      letter-spacing: 2px;
     }
 
     .cp-badge {
@@ -875,7 +1119,7 @@
       border: 1px solid;
     }
 
-    /* SKILLS */
+    /* ── SKILLS ── */
     .skills-cols {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -890,7 +1134,7 @@
       font-family: 'Share Tech Mono', monospace;
       font-size: .65rem;
       letter-spacing: 4px;
-      color: var(--accent);
+      color: var(--red);
       margin-bottom: 20px;
     }
 
@@ -902,19 +1146,20 @@
       letter-spacing: 1px;
       padding: 6px 14px;
       border-radius: 2px;
-      border: 1px solid rgba(238, 240, 248, .1);
-      color: rgba(238, 240, 248, .6);
-      background: rgba(238, 240, 248, .03);
+      border: 1px solid rgba(240, 238, 255, .1);
+      color: rgba(240, 238, 255, .6);
+      background: rgba(240, 238, 255, .03);
       transition: all .25s;
     }
 
     .skill-pill:hover {
-      border-color: var(--accent);
+      border-color: var(--red);
       color: var(--white);
-      background: rgba(123, 92, 250, .08);
+      background: rgba(232, 0, 45, .1);
+      box-shadow: 0 0 10px rgba(232, 0, 45, .2);
     }
 
-    /* EDUCATION */
+    /* ── EDUCATION ── */
     .edu-list {
       display: flex;
       flex-direction: column;
@@ -929,17 +1174,40 @@
       justify-content: space-between;
       align-items: flex-start;
       opacity: 0;
-      transition: border-color .3s;
+      transition: border-color .3s, background .3s;
+      background: rgba(10, 22, 40, .5);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .edu-item::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--red), transparent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .4s;
     }
 
     .edu-item:hover {
-      border-color: rgba(123, 92, 250, .4);
+      border-color: rgba(232, 0, 45, .4);
+    }
+
+    .edu-item:hover::before {
+      transform: scaleX(1);
     }
 
     .edu-school {
-      font-size: 1rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.1rem;
       font-weight: 700;
       color: var(--white);
+      text-transform: uppercase;
+      letter-spacing: .5px;
     }
 
     .edu-degree {
@@ -953,10 +1221,10 @@
     }
 
     .edu-score {
-      font-family: 'Orbitron', monospace;
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--accent);
+      font-family: 'Bangers', cursive;
+      font-size: 1.4rem;
+      letter-spacing: 2px;
+      color: var(--red);
     }
 
     .edu-year {
@@ -967,7 +1235,7 @@
       margin-top: 4px;
     }
 
-    /* ACHIEVEMENTS */
+    /* ── ACHIEVEMENTS ── */
     .achieve-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -976,19 +1244,19 @@
 
     .achieve-card {
       border: 1px solid var(--border);
-      border-radius: 6px;
+      border-radius: 4px;
       padding: 28px 32px;
       display: flex;
       align-items: center;
       gap: 20px;
       opacity: 0;
       transition: border-color .3s, background .3s;
-      background: rgba(10, 13, 26, .6);
+      background: rgba(10, 22, 40, .65);
     }
 
     .achieve-card:hover {
-      border-color: rgba(123, 92, 250, .45);
-      background: rgba(123, 92, 250, .05);
+      border-color: rgba(232, 0, 45, .45);
+      background: rgba(232, 0, 45, .04);
     }
 
     .achieve-badge {
@@ -1003,9 +1271,12 @@
     }
 
     .achieve-title {
+      font-family: 'Barlow Condensed', sans-serif;
       font-weight: 700;
-      font-size: 1rem;
+      font-size: 1.1rem;
       color: var(--white);
+      text-transform: uppercase;
+      letter-spacing: .5px;
     }
 
     .achieve-sub {
@@ -1015,7 +1286,7 @@
       line-height: 1.5;
     }
 
-    /* CERTIFICATIONS */
+    /* ── CERTIFICATIONS ── */
     .cert-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -1024,17 +1295,17 @@
 
     .cert-card {
       border: 1px solid var(--border);
-      border-radius: 6px;
+      border-radius: 4px;
       overflow: hidden;
       opacity: 0;
       transition: border-color .3s, transform .3s;
-      background: rgba(10, 13, 26, .7);
+      background: rgba(10, 22, 40, .75);
       cursor: pointer;
       position: relative;
     }
 
     .cert-card:hover {
-      border-color: rgba(123, 92, 250, .5);
+      border-color: rgba(232, 0, 45, .5);
       transform: translateY(-4px);
     }
 
@@ -1042,7 +1313,7 @@
       width: 100%;
       aspect-ratio: 16/10;
       overflow: hidden;
-      background: rgba(123, 92, 250, .06);
+      background: rgba(232, 0, 45, .04);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1066,7 +1337,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: rgba(6, 7, 13, .55);
+      background: rgba(8, 6, 14, .6);
       opacity: 0;
       transition: opacity .25s;
       font-family: 'Share Tech Mono', monospace;
@@ -1080,6 +1351,7 @@
     .cert-view-overlay::before {
       content: '↗';
       font-size: 1rem;
+      color: var(--red);
     }
 
     .cert-card:hover .cert-view-overlay {
@@ -1094,14 +1366,17 @@
       font-family: 'Share Tech Mono', monospace;
       font-size: .62rem;
       letter-spacing: 3px;
-      color: var(--accent);
+      color: var(--red);
       margin-bottom: 6px;
     }
 
     .cert-name {
+      font-family: 'Barlow Condensed', sans-serif;
       font-weight: 700;
-      font-size: .95rem;
+      font-size: 1rem;
       color: var(--white);
+      text-transform: uppercase;
+      letter-spacing: .5px;
     }
 
     .cert-date {
@@ -1111,7 +1386,7 @@
       margin-top: 4px;
     }
 
-    /* CONTACT */
+    /* ── CONTACT ── */
     #contact {
       text-align: center;
     }
@@ -1123,12 +1398,13 @@
     }
 
     .contact-big {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(2.5rem, 7vw, 5.5rem);
-      font-weight: 800;
-      line-height: .95;
-      letter-spacing: -2px;
+      font-family: 'Bangers', cursive;
+      font-size: clamp(3rem, 8vw, 7rem);
+      font-weight: 400;
+      line-height: .9;
+      letter-spacing: 6px;
       opacity: 0;
+      text-shadow: 4px 4px 0 rgba(232, 0, 45, 0.3);
     }
 
     .contact-sub {
@@ -1148,18 +1424,56 @@
       opacity: 0;
     }
 
+    /* ── FOOTER ── */
     footer {
       padding: 36px 64px;
-      border-top: 1px solid rgba(123, 92, 250, .1);
+      border-top: 1px solid rgba(232, 0, 45, .12);
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-family: 'Share Tech Mono', monospace;
       font-size: .65rem;
       letter-spacing: 2px;
-      color: rgba(238, 240, 248, .2);
+      color: rgba(240, 238, 255, .2);
       position: relative;
       z-index: 10;
+    }
+
+    .footer-spider {
+      font-size: 1.2rem;
+      animation: webPulse 3s ease-in-out infinite;
+    }
+
+    /* ── SPIDER WEB CORNER DECORATIONS ── */
+    .web-corner {
+      position: fixed;
+      width: 180px;
+      height: 180px;
+      pointer-events: none;
+      z-index: 5;
+      opacity: 0.15;
+    }
+
+    .web-corner-tl {
+      top: 0;
+      left: 0;
+    }
+
+    .web-corner-tr {
+      top: 0;
+      right: 0;
+      transform: scaleX(-1);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:1100px) {
+      .hero-right img {
+        width: 300px;
+        height: 300px;
+      }
+      .hero-inner {
+        gap: 40px;
+      }
     }
 
     @media(max-width:900px) {
@@ -1177,6 +1491,36 @@
 
       #hero {
         padding: 0 24px;
+        align-items: center;
+      }
+
+      .hero-inner {
+        flex-direction: column;
+        text-align: center;
+        gap: 40px;
+        padding-top: 80px;
+      }
+
+      .hero-left {
+        order: 2;
+      }
+
+      .hero-right {
+        order: 1;
+      }
+
+      .hero-right img {
+        width: 220px;
+        height: 220px;
+      }
+
+      .hero-tag {
+        justify-content: center;
+      }
+
+      .hero-chips,
+      .hero-cta {
+        justify-content: center;
       }
 
       .about-grid,
@@ -1184,6 +1528,10 @@
       .cp-grid,
       .skills-cols,
       .achieve-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cert-grid {
         grid-template-columns: 1fr;
       }
 
@@ -1203,14 +1551,79 @@
         text-align: center;
       }
     }
+
+    /* ── WEB SHOOTING ANIMATION ── */
+    @keyframes webShoot {
+      0% {
+        opacity: 0;
+        stroke-dashoffset: 200;
+      }
+
+      30% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0;
+        stroke-dashoffset: 0;
+      }
+    }
   </style>
 </head>
 
 <body>
 
+  <!-- Spider web corner SVGs -->
+  <svg class="web-corner web-corner-tl" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+    <g stroke="#e8002d" stroke-width="0.8" fill="none">
+      <line x1="0" y1="0" x2="180" y2="0" />
+      <line x1="0" y1="0" x2="0" y2="180" />
+      <line x1="0" y1="0" x2="180" y2="180" />
+      <line x1="0" y1="0" x2="90" y2="180" />
+      <line x1="0" y1="0" x2="180" y2="90" />
+      <path d="M0,30 Q30,30 30,0" stroke-width="0.6" />
+      <path d="M0,60 Q60,60 60,0" stroke-width="0.6" />
+      <path d="M0,90 Q90,90 90,0" stroke-width="0.6" />
+      <path d="M0,120 Q120,120 120,0" stroke-width="0.6" />
+      <path d="M0,150 Q150,150 150,0" stroke-width="0.6" />
+    </g>
+  </svg>
+  <svg class="web-corner web-corner-tr" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+    <g stroke="#e8002d" stroke-width="0.8" fill="none">
+      <line x1="0" y1="0" x2="180" y2="0" />
+      <line x1="0" y1="0" x2="0" y2="180" />
+      <line x1="0" y1="0" x2="180" y2="180" />
+      <line x1="0" y1="0" x2="90" y2="180" />
+      <line x1="0" y1="0" x2="180" y2="90" />
+      <path d="M0,30 Q30,30 30,0" />
+      <path d="M0,60 Q60,60 60,0" />
+      <path d="M0,90 Q90,90 90,0" />
+      <path d="M0,120 Q120,120 120,0" />
+      <path d="M0,150 Q150,150 150,0" />
+    </g>
+  </svg>
+
   <div id="progress"></div>
-  <div id="cursor"></div>
+  <div id="cursor">
+    <div class="cur-dot"></div>
+    <svg class="cur-spider" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <line x1="16" y1="15" x2="2" y2="8" stroke="#e8002d" stroke-width="1.5" stroke-linecap="round" />
+      <line x1="16" y1="16" x2="1" y2="16" stroke="#e8002d" stroke-width="1.5" stroke-linecap="round" />
+      <line x1="16" y1="17" x2="2" y2="24" stroke="#e8002d" stroke-width="1.5" stroke-linecap="round" />
+      <line x1="16" y1="18" x2="5" y2="29" stroke="#e8002d" stroke-width="1.5" stroke-linecap="round" />
+      <line x1="16" y1="15" x2="30" y2="8" stroke="#e8002d" stroke-width="1.5" stroke-linecap="round" />
+      <line x1="16" y1="16" x2="31" y2="16" stroke="#e8002d" stroke-width="1.5" stroke-linecap="round" />
+      <line x1="16" y1="17" x2="30" y2="24" stroke="#e8002d" stroke-width="1.5" stroke-linecap="round" />
+      <line x1="16" y1="18" x2="27" y2="29" stroke="#e8002d" stroke-width="1.5" stroke-linecap="round" />
+      <ellipse cx="16" cy="14" rx="4" ry="3.5" fill="#e8002d" />
+      <ellipse cx="16" cy="20" rx="5" ry="4.5" fill="#e8002d" />
+      <circle cx="14.5" cy="13.5" r="1" fill="#08060e" />
+      <circle cx="17.5" cy="13.5" r="1" fill="#08060e" />
+      <line x1="16" y1="0" x2="16" y2="10" stroke="#e8002d" stroke-width="1" stroke-dasharray="2 2" opacity="0.6" />
+    </svg>
+  </div>
   <div id="cursor-trail"></div>
+  <canvas id="web-canvas"></canvas>
   <canvas id="bg-canvas"></canvas>
 
   <nav id="navbar">
@@ -1230,26 +1643,31 @@
   <!-- HERO -->
   <section id="hero">
     <div class="hero-inner">
-      <p class="hero-tag">COMPUTER ENGINEERING · KJSSE · MUMBAI · 8.7 CGPA</p>
-      <h1 class="hero-name">
-        SWAYAM<br>
-        <span class="accent-word">NAKTE</span>
-      </h1>
-      <p class="hero-desc">
-        <strong>Full-stack developer</strong> and <strong>competitive programmer</strong> studying Computer Engineering
-        at K.J. Somaiya School Of Engineering. I build production-grade apps, solve hard algorithmic problems, and
-        obsess over clean code.
-      </p>
-      <div class="hero-chips">
-        <span class="chip chip-purple">C++ · RUST · JS</span>
-        <span class="chip chip-cyan">MERN STACK</span>
-        <span class="chip chip-green">FLUTTER · DART</span>
-        <span class="chip chip-orange">AWS · DOCKER</span>
-        <span class="chip chip-purple">CF SPECIALIST</span>
+      <div class="hero-left">
+        <p class="hero-tag" style="letter-spacing:3px;">B.TECH · KJSSE · 8.9 CGPA</p>
+        <h1 class="hero-name">
+          SWAYAM<br>
+          <span class="accent-word" data-text="NAKTE">NAKTE</span>
+        </h1>
+        <p class="hero-desc">
+          <strong>Full-stack developer</strong> and <strong>competitive programmer</strong> studying Computer Engineering
+          at K.J. Somaiya School Of Engineering. I build production-grade apps, solve hard algorithmic problems, and
+          obsess over clean code.
+        </p>
+        <div class="hero-chips">
+          <span class="chip chip-red">C++ · RUST · JS</span>
+          <span class="chip chip-blue">MERN STACK</span>
+          <span class="chip chip-green">FLUTTER · DART</span>
+          <span class="chip chip-gold">AWS · DOCKER</span>
+          <span class="chip chip-red">CF SPECIALIST</span>
+        </div>
+        <div class="hero-cta">
+          <a href="#contact" class="btn btn-filled">GET IN TOUCH</a>
+          <a href="#projects" class="btn btn-outline">VIEW PROJECTS</a>
+        </div>
       </div>
-      <div class="hero-cta">
-        <a href="#contact" class="btn btn-filled">GET IN TOUCH</a>
-        <a href="#projects" class="btn btn-outline">VIEW PROJECTS</a>
+      <div class="hero-right">
+        <img src="./src/assets/pfp.jpg" alt="Swayam Nakte">
       </div>
     </div>
     <div class="hero-scroll">
@@ -1265,8 +1683,7 @@
       <div class="about-grid">
         <div class="about-text">
           <p>I'm a <strong>3rd year Computer Engineering student</strong> at K.J. Somaiya School Of Engineering (KJSSE),
-            Mumbai
-            — holding an <strong>8.7 CGPA</strong> with a perfect 10 SGPA in Semester 4.</p>
+            Mumbai - holding an <strong>8.9 CGPA</strong> with a perfect 10 SGPA in Semester 4.</p>
           <p>I love building things end-to-end — from <strong>REST APIs and databases</strong> to <strong>React
               frontends</strong> and <strong>Flutter mobile apps</strong>, all the way to deploying on
             <strong>AWS</strong>. I care about the whole stack.
@@ -1277,28 +1694,28 @@
         </div>
         <div class="info-cards">
           <div class="info-card">
-            <div class="info-icon" style="background:rgba(123,92,250,.1)">🎓</div>
+            <div class="info-icon" style="background:rgba(232,0,45,.1)">🎓</div>
             <div>
               <div class="info-title">STUDYING AT</div>
               <div class="info-val">K.J. Somaiya School Of Engineering (KJSSE)</div>
             </div>
           </div>
           <div class="info-card">
-            <div class="info-icon" style="background:rgba(0,229,255,.1)">📍</div>
+            <div class="info-icon" style="background:rgba(0,198,255,.1)">📍</div>
             <div>
               <div class="info-title">LOCATION</div>
               <div class="info-val">Mumbai, Maharashtra, India</div>
             </div>
           </div>
           <div class="info-card">
-            <div class="info-icon" style="background:rgba(0,255,179,.1)">✉️</div>
+            <div class="info-icon" style="background:rgba(0,230,118,.1)">✉️</div>
             <div>
               <div class="info-title">EMAIL</div>
               <div class="info-val"><a href="mailto:swayamsn123@gmail.com">swayamsn123@gmail.com</a></div>
             </div>
           </div>
           <div class="info-card">
-            <div class="info-icon" style="background:rgba(255,201,71,.1)">⚡</div>
+            <div class="info-icon" style="background:rgba(255,214,0,.1)">⚡</div>
             <div>
               <div class="info-title">STATUS</div>
               <div class="info-val">Open to Internships &amp; Collaborations</div>
@@ -1309,10 +1726,78 @@
     </div>
   </section>
 
+  <!-- CP -->
+  <section id="cp">
+    <div class="section-wrap">
+      <span class="sec-label">// 02 — PROBLEM SOLVING</span>
+      <h2 class="sec-title">PROBLEM <em>SOLVING</em></h2>
+      <div class="cp-grid">
+        <a href="https://codeforces.com/profile/swayamsn123" target="_blank" class="cp-card">
+          <div class="cp-icon" style="background:rgba(232,0,45,.12)">
+            <img src="/icons/codeforces.webp" alt="Codeforces">
+          </div>
+          <div style="flex:1">
+            <div class="cp-platform-name">CODEFORCES</div>
+            <div class="cp-handle" style="color:var(--red)">@swayamsn123</div>
+            <div class="cp-rating-row">
+              <span class="cp-rating" id="cfCardRating" style="color:var(--red)">FETCHING</span>
+              <span class="cp-badge" id="cfCardBadge"
+                style="color:var(--red);border-color:rgba(232,0,45,.3);background:rgba(232,0,45,.07)">FETCHING</span>
+            </div>
+          </div>
+          <div style="font-family:'Share Tech Mono';font-size:.7rem;letter-spacing:2px;color:var(--red);opacity:.7;white-space:nowrap;">VISIT &#8599;</div>
+        </a>
+        <a href="https://www.codechef.com/users/swayamn73" target="_blank" class="cp-card">
+          <div class="cp-icon" style="background:rgba(255,214,0,.12)">
+            <img src="/icons/codechef.png" alt="CodeChef">
+          </div>
+          <div style="flex:1">
+            <div class="cp-platform-name">CODECHEF</div>
+            <div class="cp-handle" style="color:var(--gold)">@swayamn73</div>
+            <div class="cp-rating-row">
+              <span class="cp-rating" id="ccCardRating" style="color:var(--gold)">FETCHING</span>
+              <span class="cp-badge" id="ccCardBadge"
+                style="color:var(--gold);border-color:rgba(255,214,0,.3);background:rgba(255,214,0,.07)">FETCHING</span>
+            </div>
+          </div>
+          <div style="font-family:'Share Tech Mono';font-size:.7rem;letter-spacing:2px;color:var(--gold);opacity:.7;white-space:nowrap;">VISIT &#8599;</div>
+        </a>
+        <a href="https://leetcode.com/swayamn" target="_blank" class="cp-card">
+          <div class="cp-icon" style="background:rgba(255,109,0,.12)">
+            <img src="/icons/leetcode.webp" alt="LeetCode">
+          </div>
+          <div style="flex:1">
+            <div class="cp-platform-name">LEETCODE</div>
+            <div class="cp-handle" style="color:var(--orange)">@swayamn</div>
+            <div class="cp-rating-row">
+              <span class="cp-rating" id="lcCardRating"
+                style="color:var(--orange);font-size:.9rem;font-family:'Share Tech Mono'">FETCHING</span>
+            </div>
+          </div>
+          <div style="font-family:'Share Tech Mono';font-size:.7rem;letter-spacing:2px;color:var(--orange);opacity:.7;white-space:nowrap;">VISIT &#8599;</div>
+        </a>
+        <a href="https://atcoder.jp/users/swayamn72" target="_blank" class="cp-card">
+          <div class="cp-icon" style="background:rgba(0,230,118,.12)">
+            <img src="/icons/atcoder.png" alt="AtCoder" style="filter:invert(1) brightness(0.8)">
+          </div>
+          <div style="flex:1">
+            <div class="cp-platform-name">ATCODER</div>
+            <div class="cp-handle" style="color:var(--green)">@swayamn72</div>
+            <div class="cp-rating-row">
+              <span class="cp-rating" id="atCardRating"
+                style="color:var(--green);font-size:.9rem;font-family:'Share Tech Mono'">FETCHING</span>
+            </div>
+          </div>
+          <div style="font-family:'Share Tech Mono';font-size:.7rem;letter-spacing:2px;color:var(--green);opacity:.7;white-space:nowrap;">VISIT &#8599;</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
   <!-- EXPERIENCE -->
   <section id="experience">
     <div class="section-wrap">
-      <span class="sec-label">// 02 — EXPERIENCE</span>
+      <span class="sec-label">// 03 — EXPERIENCE</span>
       <h2 class="sec-title">WHERE I'VE <em>WORKED</em></h2>
       <div class="exp-item">
         <div class="exp-date">JAN 2026 — PRESENT</div>
@@ -1332,18 +1817,20 @@
   <!-- PROJECTS -->
   <section id="projects">
     <div class="section-wrap">
-      <span class="sec-label">// 03 — PROJECTS</span>
+      <span class="sec-label">// 04 — PROJECTS</span>
       <h2 class="sec-title">THINGS I'VE <em>BUILT</em></h2>
-      <div class="projects-grid">
+      <div class="projects-grid" style="display:grid;grid-template-columns:repeat(3, 1fr);gap:2rem;">
+        <!-- Aegis Web -->
         <div class="project-card">
+          <img src="./src/assets/aegis.png" alt="Aegis Platform" class="proj-img" style="width:100%;height:auto;border-radius:8px;margin-bottom:1rem;">
           <div class="proj-name">Aegis — Esports Management Platform</div>
           <div class="proj-sub">WEB APP · REACT / NODE.JS / MONGODB / SOCKET.IO / AWS</div>
           <div class="proj-desc">Comprehensive esports management platform with team recruitment, profile building,
             tournament registration, and organization management portal — deployed on AWS.</div>
           <div class="proj-tags">
-            <span class="proj-tag">REACT</span><span class="proj-tag">NODE.JS</span><span
-              class="proj-tag">MONGODB</span>
-            <span class="proj-tag">SOCKET.IO</span><span class="proj-tag">AWS</span>
+            <span class="proj-tag">REACT</span><span class="proj-tag">NODE.JS</span>
+            <span class="proj-tag">MONGODB</span><span class="proj-tag">SOCKET.IO</span><span
+              class="proj-tag">AWS</span>
           </div>
           <ul class="proj-highlights">
             <li>Real-time live chat via Socket.io across web &amp; mobile clients</li>
@@ -1355,14 +1842,22 @@
               style="font-size:.75rem;padding:.45rem 1rem">GITHUB ↗</a>
           </div>
         </div>
+        <!-- Aegis Mobile -->
         <div class="project-card">
+          <!-- Phone mockup container -->
+          <div style="width:100%;background:rgba(0,0,0,0.3);border-radius:8px;margin-bottom:1rem;display:flex;align-items:center;justify-content:center;padding:16px;min-height:180px;border:1px solid var(--border);overflow:hidden;">
+            <div style="position:relative;width:100px;background:#111;border-radius:16px;border:3px solid #333;padding:6px;box-shadow:0 0 20px rgba(232,0,45,0.2);">
+              <div style="width:30px;height:4px;background:#222;border-radius:2px;margin:0 auto 4px;"></div>
+              <img src="./src/assets/aegismobile.png" alt="Aegis Mobile App" style="width:100%;border-radius:8px;display:block;">
+            </div>
+          </div>
           <div class="proj-name">Aegis — Mobile App</div>
           <div class="proj-sub">ANDROID · FLUTTER / DART / RIVERPOD</div>
           <div class="proj-desc">Companion Android app for the Aegis esports platform, featuring a responsive UI
             optimized for mobile interactions with full feature parity to the web client.</div>
           <div class="proj-tags">
-            <span class="proj-tag">FLUTTER</span><span class="proj-tag">DART</span><span
-              class="proj-tag">RIVERPOD</span><span class="proj-tag">SOCKET.IO</span>
+            <span class="proj-tag">FLUTTER</span><span class="proj-tag">DART</span>
+            <span class="proj-tag">RIVERPOD</span><span class="proj-tag">SOCKET.IO</span>
           </div>
           <ul class="proj-highlights">
             <li>State management via Riverpod with clean architecture</li>
@@ -1371,80 +1866,42 @@
           </ul>
           <div style="margin-top:1rem">
             <a href="https://github.com/swayamn72/Aegis3.0" target="_blank" class="btn btn-outline"
+              style="font-size:.75rem;padding:.45rem 1rem">GITHUB &#8599;</a>
+          </div>
+        </div>
+        <!-- CodeMortem -->
+        <div class="project-card">
+          <img src="./src/assets/codemortem.png" alt="CodeMortem" class="proj-img" style="width:100%;height:auto;border-radius:8px;margin-bottom:1rem;">
+          <div class="proj-name">CodeMortem — CP Learning Platform</div>
+          <div class="proj-sub">WEB APP · NEXT.JS / TYPESCRIPT / TAILWIND</div>
+          <div class="proj-desc">An interactive competitive programming learning platform with animated lesson modules,
+            MCQ checkpoints, and rating history graphs for multiple CP platforms.</div>
+          <div class="proj-tags">
+            <span class="proj-tag">NEXT.JS</span><span class="proj-tag">TYPESCRIPT</span>
+            <span class="proj-tag">TAILWIND</span>
+          </div>
+          <ul class="proj-highlights">
+            <li>Rich lesson primitives with animated diagrams and code blocks</li>
+            <li>Live CP rating graphs from Codeforces, LeetCode, CodeChef &amp; AtCoder</li>
+            <li>MCQ checkpoint system with detailed explanations</li>
+          </ul>
+          <div style="margin-top:1rem">
+            <a href="https://github.com/swayamn72/CodeMortem2.0" target="_blank" class="btn btn-outline"
               style="font-size:.75rem;padding:.45rem 1rem">GITHUB ↗</a>
           </div>
         </div>
-
       </div>
     </div>
   </section>
 
-  <!-- CP -->
-  <section id="cp">
+  <!-- RATING GRAPHS -->
+  <section id="cp-graphs">
     <div class="section-wrap">
-      <span class="sec-label">// 04 — COMPETITIVE PROGRAMMING</span>
-      <h2 class="sec-title">PROBLEM <em>SOLVING</em></h2>
-      <div class="cp-grid">
-        <a href="https://codeforces.com/profile/swayamnsn123" target="_blank" class="cp-card">
-          <div class="cp-icon" style="background:rgba(255,68,102,.12)">
-            <img src="/icons/codeforces.webp" alt="Codeforces">
-          </div>
-          <div style="flex:1">
-            <div class="cp-platform-name">CODEFORCES</div>
-            <div class="cp-handle" style="color:var(--red)">@swayamnsn123</div>
-            <div class="cp-rating-row">
-              <span class="cp-rating" id="cfCardRating" style="color:var(--red)">FETCHING</span>
-              <span class="cp-badge"
-                style="color:var(--red);border-color:rgba(255,68,102,.3);background:rgba(255,68,102,.07)">SPECIALIST</span>
-            </div>
-          </div>
-        </a>
-        <a href="https://www.codechef.com/users/swayamn73" target="_blank" class="cp-card">
-          <div class="cp-icon" style="background:rgba(255,201,71,.12)">
-            <img src="/icons/codechef.png" alt="CodeChef">
-          </div>
-          <div style="flex:1">
-            <div class="cp-platform-name">CODECHEF</div>
-            <div class="cp-handle" style="color:var(--gold)">@swayamn73</div>
-            <div class="cp-rating-row">
-              <span class="cp-rating" id="ccCardRating" style="color:var(--gold)">FETCHING</span>
-              <span class="cp-badge" id="ccCardBadge"
-                style="color:var(--gold);border-color:rgba(255,201,71,.3);background:rgba(255,201,71,.07)">FETCHING</span>
-            </div>
-          </div>
-        </a>
-        <a href="https://leetcode.com/swayamn" target="_blank" class="cp-card">
-          <div class="cp-icon" style="background:rgba(255,140,66,.12)">
-            <img src="/icons/leetcode.webp" alt="LeetCode">
-          </div>
-          <div style="flex:1">
-            <div class="cp-platform-name">LEETCODE</div>
-            <div class="cp-handle" style="color:var(--orange)">@swayamn</div>
-            <div class="cp-rating-row">
-              <span class="cp-rating" id="lcCardRating"
-                style="color:var(--orange);font-size:.9rem;font-family:'Share Tech Mono'">—</span>
-            </div>
-          </div>
-        </a>
-        <a href="https://atcoder.jp/users/swayamn72" target="_blank" class="cp-card">
-          <div class="cp-icon" style="background:rgba(0,255,179,.12)">
-            <img src="/icons/atcoder.png" alt="AtCoder" style="filter:invert(1) brightness(0.8)">
-          </div>
-          <div style="flex:1">
-            <div class="cp-platform-name">ATCODER</div>
-            <div class="cp-handle" style="color:var(--green)">@swayamn72</div>
-            <div class="cp-rating-row">
-              <span class="cp-rating" id="atCardRating"
-                style="color:var(--green);font-size:.9rem;font-family:'Share Tech Mono'">—</span>
-            </div>
-          </div>
-        </a>
-      </div>
+      <span class="sec-label">// 05 — RATING GRAPHS</span>
+      <h2 class="sec-title">RATING <em>HISTORY</em></h2>
 
-      <!-- RATING HISTORY GRAPHS (4 platforms) -->
+      <!-- RATING HISTORY GRAPHS -->
       <div class="cp-graph-section" id="cpGraph">
-
-        <!-- Tabs -->
         <div class="cp-graph-tabs">
           <button class="cp-graph-tab active" data-tab="cf">
             <img src="/icons/codeforces.webp" alt="CF">CODEFORCES
@@ -1486,7 +1943,7 @@
           </div>
           <div class="cp-graph-box"><canvas id="ccChart"></canvas></div>
           <div class="cp-graph-bands">
-            <span class="cp-band-dot band-gray">1★ &lt;1400</span>
+            <span class="cp-band-dot band-gray">1★ ≤1399</span>
             <span class="cp-band-dot band-green">2★ 1400</span>
             <span class="cp-band-dot band-blue">3★ 1600</span>
             <span class="cp-band-dot band-violet">4★ 1800</span>
@@ -1523,9 +1980,7 @@
             <span class="cp-band-dot band-red">RED 2800+</span>
           </div>
         </div>
-
       </div>
-
     </div>
   </section>
 
@@ -1537,21 +1992,21 @@
       <div class="skills-cols">
         <div class="skill-group">
           <div class="skill-group-title">LANGUAGES</div>
-          <span class="skill-pill">C++</span><span class="skill-pill">Rust</span><span
-            class="skill-pill">JavaScript</span><span class="skill-pill">Dart</span>
+          <span class="skill-pill">C++</span><span class="skill-pill">Rust</span>
+          <span class="skill-pill">JavaScript</span><span class="skill-pill">Dart</span>
         </div>
         <div class="skill-group">
           <div class="skill-group-title">WEB &amp; MOBILE</div>
-          <span class="skill-pill">React</span><span class="skill-pill">Node.js</span><span
-            class="skill-pill">Express</span><span class="skill-pill">Flutter</span><span
-            class="skill-pill">Socket.io</span><span class="skill-pill">Riverpod</span><span
-            class="skill-pill">HTML/CSS</span>
+          <span class="skill-pill">React</span><span class="skill-pill">Node.js</span>
+          <span class="skill-pill">Express</span><span class="skill-pill">Flutter</span>
+          <span class="skill-pill">Socket.io</span><span class="skill-pill">Riverpod</span>
+          <span class="skill-pill">HTML/CSS</span>
         </div>
         <div class="skill-group">
           <div class="skill-group-title">DATABASES &amp; TOOLS</div>
-          <span class="skill-pill">MongoDB</span><span class="skill-pill">MySQL</span><span
-            class="skill-pill">PostgreSQL</span><span class="skill-pill">Git/GitHub</span><span
-            class="skill-pill">Docker</span><span class="skill-pill">AWS</span>
+          <span class="skill-pill">MongoDB</span><span class="skill-pill">MySQL</span>
+          <span class="skill-pill">PostgreSQL</span><span class="skill-pill">Git/GitHub</span>
+          <span class="skill-pill">Docker</span><span class="skill-pill">AWS</span>
         </div>
       </div>
     </div>
@@ -1569,7 +2024,7 @@
             <div class="edu-degree">B.Tech Computer Engineering · 3rd Year</div>
           </div>
           <div class="edu-right">
-            <div class="edu-score">8.7 CGPA</div>
+            <div class="edu-score">8.9 CGPA</div>
             <div class="edu-year">2023 — PRESENT</div>
           </div>
         </div>
@@ -1603,25 +2058,20 @@
       <span class="sec-label">// 07 — ACHIEVEMENTS</span>
       <h2 class="sec-title">WINS &amp; <em>MILESTONES</em></h2>
       <div class="achieve-grid">
-
         <div class="achieve-card">
-          <div class="achieve-badge" style="background:rgba(255,201,71,.1)">🏆</div>
+          <div class="achieve-badge" style="background:rgba(255,214,0,.1)">🏆</div>
           <div>
             <div class="achieve-title">Perfect 10 SGPA</div>
             <div class="achieve-sub">Semester 4 — K.J. Somaiya School of Engineering</div>
           </div>
         </div>
-
         <div class="achieve-card">
-          <div class="achieve-badge" style="background:rgba(123,92,250,.1)">🧮</div>
+          <div class="achieve-badge" style="background:rgba(232,0,45,.1)">🧮</div>
           <div>
             <div class="achieve-title">Abacus State Runner-Up</div>
             <div class="achieve-sub">State Level Abacus Competition</div>
           </div>
         </div>
-
-
-
       </div>
     </div>
   </section>
@@ -1632,7 +2082,6 @@
       <span class="sec-label">// 08 — CERTIFICATIONS</span>
       <h2 class="sec-title">CERTIFIED <em>SKILLS</em></h2>
       <div class="cert-grid">
-
         <div class="cert-card" id="cert-0">
           <div class="cert-img-wrap">
             <iframe src="/certifications/zs1jCD63.pdf#toolbar=0&navpanes=0&scrollbar=0&view=Fit"
@@ -1645,7 +2094,6 @@
             <div class="cert-date">2024</div>
           </div>
         </div>
-
         <div class="cert-card" id="cert-1">
           <div class="cert-img-wrap">
             <iframe src="/certifications/swayamn73-Git_Github.pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH"
@@ -1659,7 +2107,6 @@
             <div class="cert-date">2024</div>
           </div>
         </div>
-
         <div class="cert-card" id="cert-2">
           <div class="cert-img-wrap">
             <iframe
@@ -1674,7 +2121,6 @@
             <div class="cert-date">2024</div>
           </div>
         </div>
-
       </div>
     </div>
   </section>
@@ -1682,7 +2128,7 @@
   <!-- CONTACT -->
   <section id="contact">
     <div class="contact-wrap">
-      <h2 class="contact-big">LET'S<br><span style="color:var(--accent)">TALK.</span></h2>
+      <h2 class="contact-big">LET'S<br><span style="color:var(--red)">TALK.</span></h2>
       <p class="contact-sub">// OPEN TO INTERNSHIPS · COLLABORATIONS · COOL IDEAS</p>
       <div class="contact-row">
         <a href="mailto:swayamsn123@gmail.com" class="btn btn-filled">swayamsn123@gmail.com</a>
@@ -1695,330 +2141,593 @@
 
   <footer>
     <span>© 2025 SWAYAM NAKTE</span>
-
+    <span class="footer-spider">🕷️</span>
     <span>MUMBAI, IN</span>
   </footer>
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
   <script type="module">
-    /* CURSOR */
-    const cursor = document.getElementById('cursor'), trail = document.getElementById('cursor-trail');
+    /* ══════════════════════════════════════════
+       SPIDER WEB CURSOR SYSTEM
+    ══════════════════════════════════════════ */
+    const cur = document.getElementById('cursor');
+    const trail = document.getElementById('cursor-trail');
+    const wc = document.getElementById('web-canvas');
+    const wctx = wc.getContext('2d');
+
+    wc.width = window.innerWidth;
+    wc.height = window.innerHeight;
+    window.addEventListener('resize', () => {
+      wc.width = window.innerWidth;
+      wc.height = window.innerHeight;
+    });
+
     let mx = 0, my = 0, tx = 0, ty = 0;
-    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx + 'px'; cursor.style.top = my + 'px'; });
-    (function loop() { tx += (mx - tx) * .1; ty += (my - ty) * .1; trail.style.left = tx + 'px'; trail.style.top = ty + 'px'; requestAnimationFrame(loop); })();
-    document.querySelectorAll('a,button').forEach(el => {
-      el.addEventListener('mouseenter', () => { cursor.style.width = '18px'; cursor.style.height = '18px'; cursor.style.background = 'var(--cyan)'; });
-      el.addEventListener('mouseleave', () => { cursor.style.width = '10px'; cursor.style.height = '10px'; cursor.style.background = 'var(--accent)'; });
-    });
+    let prevMx = 0, prevMy = 0;
+    let isHovering = false;
 
-    /* PROGRESS + NAV */
-    window.addEventListener('scroll', () => {
-      document.getElementById('progress').style.width = (scrollY / (document.body.scrollHeight - innerHeight) * 100) + '%';
-      document.getElementById('navbar').classList.toggle('scrolled', scrollY > 60);
-    });
+    /* ── Web thread segments left behind while hovering ── */
+    const webThreads = [];   // {x1,y1,x2,y2,alpha,age}
+    const webNodes = [];   // anchor dots {x,y,alpha}
 
-    /* BG CANVAS */
-    const cvs = document.getElementById('bg-canvas'), ctx = cvs.getContext('2d');
-    function resize() { cvs.width = innerWidth; cvs.height = innerHeight; } resize(); window.addEventListener('resize', resize);
-    const dots = Array.from({ length: 55 }, () => ({ x: Math.random() * innerWidth, y: Math.random() * innerHeight, vx: (Math.random() - .5) * .3, vy: (Math.random() - .5) * .3, r: Math.random() * 1.2 + .4 }));
-    function renderBg() {
-      ctx.clearRect(0, 0, cvs.width, cvs.height);
-      ctx.strokeStyle = 'rgba(123,92,250,0.04)'; ctx.lineWidth = 1;
-      for (let x = 0; x < cvs.width; x += 80) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, cvs.height); ctx.stroke(); }
-      for (let y = 0; y < cvs.height; y += 80) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(cvs.width, y); ctx.stroke(); }
-      dots.forEach((d, i) => {
-        d.x += d.vx; d.y += d.vy;
-        if (d.x < 0 || d.x > cvs.width) d.vx *= -1; if (d.y < 0 || d.y > cvs.height) d.vy *= -1;
-        ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2); ctx.fillStyle = 'rgba(123,92,250,0.3)'; ctx.fill();
-        dots.slice(i + 1).forEach(q => { const dist = Math.hypot(d.x - q.x, d.y - q.y); if (dist < 130) { ctx.beginPath(); ctx.moveTo(d.x, d.y); ctx.lineTo(q.x, q.y); ctx.strokeStyle = `rgba(123,92,250,${.07 * (1 - dist / 130)})`; ctx.lineWidth = .7; ctx.stroke(); } });
-      });
-      requestAnimationFrame(renderBg);
+    /* ── Shoot-web burst on click / hover-enter ── */
+    const webBursts = [];   // {cx,cy,rays:[],age,maxAge}
+
+    function shootWebBurst(cx, cy, numRays = 8, len = 70) {
+      const rays = [];
+      for (let i = 0; i < numRays; i++) {
+        const angle = (i / numRays) * Math.PI * 2 + Math.random() * .3;
+        rays.push({
+          angle,
+          len: len * (.6 + Math.random() * .7),
+          progress: 0
+        });
+      }
+      webBursts.push({ cx, cy, rays, age: 0, maxAge: 55 });
     }
-    renderBg();
 
-    /* HERO ENTRANCE */
-    anime.timeline({ easing: 'easeOutExpo' })
-      .add({ targets: '.hero-tag', opacity: [0, 1], translateX: [-20, 0], duration: 800 })
-      .add({ targets: '.hero-name', opacity: [0, 1], translateY: [40, 0], duration: 1000 }, '-=500')
-      .add({ targets: '.hero-desc', opacity: [0, 1], translateY: [20, 0], duration: 800 }, '-=600')
-      .add({ targets: '.hero-chips .chip', opacity: [0, 1], translateY: [14, 0], duration: 600, delay: anime.stagger(80) }, '-=400')
-      .add({ targets: '.hero-cta .btn', opacity: [0, 1], translateY: [14, 0], duration: 600, delay: anime.stagger(100) }, '-=300');
+    /* ── Hover detect on interactive elements ── */
+    const hoverSelectors = 'a,button,.btn,.cp-card,.project-card,.cert-card,.info-card,.achieve-card,.skill-pill,.cp-graph-tab,.nav-links a';
 
-    /* SCROLL REVEAL */
+    let lastHoverEl = null;
+    function checkHover(x, y) {
+      const el = document.elementFromPoint(x, y);
+      const hit = el && el.closest(hoverSelectors);
+      if (hit && !isHovering) {
+        isHovering = true;
+        document.body.classList.add('hovering');
+        shootWebBurst(x, y, 10, 80);
+        // anchor node
+        webNodes.push({ x, y, alpha: 1 });
+      } else if (!hit && isHovering) {
+        isHovering = false;
+        document.body.classList.remove('hovering');
+        // drop a node when leaving
+        webNodes.push({ x, y, alpha: 1 });
+      }
+    }
+
+    document.addEventListener('mousemove', e => {
+      const lx = mx, ly = my;
+      mx = e.clientX; my = e.clientY;
+      cur.style.left = mx + 'px'; cur.style.top = my + 'px';
+
+      // leave thread trails only while hovering
+      if (isHovering && (Math.abs(mx - lx) > 2 || Math.abs(my - ly) > 2)) {
+        webThreads.push({ x1: lx, y1: ly, x2: mx, y2: my, alpha: .7, age: 0 });
+      }
+      checkHover(mx, my);
+    });
+
+    /* shoot burst on click anywhere */
+    document.addEventListener('click', e => {
+      shootWebBurst(e.clientX, e.clientY, 12, 90);
+      webNodes.push({ x: e.clientX, y: e.clientY, alpha: 1 });
+    });
+
+    /* ── Trail follow ── */
+    function animTrail() {
+      tx += (mx - tx) * .12; ty += (my - ty) * .12;
+      trail.style.left = tx + 'px'; trail.style.top = ty + 'px';
+      requestAnimationFrame(animTrail);
+    }
+    animTrail();
+
+    /* ── Draw web overlay every frame ── */
+    let webCanvasNeedsClear = false;
+    function drawWeb() {
+      const hasActive = webThreads.length > 0 || webNodes.length > 0 || webBursts.length > 0 || (isHovering && webNodes.length > 0);
+      if (!hasActive) {
+        if (webCanvasNeedsClear) {
+          wctx.clearRect(0, 0, wc.width, wc.height);
+          webCanvasNeedsClear = false;
+        }
+        requestAnimationFrame(drawWeb);
+        return;
+      }
+      webCanvasNeedsClear = true;
+      wctx.clearRect(0, 0, wc.width, wc.height);
+
+      /* draw thread segments */
+      for (let i = webThreads.length - 1; i >= 0; i--) {
+        const t = webThreads[i];
+        t.age++;
+        t.alpha = Math.max(0, t.alpha - .008);
+        if (t.alpha <= 0) { webThreads.splice(i, 1); continue; }
+        wctx.beginPath();
+        wctx.moveTo(t.x1, t.y1);
+        wctx.lineTo(t.x2, t.y2);
+        wctx.strokeStyle = `rgba(232,0,45,${t.alpha})`;
+        wctx.lineWidth = .8;
+        wctx.stroke();
+      }
+
+      /* draw anchor nodes */
+      for (let i = webNodes.length - 1; i >= 0; i--) {
+        const n = webNodes[i];
+        n.alpha = Math.max(0, n.alpha - .009);
+        if (n.alpha <= 0) { webNodes.splice(i, 1); continue; }
+        wctx.beginPath();
+        wctx.arc(n.x, n.y, 2.5, 0, Math.PI * 2);
+        wctx.fillStyle = `rgba(232,0,45,${n.alpha})`;
+        wctx.fill();
+        /* small halo */
+        wctx.beginPath();
+        wctx.arc(n.x, n.y, 5, 0, Math.PI * 2);
+        wctx.strokeStyle = `rgba(232,0,45,${n.alpha * .4})`;
+        wctx.lineWidth = .6;
+        wctx.stroke();
+      }
+
+      /* draw shoot bursts */
+      for (let b = webBursts.length - 1; b >= 0; b--) {
+        const burst = webBursts[b];
+        burst.age++;
+        const progress = burst.age / burst.maxAge;
+        if (burst.age >= burst.maxAge) { webBursts.splice(b, 1); continue; }
+        const alpha = (1 - progress) * .8;
+
+        burst.rays.forEach(ray => {
+          ray.progress = Math.min(1, burst.age / (burst.maxAge * .6));
+          const ex = burst.cx + Math.cos(ray.angle) * ray.len * ray.progress;
+          const ey = burst.cy + Math.sin(ray.angle) * ray.len * ray.progress;
+
+          /* main ray */
+          wctx.beginPath();
+          wctx.moveTo(burst.cx, burst.cy);
+          wctx.lineTo(ex, ey);
+          wctx.strokeStyle = `rgba(232,0,45,${alpha})`;
+          wctx.lineWidth = 1;
+          wctx.stroke();
+
+          /* cross-web arcs between rays — drawn at 30%,60%,90% of length */
+          if (ray.progress > .3) {
+            const fracs = [.3, .6, .9];
+            fracs.forEach((f, fi) => {
+              if (ray.progress < f) return;
+              const ang2 = burst.rays[(burst.rays.indexOf(ray) + 1) % burst.rays.length].angle;
+              const r1 = ray.len * f;
+              const r2 = ray.len * f;
+              const sx = burst.cx + Math.cos(ray.angle) * r1;
+              const sy = burst.cy + Math.sin(ray.angle) * r1;
+              const dx2 = burst.cx + Math.cos(ang2) * r2;
+              const dy2 = burst.cy + Math.sin(ang2) * r2;
+              wctx.beginPath();
+              wctx.moveTo(sx, sy);
+              /* arc via midpoint curve */
+              const mx2 = (sx + dx2) / 2, my2 = (sy + dy2) / 2;
+              const distToCenter = Math.sqrt((mx2 - burst.cx) ** 2 + (my2 - burst.cy) ** 2);
+              const pull = distToCenter * .15;
+              const nx = (mx2 - burst.cx) / distToCenter || 0;
+              const ny = (my2 - burst.cy) / distToCenter || 0;
+              wctx.quadraticCurveTo(mx2 + nx * pull, my2 + ny * pull, dx2, dy2);
+              wctx.strokeStyle = `rgba(232,0,45,${alpha * .5})`;
+              wctx.lineWidth = .6;
+              wctx.stroke();
+            });
+          }
+        });
+
+        /* center dot */
+        wctx.beginPath();
+        wctx.arc(burst.cx, burst.cy, 3 * (1 - progress * .5), 0, Math.PI * 2);
+        wctx.fillStyle = `rgba(232,0,45,${alpha})`;
+        wctx.fill();
+      }
+
+      /* live thread from last hover position to cursor */
+      if (isHovering && webNodes.length > 0) {
+        const last = webNodes[webNodes.length - 1];
+        wctx.beginPath();
+        wctx.moveTo(last.x, last.y);
+        wctx.lineTo(mx, my);
+        wctx.strokeStyle = 'rgba(232,0,45,0.25)';
+        wctx.lineWidth = .7;
+        wctx.setLineDash([4, 4]);
+        wctx.stroke();
+        wctx.setLineDash([]);
+      }
+
+      requestAnimationFrame(drawWeb);
+    }
+    drawWeb();
+
+    /* ── SPIDER WEB CANVAS ── */
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+    window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+
+    /* Particles + web threads */
+    const particles = [];
+    for (let i = 0; i < 25; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - .5) * .4,
+        vy: (Math.random() - .5) * .4,
+        r: Math.random() * 1.5 + .5
+      });
+    }
+
+    let lastFrameTime = 0;
+    const FRAME_INTERVAL = 1000 / 30; // cap particle canvas at 30fps
+
+    function drawFrame(timestamp) {
+      requestAnimationFrame(drawFrame);
+      if (timestamp - lastFrameTime < FRAME_INTERVAL) return;
+      lastFrameTime = timestamp;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // batch all line drawing with a single path + single stroke call per pair
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const distSq = dx * dx + dy * dy;
+          if (distSq < 16900) {
+            const d = Math.sqrt(distSq);
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(232,0,45,${0.12 * (1 - d / 130)})`;
+            ctx.lineWidth = .5;
+            ctx.stroke();
+          }
+        }
+      }
+      // draw particles
+      particles.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(232,0,45,0.5)';
+        ctx.fill();
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+      });
+    }
+    requestAnimationFrame(drawFrame);
+
+    /* ── PROGRESS BAR ── */
+    const prog = document.getElementById('progress');
+    window.addEventListener('scroll', () => {
+      const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+      prog.style.width = (pct * 100) + '%';
+    });
+
+    /* ── NAV SCROLL ── */
+    const nav = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    /* ── INTERSECTION OBSERVER (fade in) ── */
+    const fadeEls = document.querySelectorAll('.info-card,.exp-item,.project-card,.cp-card,.cp-graph-section,.skill-group,.edu-item,.achieve-card,.cert-card');
     const obs = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-        const el = entry.target, cls = [...el.classList];
-        if (cls.includes('about-text')) anime({ targets: el.querySelectorAll('p'), opacity: [0, 1], translateX: [-24, 0], duration: 800, delay: anime.stagger(120), easing: 'easeOutExpo' });
-        if (cls.includes('info-card')) anime({ targets: '.info-card', opacity: [0, 1], translateX: [24, 0], duration: 700, delay: anime.stagger(90), easing: 'easeOutExpo' });
-        if (cls.includes('exp-item')) anime({ targets: '.exp-item', opacity: [0, 1], translateY: [24, 0], duration: 800, delay: anime.stagger(150), easing: 'easeOutExpo' });
-        if (cls.includes('project-card')) anime({ targets: '.project-card', opacity: [0, 1], translateY: [32, 0], scale: [.96, 1], duration: 900, delay: anime.stagger(130), easing: 'easeOutExpo' });
-        if (cls.includes('cp-card')) anime({ targets: '.cp-card', opacity: [0, 1], translateX: [-20, 0], duration: 800, delay: anime.stagger(100), easing: 'easeOutExpo' });
-        if (cls.includes('skill-group')) anime({ targets: '.skill-group', opacity: [0, 1], translateY: [24, 0], duration: 700, delay: anime.stagger(100), easing: 'easeOutExpo' });
-        if (cls.includes('edu-item')) anime({ targets: '.edu-item', opacity: [0, 1], translateY: [20, 0], duration: 700, delay: anime.stagger(100), easing: 'easeOutExpo' });
-        if (cls.includes('achieve-card')) anime({ targets: '.achieve-card', opacity: [0, 1], translateX: [-20, 0], duration: 700, delay: anime.stagger(100), easing: 'easeOutExpo' });
-        if (cls.includes('cert-card')) anime({ targets: '.cert-card', opacity: [0, 1], translateY: [28, 0], scale: [.96, 1], duration: 800, delay: anime.stagger(110), easing: 'easeOutExpo' });
-        if (cls.includes('contact-big')) anime({ targets: ['.contact-big', '.contact-sub', '.contact-row'], opacity: [0, 1], translateY: [30, 0], duration: 800, delay: anime.stagger(120), easing: 'easeOutExpo' });
-        obs.unobserve(el);
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          anime({ targets: e.target, opacity: [0, 1], translateY: [30, 0], duration: 700, easing: 'easeOutCubic' });
+          obs.unobserve(e.target);
+        }
       });
-    }, { threshold: 0.1 });
+    }, { threshold: .15 });
+    fadeEls.forEach(el => obs.observe(el));
 
-    ['.about-text', '.info-card', '.exp-item', '.project-card', '.cp-card',
-      '.skill-group', '.edu-item', '.achieve-card', '.cert-card', '.contact-big']
-      .forEach(s => document.querySelectorAll(s).forEach(el => { el.style.opacity = '0'; obs.observe(el); }));
-
-    /* CP RATING GRAPHS — all 4 platforms via /api backend */
-    /* In dev, API_BASE is '' so Vite proxy handles /api/*.
-       In production (Vercel), set VITE_API_BASE to your Render backend URL. */
-    const API_BASE = import.meta.env.VITE_API_BASE || '';
-    (function initCPGraphs() {
-      // Animate section in on scroll
-      const graphEl = document.getElementById('cpGraph');
-      new IntersectionObserver(([entry], ob) => {
-        if (!entry.isIntersecting) return;
-        anime({ targets: graphEl, opacity: [0, 1], translateY: [28, 0], duration: 900, easing: 'easeOutExpo' });
-        ob.disconnect();
-      }, { threshold: 0.1 }).observe(graphEl);
-
-      // ── Tab switching ─────────────────────────────────────────
-      document.querySelectorAll('.cp-graph-tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-          document.querySelectorAll('.cp-graph-tab').forEach(t => t.classList.remove('active'));
-          document.querySelectorAll('.cp-graph-panel').forEach(p => p.classList.add('hidden'));
-          tab.classList.add('active');
-          document.getElementById('panel-' + tab.dataset.tab).classList.remove('hidden');
-        });
+    /* ── HERO ANIMATIONS — deferred to after first paint ── */
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        anime.timeline({ easing: 'easeOutExpo' })
+          .add({ targets: '.hero-tag', opacity: [0, 1], translateY: [20, 0], duration: 900 })
+          .add({ targets: '.hero-name', opacity: [0, 1], translateY: [40, 0], duration: 900 }, '-=600')
+          .add({ targets: '.hero-desc', opacity: [0, 1], translateY: [20, 0], duration: 700 }, '-=500')
+          .add({ targets: '.hero-chips', opacity: [0, 1], translateY: [20, 0], duration: 600 }, '-=400')
+          .add({ targets: '.hero-cta', opacity: [0, 1], translateY: [20, 0], duration: 600 }, '-=300');
       });
+    });
 
-      // ── Shared helpers ────────────────────────────────────────
-      function setStatus(id, text, color) {
-        const el = document.getElementById(id);
-        if (!el) return;
-        el.textContent = text;
-        if (color) el.style.color = color;
+    /* ── CONTACT ANIM ── */
+    const contactObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          anime.timeline({ easing: 'easeOutExpo' })
+            .add({ targets: '.contact-big', opacity: [0, 1], translateY: [40, 0], duration: 900 })
+            .add({ targets: '.contact-sub', opacity: [0, 1], translateY: [20, 0], duration: 700 }, '-=500')
+            .add({ targets: '.contact-row', opacity: [0, 1], translateY: [20, 0], duration: 600 }, '-=400');
+          contactObs.disconnect();
+        }
+      });
+    }, { threshold: .3 });
+    contactObs.observe(document.querySelector('.contact-big'));
+
+    /* ── CP GRAPH TABS ── */
+    document.querySelectorAll('.cp-graph-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.cp-graph-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.cp-graph-panel').forEach(p => p.classList.add('hidden'));
+        tab.classList.add('active');
+        document.getElementById('panel-' + tab.dataset.tab).classList.remove('hidden');
+      });
+    });
+
+    /* ── CHART.JS THEME ── */
+    const chartDefaults = {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false }, tooltip: {
+          backgroundColor: 'rgba(8,6,14,0.95)',
+          borderColor: 'rgba(232,0,45,0.3)', borderWidth: 1,
+          titleColor: '#f0eeff', bodyColor: 'rgba(240,238,255,0.7)',
+          titleFont: { family: 'Share Tech Mono', size: 10 },
+          bodyFont: { family: 'Share Tech Mono', size: 11 },
+          padding: 12, cornerRadius: 2
+        }
+      },
+      scales: {
+        x: { grid: { color: 'rgba(232,0,45,0.06)' }, ticks: { color: 'rgba(240,238,255,0.3)', font: { family: 'Share Tech Mono', size: 9 }, maxTicksLimit: 8 } },
+        y: { grid: { color: 'rgba(232,0,45,0.06)' }, ticks: { color: 'rgba(240,238,255,0.3)', font: { family: 'Share Tech Mono', size: 9 } } }
       }
+    };
 
-      function bandColor(r, bands) {
-        return (bands.find(b => r >= b.min && r <= b.max) || bands[0]).c;
-      }
-
-      function hexToRgba(hex, alpha) {
-        const clean = hex.replace('#', '');
-        const full = clean.length === 3
-          ? clean.split('').map(ch => ch + ch).join('')
-          : clean;
-        const r = parseInt(full.slice(0, 2), 16);
-        const g = parseInt(full.slice(2, 4), 16);
-        const b = parseInt(full.slice(4, 6), 16);
-        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-      }
-
-      function setBadgeStyle(el, color) {
-        if (!el) return;
-        el.style.color = color;
-        el.style.borderColor = hexToRgba(color, 0.3);
-        el.style.backgroundColor = hexToRgba(color, 0.07);
-      }
-
-      function getCodeChefStarLabel(rating) {
-        if (rating < 1400) return 'UNRATED';
-        if (rating < 1600) return '1 STAR';
-        if (rating < 1800) return '2 STAR';
-        if (rating < 2000) return '3 STAR';
-        if (rating < 2200) return '4 STAR';
-        if (rating < 2500) return '5 STAR';
-        return '6 STAR';
-      }
-
-      const SCALE_DEFAULTS = {
-        grid: { color: 'rgba(123,92,250,0.05)' },
-        border: { display: false },
-        ticks: { color: 'rgba(238,240,248,0.3)', font: { family: 'Share Tech Mono', size: 10 } },
+    function makeChart(id, labels, data, color, minY, colorForValue, bandOverlays) {
+      const el = document.getElementById(id);
+      if (!el) return null;
+      const useBandColors = typeof colorForValue === 'function';
+      const useBands = Array.isArray(bandOverlays) && bandOverlays.length > 0;
+      const bandPlugin = {
+        id: 'ratingBands',
+        beforeDraw(chart) {
+          if (!useBands) return;
+          const { ctx, chartArea, scales } = chart;
+          if (!chartArea || !scales?.y) return;
+          const { left, right, top, bottom } = chartArea;
+          const yScale = scales.y;
+          ctx.save();
+          bandOverlays.forEach((band) => {
+            const yTop = yScale.getPixelForValue(band.max);
+            const yBottom = yScale.getPixelForValue(band.min);
+            const bandTop = Math.min(yTop, yBottom);
+            const bandHeight = Math.abs(yBottom - yTop);
+            ctx.fillStyle = band.color.replace('1)', '0.06)');
+            ctx.fillRect(left, bandTop, right - left, bandHeight);
+          });
+          ctx.restore();
+        }
       };
+      return new Chart(el, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [{
+            data, borderColor: color,
+            backgroundColor: color.replace('1)', '0.08)'),
+            borderWidth: 2, pointRadius: 3,
+            pointBackgroundColor: useBandColors
+              ? (ctx) => colorForValue(ctx.parsed.y)
+              : color,
+            pointBorderColor: 'rgba(8,6,14,0.9)',
+            pointBorderWidth: 1.5, tension: .35, fill: true
+            , segment: useBandColors
+              ? { borderColor: (ctx) => colorForValue(ctx.p1.parsed.y) }
+              : undefined
+          }]
+        },
+        options: { ...chartDefaults, scales: { ...chartDefaults.scales, y: { ...chartDefaults.scales.y, min: minY || undefined } } },
+        plugins: useBands ? [bandPlugin] : []
+      });
+    }
 
-      function buildChart(canvasId, labels, ratings, pointColors, lineColor, titleFn, labelFn) {
-        const canvas = document.getElementById(canvasId);
-        if (!canvas) return;
-        const ctx = canvas.getContext('2d');
-        const grad = ctx.createLinearGradient(0, 0, 0, 300);
-        grad.addColorStop(0, lineColor + '35');
-        grad.addColorStop(1, lineColor + '04');
-        return new Chart(ctx, {
-          type: 'line',
-          data: {
-            labels,
-            datasets: [{
-              data: ratings,
-              borderColor: lineColor,
-              backgroundColor: grad,
-              fill: true,
-              tension: 0.35,
-              pointRadius: 4,
-              pointHoverRadius: 8,
-              pointBackgroundColor: pointColors,
-              pointBorderColor: pointColors,
-              borderWidth: 2,
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            interaction: { mode: 'index', intersect: false },
-            plugins: {
-              legend: { display: false },
-              tooltip: {
-                backgroundColor: 'rgba(6,7,13,0.96)',
-                borderColor: lineColor + '50',
-                borderWidth: 1,
-                titleColor: 'rgba(238,240,248,0.6)',
-                titleFont: { family: 'Share Tech Mono', size: 11 },
-                bodyColor: lineColor,
-                bodyFont: { family: 'Orbitron', size: 13, weight: 'bold' },
-                padding: 12,
-                callbacks: { title: titleFn, label: labelFn },
-              },
-            },
-            scales: {
-              x: { ...SCALE_DEFAULTS, ticks: { ...SCALE_DEFAULTS.ticks, maxTicksLimit: 12, maxRotation: 0 } },
-              y: { ...SCALE_DEFAULTS },
-            },
-          },
+    function setText(id, text) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = text;
+    }
+
+    function setRating(id, value, color) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.textContent = value;
+      if (color) el.style.color = color;
+    }
+
+    function setBadge(id, text, color) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.textContent = text;
+      if (color) {
+        el.style.color = color;
+        el.style.borderColor = color.replace('1)', '0.3)');
+        el.style.backgroundColor = color.replace('1)', '0.07)');
+      }
+    }
+
+    const cfBands = [
+      { min: 0, max: 1199, label: 'NEWBIE', color: 'rgba(158,158,158,1)' },
+      { min: 1200, max: 1399, label: 'PUPIL', color: 'rgba(76,175,80,1)' },
+      { min: 1400, max: 1599, label: 'SPECIALIST', color: 'rgba(0,188,212,1)' },
+      { min: 1600, max: 1899, label: 'EXPERT', color: 'rgba(33,150,243,1)' },
+      { min: 1900, max: 2099, label: 'CANDIDATE MASTER', color: 'rgba(156,39,176,1)' },
+      { min: 2100, max: 2299, label: 'MASTER', color: 'rgba(255,152,0,1)' },
+      { min: 2300, max: 9999, label: 'GRANDMASTER', color: 'rgba(244,67,54,1)' }
+    ];
+
+    const ccBands = [
+      { min: 0, max: 1399, label: '1 STAR', color: 'rgba(158,158,158,1)' },
+      { min: 1400, max: 1599, label: '2 STAR', color: 'rgba(76,175,80,1)' },
+      { min: 1600, max: 1799, label: '3 STAR', color: 'rgba(33,150,243,1)' },
+      { min: 1800, max: 1999, label: '4 STAR', color: 'rgba(156,39,176,1)' },
+      { min: 2000, max: 2199, label: '5 STAR', color: 'rgba(255,214,0,1)' },
+      { min: 2200, max: 2499, label: '6 STAR', color: 'rgba(255,152,0,1)' },
+      { min: 2500, max: 9999, label: '7 STAR', color: 'rgba(244,67,54,1)' }
+    ];
+
+    const atBands = [
+      { min: 0, max: 399, label: 'GRAY', color: 'rgba(158,158,158,1)' },
+      { min: 400, max: 799, label: 'BROWN', color: 'rgba(121,85,72,1)' },
+      { min: 800, max: 1199, label: 'GREEN', color: 'rgba(76,175,80,1)' },
+      { min: 1200, max: 1599, label: 'CYAN', color: 'rgba(0,188,212,1)' },
+      { min: 1600, max: 1999, label: 'BLUE', color: 'rgba(33,150,243,1)' },
+      { min: 2000, max: 2399, label: 'YELLOW', color: 'rgba(255,214,0,1)' },
+      { min: 2400, max: 2799, label: 'ORANGE', color: 'rgba(255,152,0,1)' },
+      { min: 2800, max: 9999, label: 'RED', color: 'rgba(244,67,54,1)' }
+    ];
+
+    function pickBand(value, bands) {
+      return bands.find(b => value >= b.min && value <= b.max) || bands[0];
+    }
+
+    function bandColorForValue(value, bands, fallback) {
+      if (!Number.isFinite(value)) return fallback;
+      const band = pickBand(value, bands);
+      return band?.color || fallback;
+    }
+
+    const API_BASE = import.meta.env.VITE_API_BASE || '';
+
+    /* ── FETCH CODEFORCES ── */
+    async function fetchCF() {
+      try {
+        const r = await fetch(`${API_BASE}/api/codeforces`);
+        const d = await r.json();
+        if (!d.ok) throw new Error(d.error || 'CF API error');
+        const rows = d.data;
+        const labels = rows.map(r => r.contestName.length > 20 ? r.contestName.slice(0, 20) + '…' : r.contestName);
+        const data = rows.map(r => r.newRating);
+        const current = rows.length ? rows[rows.length - 1].newRating : null;
+        const maxRating = data.length ? Math.max(...data) : null;
+        if (current === null || maxRating === null) throw new Error();
+        const band = pickBand(current, cfBands);
+        document.getElementById('cfStatus').textContent = 'MAX: ' + maxRating + ' | CONTESTS: ' + rows.length;
+        setRating('cfCardRating', current, band.color);
+        setBadge('cfCardBadge', band.label, band.color);
+        makeChart(
+          'cfChart',
+          labels,
+          data,
+          'rgba(232,0,45,1)',
+          800,
+          (value) => bandColorForValue(value, cfBands, 'rgba(232,0,45,1)'),
+          cfBands
+        );
+      } catch (e) {
+        document.getElementById('cfStatus').textContent = 'UNAVAILABLE';
+        setText('cfCardRating', 'FETCHING');
+        setText('cfCardBadge', 'FETCHING');
+      }
+    }
+    fetchCF();
+
+    /* ── FETCH CODECHEF (server) ── */
+    async function fetchCC() {
+      try {
+        const r = await fetch(`${API_BASE}/api/codechef`);
+        const d = await r.json();
+        if (!d.ok) throw new Error(d.error || 'CC API error');
+        const rows = d.data;
+        const labels = rows.map(r => r.contestName ? r.contestName.slice(0, 20) : '—');
+        const data = rows.map(r => {
+          const rating = Number.parseInt(r.rating, 10);
+          return Number.isFinite(rating) && rating > 0 ? rating : null;
         });
+        const numeric = data.filter(v => typeof v === 'number');
+        if (!numeric.length) throw new Error();
+        const maxRating = Math.max(...numeric);
+        const current = numeric[numeric.length - 1];
+        const band = pickBand(current, ccBands);
+        document.getElementById('ccStatus').textContent = 'MAX: ' + maxRating + ' | CONTESTS: ' + rows.length;
+        setRating('ccCardRating', current, band.color);
+        setBadge('ccCardBadge', band.label, band.color);
+        makeChart(
+          'ccChart',
+          labels,
+          data,
+          'rgba(255,214,0,1)',
+          1000,
+          (value) => bandColorForValue(value, ccBands, 'rgba(255,214,0,1)'),
+          ccBands
+        );
+      } catch (e) {
+        document.getElementById('ccStatus').textContent = 'UNAVAILABLE';
+        setText('ccCardRating', 'FETCHING');
+        setText('ccCardBadge', 'FETCHING');
       }
+    }
+    fetchCC();
 
-      function fmtDate(ts) {
-        return new Date(ts).toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
+    /* ── FETCH LEETCODE (server) ── */
+    async function fetchLC() {
+      try {
+        const r = await fetch(`${API_BASE}/api/leetcode`);
+        const d = await r.json();
+        if (!d.ok) throw new Error(d.error || 'LC API error');
+        const rows = Array.isArray(d.data) ? d.data : [];
+        if (!rows.length) throw new Error('No contest history');
+        const labels = rows.map(r => r.contest?.title?.slice(0, 15) || '—');
+        const data = rows.map(r => Number.isFinite(r.rating) ? r.rating : null);
+        const numeric = data.filter(v => typeof v === 'number');
+        if (!numeric.length) throw new Error('No ratings');
+        const current = numeric[numeric.length - 1];
+        const maxRating = Math.max(...numeric);
+        setRating('lcCardRating', Math.round(current), 'rgba(255,109,0,1)');
+        document.getElementById('lcStatus').textContent = 'MAX: ' + Math.round(maxRating) + ' | CONTESTS: ' + rows.length;
+        makeChart('lcChart', labels, data, 'rgba(255,109,0,1)', 1000);
+      } catch (e) {
+        document.getElementById('lcStatus').textContent = 'UNAVAILABLE';
+        setText('lcCardRating', 'FETCHING');
       }
+    }
+    fetchLC();
 
-      // ── Codeforces ────────────────────────────────────────────
-      const CF_BANDS = [
-        { min: 0, max: 1199, c: '#9e9e9e' },
-        { min: 1200, max: 1399, c: '#4caf50' },
-        { min: 1400, max: 1599, c: '#00bcd4' },
-        { min: 1600, max: 1899, c: '#2196f3' },
-        { min: 1900, max: 2099, c: '#9c27b0' },
-        { min: 2100, max: 2299, c: '#ff9800' },
-        { min: 2300, max: 9999, c: '#f44336' },
-      ];
-      fetch(API_BASE + '/api/codeforces')
-        .then(r => r.json())
-        .then(({ ok, data, error }) => {
-          if (!ok) throw new Error(error);
-          const labels = data.map(c => fmtDate(c.ratingUpdateTimeSeconds * 1000));
-          const ratings = data.map(c => c.newRating);
-          const ptC = ratings.map(r => bandColor(r, CF_BANDS));
-          const maxRating = Math.max(...ratings);
-          setStatus('cfStatus',
-            `${data.length} CONTESTS · MAX ${maxRating}`,
-            bandColor(ratings.at(-1), CF_BANDS));
-          const cfCard = document.getElementById('cfCardRating');
-          if (cfCard) {
-            cfCard.textContent = maxRating;
-            cfCard.style.color = bandColor(maxRating, CF_BANDS);
-          }
-          buildChart('cfChart', labels, ratings, ptC, '#ff4466',
-            items => data[items[0].dataIndex].contestName,
-            item => { const c = data[item.dataIndex], d = c.newRating - c.oldRating; return `  ${c.newRating}  (${d >= 0 ? '+' : ''}${d})`; }
-          );
-        })
-        .catch(e => setStatus('cfStatus', 'FAILED — ' + e.message.toUpperCase(), 'var(--red)'));
-
-      // ── CodeChef ──────────────────────────────────────────────
-      const CC_BANDS = [
-        { min: 0, max: 1399, c: '#9e9e9e' },
-        { min: 1400, max: 1599, c: '#4caf50' },
-        { min: 1600, max: 1799, c: '#2196f3' },
-        { min: 1800, max: 1999, c: '#9c27b0' },
-        { min: 2000, max: 2199, c: '#ffc947' },
-        { min: 2200, max: 2499, c: '#ff9800' },
-        { min: 2500, max: 9999, c: '#f44336' },
-      ];
-      fetch(API_BASE + '/api/codechef')
-        .then(r => r.json())
-        .then(({ ok, data, error }) => {
-          if (!ok) throw new Error(error);
-          const ratings = data.map(c => c.rating);
-          const labels = data.map(c => c.date ? c.date.slice(0, 7) : c.code.slice(0, 8));
-          const ptC = ratings.map(r => bandColor(r, CC_BANDS));
-          const maxRating = Math.max(...ratings);
-          const currentRating = ratings.at(-1);
-          const currentColor = bandColor(currentRating, CC_BANDS);
-          setStatus('ccStatus',
-            `${data.length} CONTESTS · MAX ${maxRating}`,
-            currentColor);
-          const ccCard = document.getElementById('ccCardRating');
-          if (ccCard) {
-            ccCard.textContent = currentRating;
-            ccCard.style.color = currentColor;
-          }
-          const ccBadge = document.getElementById('ccCardBadge');
-          if (ccBadge) {
-            ccBadge.textContent = getCodeChefStarLabel(currentRating);
-            setBadgeStyle(ccBadge, currentColor);
-          }
-          buildChart('ccChart', labels, ratings, ptC, '#ffc947',
-            items => data[items[0].dataIndex].contestName,
-            item => `  ${data[item.dataIndex].rating}`
-          );
-        })
-        .catch(e => setStatus('ccStatus', 'FAILED — ' + e.message.toUpperCase(), 'var(--red)'));
-
-      // ── LeetCode ──────────────────────────────────────────────
-      fetch(API_BASE + '/api/leetcode')
-        .then(r => r.json())
-        .then(({ ok, data, error }) => {
-          if (!ok) throw new Error(error);
-          if (!data.length) throw new Error('NO CONTEST HISTORY');
-          const labels = data.map(c => fmtDate(c.contest.startTime * 1000));
-          const ratings = data.map(c => Math.round(c.rating));
-          setStatus('lcStatus', `${data.length} CONTESTS · MAX ${Math.max(...ratings)}`, '#ff8c42');
-          const lcCur = document.getElementById('lcCardRating');
-          if (lcCur) lcCur.textContent = Math.round(Math.max(...ratings));
-          buildChart('lcChart', labels, ratings, ratings.map(() => '#ff8c42'), '#ff8c42',
-            items => data[items[0].dataIndex].contest.title,
-            item => { const c = data[item.dataIndex]; return `  ${Math.round(c.rating)}  · RANK ${c.ranking}`; }
-          );
-        })
-        .catch(e => setStatus('lcStatus', 'FAILED — ' + e.message.toUpperCase(), 'var(--red)'));
-
-      // ── AtCoder ───────────────────────────────────────────────
-      const AT_BANDS = [
-        { min: 0, max: 399, c: '#9e9e9e' },
-        { min: 400, max: 799, c: '#795548' },
-        { min: 800, max: 1199, c: '#4caf50' },
-        { min: 1200, max: 1599, c: '#00bcd4' },
-        { min: 1600, max: 1999, c: '#2196f3' },
-        { min: 2000, max: 2399, c: '#ffc947' },
-        { min: 2400, max: 2799, c: '#ff9800' },
-        { min: 2800, max: 9999, c: '#f44336' },
-      ];
-      fetch(API_BASE + '/api/atcoder')
-        .then(r => r.json())
-        .then(({ ok, data, error }) => {
-          if (!ok) throw new Error(error);
-          if (!data.length) throw new Error('NO CONTEST HISTORY');
-          const labels = data.map(c => c.EndTime.slice(0, 7));
-          const ratings = data.map(c => c.NewRating);
-          const ptC = ratings.map(r => bandColor(r, AT_BANDS));
-          const atCurRating = Math.max(...ratings);
-          const atCurColor = bandColor(atCurRating, AT_BANDS);
-          setStatus('atStatus',
-            `${data.length} CONTESTS · MAX ${Math.max(...ratings)}`,
-            atCurColor);
-          const atCur = document.getElementById('atCardRating');
-          if (atCur) { atCur.textContent = atCurRating; atCur.style.color = atCurColor; }
-          buildChart('atChart', labels, ratings, ptC, '#00e5ff',
-            items => data[items[0].dataIndex].ContestName,
-            item => { const c = data[item.dataIndex], d = c.NewRating - c.OldRating; return `  ${c.NewRating}  (${d >= 0 ? '+' : ''}${d})`; }
-          );
-        })
-        .catch(e => setStatus('atStatus', 'FAILED — ' + e.message.toUpperCase(), 'var(--red)'));
-
-    })();
+    /* ── FETCH ATCODER ── */
+    async function fetchAT() {
+      try {
+        const r = await fetch(`${API_BASE}/api/atcoder`);
+        const d = await r.json();
+        if (!d.ok) throw new Error(d.error || 'AT API error');
+        const rows = d.data;
+        if (!Array.isArray(rows)) throw new Error();
+        const labels = rows.map(r => r.ContestName?.slice(0, 15) || '—');
+        const data = rows.map(r => Number.isFinite(r.NewRating) ? r.NewRating : null);
+        const numeric = data.filter(v => typeof v === 'number');
+        const cur = numeric.length ? numeric[numeric.length - 1] : null;
+        if (cur === null) throw new Error();
+        document.getElementById('atCardRating').textContent = cur;
+        document.getElementById('atStatus').textContent = 'CONTESTS: ' + rows.length;
+        makeChart(
+          'atChart',
+          labels,
+          data,
+          'rgba(0,230,118,1)',
+          0,
+          (value) => bandColorForValue(value, atBands, 'rgba(0,230,118,1)'),
+          atBands
+        );
+      } catch (e) {
+        document.getElementById('atStatus').textContent = 'UNAVAILABLE';
+        setText('atCardRating', 'FETCHING');
+      }
+    }
+    fetchAT();
   </script>
 
-  <div id="root"></div>
-  <script type="module" src="/src/main.jsx"></script>
 </body>
 
 </html>

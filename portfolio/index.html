@@ -266,7 +266,8 @@
       min-height: 100vh;
       display: flex;
       align-items: center;
-      padding: 0 64px;
+      justify-content: center;
+      padding: 0 48px;
       position: relative;
       overflow: hidden;
     }
@@ -291,9 +292,35 @@
     }
 
     .hero-inner {
-      max-width: 860px;
+      max-width: 1300px;
+      width: 100%;
+      margin: 0 auto;
       position: relative;
       z-index: 2;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 80px;
+    }
+
+    .hero-left {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .hero-right {
+      flex-shrink: 0;
+    }
+
+    .hero-right img {
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 5px solid var(--red);
+      box-shadow: 0 0 50px rgba(232,0,45,0.5), 0 0 100px rgba(232,0,45,0.15);
+      display: block;
     }
 
     .hero-tag {
@@ -510,9 +537,9 @@
     }
 
     .section-wrap {
-      max-width: 1100px;
+      max-width: 1300px;
       margin: 0 auto;
-      padding: 120px 64px;
+      padding: 100px 80px;
     }
 
     .sec-label {
@@ -716,8 +743,30 @@
     /* ── PROJECTS ── */
     .projects-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 24px;
+    }
+
+    .proj-img {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      border: 1px solid var(--border);
+      display: block;
+    }
+
+    .proj-img-phone {
+      width: 100%;
+      aspect-ratio: 9/16;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      border: 1px solid var(--border);
+      display: block;
+      max-height: 220px;
+      object-position: top;
     }
 
     .project-card {
@@ -1417,6 +1466,16 @@
     }
 
     /* ── RESPONSIVE ── */
+    @media(max-width:1100px) {
+      .hero-right img {
+        width: 300px;
+        height: 300px;
+      }
+      .hero-inner {
+        gap: 40px;
+      }
+    }
+
     @media(max-width:900px) {
       nav {
         padding: 16px 24px;
@@ -1432,6 +1491,36 @@
 
       #hero {
         padding: 0 24px;
+        align-items: center;
+      }
+
+      .hero-inner {
+        flex-direction: column;
+        text-align: center;
+        gap: 40px;
+        padding-top: 80px;
+      }
+
+      .hero-left {
+        order: 2;
+      }
+
+      .hero-right {
+        order: 1;
+      }
+
+      .hero-right img {
+        width: 220px;
+        height: 220px;
+      }
+
+      .hero-tag {
+        justify-content: center;
+      }
+
+      .hero-chips,
+      .hero-cta {
+        justify-content: center;
       }
 
       .about-grid,
@@ -1554,26 +1643,31 @@
   <!-- HERO -->
   <section id="hero">
     <div class="hero-inner">
-      <p class="hero-tag">COMPUTER ENGINEERING · KJSSE · MUMBAI · 8.7 CGPA</p>
-      <h1 class="hero-name">
-        SWAYAM<br>
-        <span class="accent-word" data-text="NAKTE">NAKTE</span>
-      </h1>
-      <p class="hero-desc">
-        <strong>Full-stack developer</strong> and <strong>competitive programmer</strong> studying Computer Engineering
-        at K.J. Somaiya School Of Engineering. I build production-grade apps, solve hard algorithmic problems, and
-        obsess over clean code.
-      </p>
-      <div class="hero-chips">
-        <span class="chip chip-red">C++ · RUST · JS</span>
-        <span class="chip chip-blue">MERN STACK</span>
-        <span class="chip chip-green">FLUTTER · DART</span>
-        <span class="chip chip-gold">AWS · DOCKER</span>
-        <span class="chip chip-red">CF SPECIALIST</span>
+      <div class="hero-left">
+        <p class="hero-tag" style="letter-spacing:3px;">B.TECH · KJSSE · 8.9 CGPA</p>
+        <h1 class="hero-name">
+          SWAYAM<br>
+          <span class="accent-word" data-text="NAKTE">NAKTE</span>
+        </h1>
+        <p class="hero-desc">
+          <strong>Full-stack developer</strong> and <strong>competitive programmer</strong> studying Computer Engineering
+          at K.J. Somaiya School Of Engineering. I build production-grade apps, solve hard algorithmic problems, and
+          obsess over clean code.
+        </p>
+        <div class="hero-chips">
+          <span class="chip chip-red">C++ · RUST · JS</span>
+          <span class="chip chip-blue">MERN STACK</span>
+          <span class="chip chip-green">FLUTTER · DART</span>
+          <span class="chip chip-gold">AWS · DOCKER</span>
+          <span class="chip chip-red">CF SPECIALIST</span>
+        </div>
+        <div class="hero-cta">
+          <a href="#contact" class="btn btn-filled">GET IN TOUCH</a>
+          <a href="#projects" class="btn btn-outline">VIEW PROJECTS</a>
+        </div>
       </div>
-      <div class="hero-cta">
-        <a href="#contact" class="btn btn-filled">GET IN TOUCH</a>
-        <a href="#projects" class="btn btn-outline">VIEW PROJECTS</a>
+      <div class="hero-right">
+        <img src="./src/assets/pfp.jpg" alt="Swayam Nakte">
       </div>
     </div>
     <div class="hero-scroll">
@@ -1589,7 +1683,7 @@
       <div class="about-grid">
         <div class="about-text">
           <p>I'm a <strong>3rd year Computer Engineering student</strong> at K.J. Somaiya School Of Engineering (KJSSE),
-            Mumbai — holding an <strong>8.7 CGPA</strong> with a perfect 10 SGPA in Semester 4.</p>
+            Mumbai - holding an <strong>8.9 CGPA</strong> with a perfect 10 SGPA in Semester 4.</p>
           <p>I love building things end-to-end — from <strong>REST APIs and databases</strong> to <strong>React
               frontends</strong> and <strong>Flutter mobile apps</strong>, all the way to deploying on
             <strong>AWS</strong>. I care about the whole stack.
@@ -1632,10 +1726,78 @@
     </div>
   </section>
 
+  <!-- CP -->
+  <section id="cp">
+    <div class="section-wrap">
+      <span class="sec-label">// 02 — PROBLEM SOLVING</span>
+      <h2 class="sec-title">PROBLEM <em>SOLVING</em></h2>
+      <div class="cp-grid">
+        <a href="https://codeforces.com/profile/swayamsn123" target="_blank" class="cp-card">
+          <div class="cp-icon" style="background:rgba(232,0,45,.12)">
+            <img src="/icons/codeforces.webp" alt="Codeforces">
+          </div>
+          <div style="flex:1">
+            <div class="cp-platform-name">CODEFORCES</div>
+            <div class="cp-handle" style="color:var(--red)">@swayamsn123</div>
+            <div class="cp-rating-row">
+              <span class="cp-rating" id="cfCardRating" style="color:var(--red)">FETCHING</span>
+              <span class="cp-badge" id="cfCardBadge"
+                style="color:var(--red);border-color:rgba(232,0,45,.3);background:rgba(232,0,45,.07)">FETCHING</span>
+            </div>
+          </div>
+          <div style="font-family:'Share Tech Mono';font-size:.7rem;letter-spacing:2px;color:var(--red);opacity:.7;white-space:nowrap;">VISIT &#8599;</div>
+        </a>
+        <a href="https://www.codechef.com/users/swayamn73" target="_blank" class="cp-card">
+          <div class="cp-icon" style="background:rgba(255,214,0,.12)">
+            <img src="/icons/codechef.png" alt="CodeChef">
+          </div>
+          <div style="flex:1">
+            <div class="cp-platform-name">CODECHEF</div>
+            <div class="cp-handle" style="color:var(--gold)">@swayamn73</div>
+            <div class="cp-rating-row">
+              <span class="cp-rating" id="ccCardRating" style="color:var(--gold)">FETCHING</span>
+              <span class="cp-badge" id="ccCardBadge"
+                style="color:var(--gold);border-color:rgba(255,214,0,.3);background:rgba(255,214,0,.07)">FETCHING</span>
+            </div>
+          </div>
+          <div style="font-family:'Share Tech Mono';font-size:.7rem;letter-spacing:2px;color:var(--gold);opacity:.7;white-space:nowrap;">VISIT &#8599;</div>
+        </a>
+        <a href="https://leetcode.com/swayamn" target="_blank" class="cp-card">
+          <div class="cp-icon" style="background:rgba(255,109,0,.12)">
+            <img src="/icons/leetcode.webp" alt="LeetCode">
+          </div>
+          <div style="flex:1">
+            <div class="cp-platform-name">LEETCODE</div>
+            <div class="cp-handle" style="color:var(--orange)">@swayamn</div>
+            <div class="cp-rating-row">
+              <span class="cp-rating" id="lcCardRating"
+                style="color:var(--orange);font-size:.9rem;font-family:'Share Tech Mono'">FETCHING</span>
+            </div>
+          </div>
+          <div style="font-family:'Share Tech Mono';font-size:.7rem;letter-spacing:2px;color:var(--orange);opacity:.7;white-space:nowrap;">VISIT &#8599;</div>
+        </a>
+        <a href="https://atcoder.jp/users/swayamn72" target="_blank" class="cp-card">
+          <div class="cp-icon" style="background:rgba(0,230,118,.12)">
+            <img src="/icons/atcoder.png" alt="AtCoder" style="filter:invert(1) brightness(0.8)">
+          </div>
+          <div style="flex:1">
+            <div class="cp-platform-name">ATCODER</div>
+            <div class="cp-handle" style="color:var(--green)">@swayamn72</div>
+            <div class="cp-rating-row">
+              <span class="cp-rating" id="atCardRating"
+                style="color:var(--green);font-size:.9rem;font-family:'Share Tech Mono'">FETCHING</span>
+            </div>
+          </div>
+          <div style="font-family:'Share Tech Mono';font-size:.7rem;letter-spacing:2px;color:var(--green);opacity:.7;white-space:nowrap;">VISIT &#8599;</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
   <!-- EXPERIENCE -->
   <section id="experience">
     <div class="section-wrap">
-      <span class="sec-label">// 02 — EXPERIENCE</span>
+      <span class="sec-label">// 03 — EXPERIENCE</span>
       <h2 class="sec-title">WHERE I'VE <em>WORKED</em></h2>
       <div class="exp-item">
         <div class="exp-date">JAN 2026 — PRESENT</div>
@@ -1655,10 +1817,12 @@
   <!-- PROJECTS -->
   <section id="projects">
     <div class="section-wrap">
-      <span class="sec-label">// 03 — PROJECTS</span>
+      <span class="sec-label">// 04 — PROJECTS</span>
       <h2 class="sec-title">THINGS I'VE <em>BUILT</em></h2>
-      <div class="projects-grid">
+      <div class="projects-grid" style="display:grid;grid-template-columns:repeat(3, 1fr);gap:2rem;">
+        <!-- Aegis Web -->
         <div class="project-card">
+          <img src="./src/assets/aegis.png" alt="Aegis Platform" class="proj-img" style="width:100%;height:auto;border-radius:8px;margin-bottom:1rem;">
           <div class="proj-name">Aegis — Esports Management Platform</div>
           <div class="proj-sub">WEB APP · REACT / NODE.JS / MONGODB / SOCKET.IO / AWS</div>
           <div class="proj-desc">Comprehensive esports management platform with team recruitment, profile building,
@@ -1678,7 +1842,15 @@
               style="font-size:.75rem;padding:.45rem 1rem">GITHUB ↗</a>
           </div>
         </div>
+        <!-- Aegis Mobile -->
         <div class="project-card">
+          <!-- Phone mockup container -->
+          <div style="width:100%;background:rgba(0,0,0,0.3);border-radius:8px;margin-bottom:1rem;display:flex;align-items:center;justify-content:center;padding:16px;min-height:180px;border:1px solid var(--border);overflow:hidden;">
+            <div style="position:relative;width:100px;background:#111;border-radius:16px;border:3px solid #333;padding:6px;box-shadow:0 0 20px rgba(232,0,45,0.2);">
+              <div style="width:30px;height:4px;background:#222;border-radius:2px;margin:0 auto 4px;"></div>
+              <img src="./src/assets/aegismobile.png" alt="Aegis Mobile App" style="width:100%;border-radius:8px;display:block;">
+            </div>
+          </div>
           <div class="proj-name">Aegis — Mobile App</div>
           <div class="proj-sub">ANDROID · FLUTTER / DART / RIVERPOD</div>
           <div class="proj-desc">Companion Android app for the Aegis esports platform, featuring a responsive UI
@@ -1694,6 +1866,27 @@
           </ul>
           <div style="margin-top:1rem">
             <a href="https://github.com/swayamn72/Aegis3.0" target="_blank" class="btn btn-outline"
+              style="font-size:.75rem;padding:.45rem 1rem">GITHUB &#8599;</a>
+          </div>
+        </div>
+        <!-- CodeMortem -->
+        <div class="project-card">
+          <img src="./src/assets/codemortem.png" alt="CodeMortem" class="proj-img" style="width:100%;height:auto;border-radius:8px;margin-bottom:1rem;">
+          <div class="proj-name">CodeMortem — CP Learning Platform</div>
+          <div class="proj-sub">WEB APP · NEXT.JS / TYPESCRIPT / TAILWIND</div>
+          <div class="proj-desc">An interactive competitive programming learning platform with animated lesson modules,
+            MCQ checkpoints, and rating history graphs for multiple CP platforms.</div>
+          <div class="proj-tags">
+            <span class="proj-tag">NEXT.JS</span><span class="proj-tag">TYPESCRIPT</span>
+            <span class="proj-tag">TAILWIND</span>
+          </div>
+          <ul class="proj-highlights">
+            <li>Rich lesson primitives with animated diagrams and code blocks</li>
+            <li>Live CP rating graphs from Codeforces, LeetCode, CodeChef &amp; AtCoder</li>
+            <li>MCQ checkpoint system with detailed explanations</li>
+          </ul>
+          <div style="margin-top:1rem">
+            <a href="https://github.com/swayamn72/CodeMortem2.0" target="_blank" class="btn btn-outline"
               style="font-size:.75rem;padding:.45rem 1rem">GITHUB ↗</a>
           </div>
         </div>
@@ -1701,67 +1894,11 @@
     </div>
   </section>
 
-  <!-- CP -->
-  <section id="cp">
+  <!-- RATING GRAPHS -->
+  <section id="cp-graphs">
     <div class="section-wrap">
-      <span class="sec-label">// 04 — COMPETITIVE PROGRAMMING</span>
-      <h2 class="sec-title">PROBLEM <em>SOLVING</em></h2>
-      <div class="cp-grid">
-        <a href="https://codeforces.com/profile/swayamnsn123" target="_blank" class="cp-card">
-          <div class="cp-icon" style="background:rgba(232,0,45,.12)">
-            <img src="/icons/codeforces.webp" alt="Codeforces">
-          </div>
-          <div style="flex:1">
-            <div class="cp-platform-name">CODEFORCES</div>
-            <div class="cp-handle" style="color:var(--red)">@swayamnsn123</div>
-            <div class="cp-rating-row">
-              <span class="cp-rating" id="cfCardRating" style="color:var(--red)">FETCHING</span>
-              <span class="cp-badge" id="cfCardBadge"
-                style="color:var(--red);border-color:rgba(232,0,45,.3);background:rgba(232,0,45,.07)">FETCHING</span>
-            </div>
-          </div>
-        </a>
-        <a href="https://www.codechef.com/users/swayamn73" target="_blank" class="cp-card">
-          <div class="cp-icon" style="background:rgba(255,214,0,.12)">
-            <img src="/icons/codechef.png" alt="CodeChef">
-          </div>
-          <div style="flex:1">
-            <div class="cp-platform-name">CODECHEF</div>
-            <div class="cp-handle" style="color:var(--gold)">@swayamn73</div>
-            <div class="cp-rating-row">
-              <span class="cp-rating" id="ccCardRating" style="color:var(--gold)">FETCHING</span>
-              <span class="cp-badge" id="ccCardBadge"
-                style="color:var(--gold);border-color:rgba(255,214,0,.3);background:rgba(255,214,0,.07)">FETCHING</span>
-            </div>
-          </div>
-        </a>
-        <a href="https://leetcode.com/swayamn" target="_blank" class="cp-card">
-          <div class="cp-icon" style="background:rgba(255,109,0,.12)">
-            <img src="/icons/leetcode.webp" alt="LeetCode">
-          </div>
-          <div style="flex:1">
-            <div class="cp-platform-name">LEETCODE</div>
-            <div class="cp-handle" style="color:var(--orange)">@swayamn</div>
-            <div class="cp-rating-row">
-              <span class="cp-rating" id="lcCardRating"
-                style="color:var(--orange);font-size:.9rem;font-family:'Share Tech Mono'">FETCHING</span>
-            </div>
-          </div>
-        </a>
-        <a href="https://atcoder.jp/users/swayamn72" target="_blank" class="cp-card">
-          <div class="cp-icon" style="background:rgba(0,230,118,.12)">
-            <img src="/icons/atcoder.png" alt="AtCoder" style="filter:invert(1) brightness(0.8)">
-          </div>
-          <div style="flex:1">
-            <div class="cp-platform-name">ATCODER</div>
-            <div class="cp-handle" style="color:var(--green)">@swayamn72</div>
-            <div class="cp-rating-row">
-              <span class="cp-rating" id="atCardRating"
-                style="color:var(--green);font-size:.9rem;font-family:'Share Tech Mono'">FETCHING</span>
-            </div>
-          </div>
-        </a>
-      </div>
+      <span class="sec-label">// 05 — RATING GRAPHS</span>
+      <h2 class="sec-title">RATING <em>HISTORY</em></h2>
 
       <!-- RATING HISTORY GRAPHS -->
       <div class="cp-graph-section" id="cpGraph">
@@ -1887,7 +2024,7 @@
             <div class="edu-degree">B.Tech Computer Engineering · 3rd Year</div>
           </div>
           <div class="edu-right">
-            <div class="edu-score">8.7 CGPA</div>
+            <div class="edu-score">8.9 CGPA</div>
             <div class="edu-year">2023 — PRESENT</div>
           </div>
         </div>
