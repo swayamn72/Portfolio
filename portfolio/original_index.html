@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -50,7 +50,7 @@
       cursor: none;
     }
 
-    /* ── WEB PATTERN OVERLAY ── */
+    /* ΓöÇΓöÇ WEB PATTERN OVERLAY ΓöÇΓöÇ */
     body::before {
       content: '';
       position: fixed;
@@ -72,7 +72,7 @@
       z-index: 1000;
     }
 
-    /* ── CURSOR ── */
+    /* ΓöÇΓöÇ CURSOR ΓöÇΓöÇ */
     #cursor {
       position: fixed;
       width: 14px;
@@ -98,7 +98,7 @@
       transition: opacity .2s, transform .2s;
     }
 
-    /* spider SVG — shown on hover */
+    /* spider SVG ΓÇö shown on hover */
     #cursor .cur-spider {
       position: absolute;
       top: 50%;
@@ -140,7 +140,7 @@
       border-color: rgba(232, 0, 45, 0.7);
     }
 
-    /* web canvas overlay — sits above everything, pointer-events off */
+    /* web canvas overlay ΓÇö sits above everything, pointer-events off */
     #web-canvas {
       position: fixed;
       top: 0;
@@ -179,7 +179,7 @@
       contain: strict;
     }
 
-    /* ── PROGRESS BAR ── */
+    /* ΓöÇΓöÇ PROGRESS BAR ΓöÇΓöÇ */
     #progress {
       position: fixed;
       top: 0;
@@ -191,7 +191,7 @@
       width: 0;
     }
 
-    /* ── NAV ── */
+    /* ΓöÇΓöÇ NAV ΓöÇΓöÇ */
     nav {
       position: fixed;
       top: 0;
@@ -225,7 +225,7 @@
     }
 
     .nav-logo::after {
-      content: '⬡';
+      content: 'Γ¼í';
       position: absolute;
       top: -4px;
       right: -18px;
@@ -261,13 +261,12 @@
       text-shadow: 0 0 10px var(--red);
     }
 
-    /* ── HERO ── */
+    /* ΓöÇΓöÇ HERO ΓöÇΓöÇ */
     #hero {
       min-height: 100vh;
       display: flex;
       align-items: center;
-      justify-content: center;
-      padding: 0 48px;
+      padding: 0 64px;
       position: relative;
       overflow: hidden;
     }
@@ -292,35 +291,9 @@
     }
 
     .hero-inner {
-      max-width: 1300px;
-      width: 100%;
-      margin: 0 auto;
+      max-width: 860px;
       position: relative;
       z-index: 2;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      gap: 80px;
-    }
-
-    .hero-left {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .hero-right {
-      flex-shrink: 0;
-    }
-
-    .hero-right img {
-      width: 400px;
-      height: 400px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 5px solid var(--red);
-      box-shadow: 0 0 50px rgba(232,0,45,0.5), 0 0 100px rgba(232,0,45,0.15);
-      display: block;
     }
 
     .hero-tag {
@@ -530,16 +503,16 @@
       }
     }
 
-    /* ── SECTIONS ── */
+    /* ΓöÇΓöÇ SECTIONS ΓöÇΓöÇ */
     section {
       position: relative;
       z-index: 10;
     }
 
     .section-wrap {
-      max-width: 1300px;
+      max-width: 1100px;
       margin: 0 auto;
-      padding: 100px 80px;
+      padding: 120px 64px;
     }
 
     .sec-label {
@@ -579,7 +552,7 @@
       right: 0;
     }
 
-    /* ── ABOUT ── */
+    /* ΓöÇΓöÇ ABOUT ΓöÇΓöÇ */
     .about-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -676,7 +649,7 @@
       color: var(--red);
     }
 
-    /* ── EXPERIENCE ── */
+    /* ΓöÇΓöÇ EXPERIENCE ΓöÇΓöÇ */
     .exp-item {
       border-left: 2px solid rgba(232, 0, 45, .3);
       padding-left: 36px;
@@ -734,39 +707,17 @@
     }
 
     .exp-bullets li::before {
-      content: '▸';
+      content: 'Γû╕';
       position: absolute;
       left: 0;
       color: var(--red);
     }
 
-    /* ── PROJECTS ── */
+    /* ΓöÇΓöÇ PROJECTS ΓöÇΓöÇ */
     .projects-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 24px;
-    }
-
-    .proj-img {
-      width: 100%;
-      aspect-ratio: 16/9;
-      object-fit: cover;
-      border-radius: 4px;
-      margin-bottom: 20px;
-      border: 1px solid var(--border);
-      display: block;
-    }
-
-    .proj-img-phone {
-      width: 100%;
-      aspect-ratio: 9/16;
-      object-fit: cover;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      border: 1px solid var(--border);
-      display: block;
-      max-height: 220px;
-      object-position: top;
     }
 
     .project-card {
@@ -870,14 +821,14 @@
     }
 
     .proj-highlights li::before {
-      content: '▸';
+      content: 'Γû╕';
       position: absolute;
       left: 0;
       color: var(--cyan);
       font-size: .75rem;
     }
 
-    /* ── CP ── */
+    /* ΓöÇΓöÇ CP ΓöÇΓöÇ */
     .cp-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -905,7 +856,7 @@
     }
 
     .cp-card::after {
-      content: '→';
+      content: 'ΓåÆ';
       position: absolute;
       right: 20px;
       top: 50%;
@@ -1119,7 +1070,7 @@
       border: 1px solid;
     }
 
-    /* ── SKILLS ── */
+    /* ΓöÇΓöÇ SKILLS ΓöÇΓöÇ */
     .skills-cols {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -1159,7 +1110,7 @@
       box-shadow: 0 0 10px rgba(232, 0, 45, .2);
     }
 
-    /* ── EDUCATION ── */
+    /* ΓöÇΓöÇ EDUCATION ΓöÇΓöÇ */
     .edu-list {
       display: flex;
       flex-direction: column;
@@ -1235,7 +1186,7 @@
       margin-top: 4px;
     }
 
-    /* ── ACHIEVEMENTS ── */
+    /* ΓöÇΓöÇ ACHIEVEMENTS ΓöÇΓöÇ */
     .achieve-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -1286,7 +1237,7 @@
       line-height: 1.5;
     }
 
-    /* ── CERTIFICATIONS ── */
+    /* ΓöÇΓöÇ CERTIFICATIONS ΓöÇΓöÇ */
     .cert-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -1349,7 +1300,7 @@
     }
 
     .cert-view-overlay::before {
-      content: '↗';
+      content: 'Γåù';
       font-size: 1rem;
       color: var(--red);
     }
@@ -1386,7 +1337,7 @@
       margin-top: 4px;
     }
 
-    /* ── CONTACT ── */
+    /* ΓöÇΓöÇ CONTACT ΓöÇΓöÇ */
     #contact {
       text-align: center;
     }
@@ -1424,7 +1375,7 @@
       opacity: 0;
     }
 
-    /* ── FOOTER ── */
+    /* ΓöÇΓöÇ FOOTER ΓöÇΓöÇ */
     footer {
       padding: 36px 64px;
       border-top: 1px solid rgba(232, 0, 45, .12);
@@ -1444,7 +1395,7 @@
       animation: webPulse 3s ease-in-out infinite;
     }
 
-    /* ── SPIDER WEB CORNER DECORATIONS ── */
+    /* ΓöÇΓöÇ SPIDER WEB CORNER DECORATIONS ΓöÇΓöÇ */
     .web-corner {
       position: fixed;
       width: 180px;
@@ -1465,17 +1416,7 @@
       transform: scaleX(-1);
     }
 
-    /* ── RESPONSIVE ── */
-    @media(max-width:1100px) {
-      .hero-right img {
-        width: 300px;
-        height: 300px;
-      }
-      .hero-inner {
-        gap: 40px;
-      }
-    }
-
+    /* ΓöÇΓöÇ RESPONSIVE ΓöÇΓöÇ */
     @media(max-width:900px) {
       nav {
         padding: 16px 24px;
@@ -1491,36 +1432,6 @@
 
       #hero {
         padding: 0 24px;
-        align-items: center;
-      }
-
-      .hero-inner {
-        flex-direction: column;
-        text-align: center;
-        gap: 40px;
-        padding-top: 80px;
-      }
-
-      .hero-left {
-        order: 2;
-      }
-
-      .hero-right {
-        order: 1;
-      }
-
-      .hero-right img {
-        width: 220px;
-        height: 220px;
-      }
-
-      .hero-tag {
-        justify-content: center;
-      }
-
-      .hero-chips,
-      .hero-cta {
-        justify-content: center;
       }
 
       .about-grid,
@@ -1552,7 +1463,7 @@
       }
     }
 
-    /* ── WEB SHOOTING ANIMATION ── */
+    /* ΓöÇΓöÇ WEB SHOOTING ANIMATION ΓöÇΓöÇ */
     @keyframes webShoot {
       0% {
         opacity: 0;
@@ -1643,31 +1554,26 @@
   <!-- HERO -->
   <section id="hero">
     <div class="hero-inner">
-      <div class="hero-left">
-        <p class="hero-tag" style="letter-spacing:3px;">B.TECH · KJSSE · 8.9 CGPA</p>
-        <h1 class="hero-name">
-          SWAYAM<br>
-          <span class="accent-word" data-text="NAKTE">NAKTE</span>
-        </h1>
-        <p class="hero-desc">
-          <strong>Full-stack developer</strong> and <strong>competitive programmer</strong> studying Computer Engineering
-          at K.J. Somaiya School Of Engineering. I build production-grade apps, solve hard algorithmic problems, and
-          obsess over clean code.
-        </p>
-        <div class="hero-chips">
-          <span class="chip chip-red">C++ · RUST · JS</span>
-          <span class="chip chip-blue">MERN STACK</span>
-          <span class="chip chip-green">FLUTTER · DART</span>
-          <span class="chip chip-gold">AWS · DOCKER</span>
-          <span class="chip chip-red">CF SPECIALIST</span>
-        </div>
-        <div class="hero-cta">
-          <a href="#contact" class="btn btn-filled">GET IN TOUCH</a>
-          <a href="#projects" class="btn btn-outline">VIEW PROJECTS</a>
-        </div>
+      <p class="hero-tag">COMPUTER ENGINEERING ┬╖ KJSSE ┬╖ MUMBAI ┬╖ 8.7 CGPA</p>
+      <h1 class="hero-name">
+        SWAYAM<br>
+        <span class="accent-word" data-text="NAKTE">NAKTE</span>
+      </h1>
+      <p class="hero-desc">
+        <strong>Full-stack developer</strong> and <strong>competitive programmer</strong> studying Computer Engineering
+        at K.J. Somaiya School Of Engineering. I build production-grade apps, solve hard algorithmic problems, and
+        obsess over clean code.
+      </p>
+      <div class="hero-chips">
+        <span class="chip chip-red">C++ ┬╖ RUST ┬╖ JS</span>
+        <span class="chip chip-blue">MERN STACK</span>
+        <span class="chip chip-green">FLUTTER ┬╖ DART</span>
+        <span class="chip chip-gold">AWS ┬╖ DOCKER</span>
+        <span class="chip chip-red">CF SPECIALIST</span>
       </div>
-      <div class="hero-right">
-        <img src="./src/assets/pfp.jpg" alt="Swayam Nakte">
+      <div class="hero-cta">
+        <a href="#contact" class="btn btn-filled">GET IN TOUCH</a>
+        <a href="#projects" class="btn btn-outline">VIEW PROJECTS</a>
       </div>
     </div>
     <div class="hero-scroll">
@@ -1678,13 +1584,13 @@
   <!-- ABOUT -->
   <section id="about">
     <div class="section-wrap">
-      <span class="sec-label">// 01 — ABOUT</span>
+      <span class="sec-label">// 01 ΓÇö ABOUT</span>
       <h2 class="sec-title">WHO I <em>AM</em></h2>
       <div class="about-grid">
         <div class="about-text">
           <p>I'm a <strong>3rd year Computer Engineering student</strong> at K.J. Somaiya School Of Engineering (KJSSE),
-            Mumbai - holding an <strong>8.9 CGPA</strong> with a perfect 10 SGPA in Semester 4.</p>
-          <p>I love building things end-to-end — from <strong>REST APIs and databases</strong> to <strong>React
+            Mumbai ΓÇö holding an <strong>8.7 CGPA</strong> with a perfect 10 SGPA in Semester 4.</p>
+          <p>I love building things end-to-end ΓÇö from <strong>REST APIs and databases</strong> to <strong>React
               frontends</strong> and <strong>Flutter mobile apps</strong>, all the way to deploying on
             <strong>AWS</strong>. I care about the whole stack.
           </p>
@@ -1694,28 +1600,28 @@
         </div>
         <div class="info-cards">
           <div class="info-card">
-            <div class="info-icon" style="background:rgba(232,0,45,.1)">🎓</div>
+            <div class="info-icon" style="background:rgba(232,0,45,.1)">≡ƒÄô</div>
             <div>
               <div class="info-title">STUDYING AT</div>
               <div class="info-val">K.J. Somaiya School Of Engineering (KJSSE)</div>
             </div>
           </div>
           <div class="info-card">
-            <div class="info-icon" style="background:rgba(0,198,255,.1)">📍</div>
+            <div class="info-icon" style="background:rgba(0,198,255,.1)">≡ƒôì</div>
             <div>
               <div class="info-title">LOCATION</div>
               <div class="info-val">Mumbai, Maharashtra, India</div>
             </div>
           </div>
           <div class="info-card">
-            <div class="info-icon" style="background:rgba(0,230,118,.1)">✉️</div>
+            <div class="info-icon" style="background:rgba(0,230,118,.1)">Γ£ë∩╕Å</div>
             <div>
               <div class="info-title">EMAIL</div>
               <div class="info-val"><a href="mailto:swayamsn123@gmail.com">swayamsn123@gmail.com</a></div>
             </div>
           </div>
           <div class="info-card">
-            <div class="info-icon" style="background:rgba(255,214,0,.1)">⚡</div>
+            <div class="info-icon" style="background:rgba(255,214,0,.1)">ΓÜí</div>
             <div>
               <div class="info-title">STATUS</div>
               <div class="info-val">Open to Internships &amp; Collaborations</div>
@@ -1726,83 +1632,15 @@
     </div>
   </section>
 
-  <!-- CP -->
-  <section id="cp">
-    <div class="section-wrap">
-      <span class="sec-label">// 02 — PROBLEM SOLVING</span>
-      <h2 class="sec-title">PROBLEM <em>SOLVING</em></h2>
-      <div class="cp-grid">
-        <a href="https://codeforces.com/profile/swayamsn123" target="_blank" class="cp-card">
-          <div class="cp-icon" style="background:rgba(232,0,45,.12)">
-            <img src="/icons/codeforces.webp" alt="Codeforces">
-          </div>
-          <div style="flex:1">
-            <div class="cp-platform-name">CODEFORCES</div>
-            <div class="cp-handle" style="color:var(--red)">@swayamsn123</div>
-            <div class="cp-rating-row">
-              <span class="cp-rating" id="cfCardRating" style="color:var(--red)">FETCHING</span>
-              <span class="cp-badge" id="cfCardBadge"
-                style="color:var(--red);border-color:rgba(232,0,45,.3);background:rgba(232,0,45,.07)">FETCHING</span>
-            </div>
-          </div>
-          <div style="font-family:'Share Tech Mono';font-size:.7rem;letter-spacing:2px;color:var(--red);opacity:.7;white-space:nowrap;">VISIT &#8599;</div>
-        </a>
-        <a href="https://www.codechef.com/users/swayamn73" target="_blank" class="cp-card">
-          <div class="cp-icon" style="background:rgba(255,214,0,.12)">
-            <img src="/icons/codechef.png" alt="CodeChef">
-          </div>
-          <div style="flex:1">
-            <div class="cp-platform-name">CODECHEF</div>
-            <div class="cp-handle" style="color:var(--gold)">@swayamn73</div>
-            <div class="cp-rating-row">
-              <span class="cp-rating" id="ccCardRating" style="color:var(--gold)">FETCHING</span>
-              <span class="cp-badge" id="ccCardBadge"
-                style="color:var(--gold);border-color:rgba(255,214,0,.3);background:rgba(255,214,0,.07)">FETCHING</span>
-            </div>
-          </div>
-          <div style="font-family:'Share Tech Mono';font-size:.7rem;letter-spacing:2px;color:var(--gold);opacity:.7;white-space:nowrap;">VISIT &#8599;</div>
-        </a>
-        <a href="https://leetcode.com/swayamn" target="_blank" class="cp-card">
-          <div class="cp-icon" style="background:rgba(255,109,0,.12)">
-            <img src="/icons/leetcode.webp" alt="LeetCode">
-          </div>
-          <div style="flex:1">
-            <div class="cp-platform-name">LEETCODE</div>
-            <div class="cp-handle" style="color:var(--orange)">@swayamn</div>
-            <div class="cp-rating-row">
-              <span class="cp-rating" id="lcCardRating"
-                style="color:var(--orange);font-size:.9rem;font-family:'Share Tech Mono'">FETCHING</span>
-            </div>
-          </div>
-          <div style="font-family:'Share Tech Mono';font-size:.7rem;letter-spacing:2px;color:var(--orange);opacity:.7;white-space:nowrap;">VISIT &#8599;</div>
-        </a>
-        <a href="https://atcoder.jp/users/swayamn72" target="_blank" class="cp-card">
-          <div class="cp-icon" style="background:rgba(0,230,118,.12)">
-            <img src="/icons/atcoder.png" alt="AtCoder" style="filter:invert(1) brightness(0.8)">
-          </div>
-          <div style="flex:1">
-            <div class="cp-platform-name">ATCODER</div>
-            <div class="cp-handle" style="color:var(--green)">@swayamn72</div>
-            <div class="cp-rating-row">
-              <span class="cp-rating" id="atCardRating"
-                style="color:var(--green);font-size:.9rem;font-family:'Share Tech Mono'">FETCHING</span>
-            </div>
-          </div>
-          <div style="font-family:'Share Tech Mono';font-size:.7rem;letter-spacing:2px;color:var(--green);opacity:.7;white-space:nowrap;">VISIT &#8599;</div>
-        </a>
-      </div>
-    </div>
-  </section>
-
   <!-- EXPERIENCE -->
   <section id="experience">
     <div class="section-wrap">
-      <span class="sec-label">// 03 — EXPERIENCE</span>
+      <span class="sec-label">// 02 ΓÇö EXPERIENCE</span>
       <h2 class="sec-title">WHERE I'VE <em>WORKED</em></h2>
       <div class="exp-item">
-        <div class="exp-date">JAN 2026 — PRESENT</div>
+        <div class="exp-date">JAN 2026 ΓÇö PRESENT</div>
         <div class="exp-role">Full Stack Developer Intern</div>
-        <div class="exp-company">K.J. Somaiya School of Engineering · Remote</div>
+        <div class="exp-company">K.J. Somaiya School of Engineering ┬╖ Remote</div>
         <ul class="exp-bullets">
           <li>Developed a MERN stack alumni portal enabling seamless networking, events management, and resource sharing
             between alumni and current students.</li>
@@ -1817,37 +1655,14 @@
   <!-- PROJECTS -->
   <section id="projects">
     <div class="section-wrap">
-      <span class="sec-label">// 04 — PROJECTS</span>
+      <span class="sec-label">// 03 ΓÇö PROJECTS</span>
       <h2 class="sec-title">THINGS I'VE <em>BUILT</em></h2>
-      <div class="projects-grid" style="display:grid;grid-template-columns:repeat(3, 1fr);gap:2rem;">
-        <!-- Aquila -->
+      <div class="projects-grid">
         <div class="project-card">
-          <img src="./src/assets/aquilaDashboard.png" alt="Aquila Dashboard" class="proj-img" style="width:100%;height:auto;border-radius:8px;margin-bottom:1rem;">
-          <div class="proj-name">Aquila — Quantitative Backtesting Framework</div>
-          <div class="proj-sub">SYSTEMS · C++23 / CRTP / STD::PMR / RDTSC</div>
-          <div class="proj-desc">A systems-level, event-driven trading simulator processing historical market data with nanosecond precision. Eliminates OOP bottlenecks to push single-thread performance to its absolute theoretical limits.</div>
-          <div class="proj-tags">
-            <span class="proj-tag">C++23</span><span class="proj-tag">CRTP</span>
-            <span class="proj-tag">LOCK-FREE</span><span class="proj-tag">ZERO-COPY</span>
-          </div>
-          <ul class="proj-highlights">
-            <li>Built a lock-free SPSC event bus with cache-line isolation achieving 1.15 ns/op</li>
-            <li>Engineered a custom std::pmr arena allocator reducing event allocation to 14 ns</li>
-            <li>Replaced virtual dispatch with CRTP and SoA layout with 2MB huge pages</li>
-            <li>Hardware TSC profiling measuring p50 = 40 ns end-to-end tick dispatch latency</li>
-          </ul>
-          <div style="margin-top:1rem">
-            <a href="https://github.com/swayamn72/Aquila" target="_blank" class="btn btn-outline"
-              style="font-size:.75rem;padding:.45rem 1rem">GITHUB ↗</a>
-          </div>
-        </div>
-        <!-- Aegis Web -->
-        <div class="project-card">
-          <img src="./src/assets/aegis.png" alt="Aegis Platform" class="proj-img" style="width:100%;height:auto;border-radius:8px;margin-bottom:1rem;">
-          <div class="proj-name">Aegis — Esports Management Platform</div>
-          <div class="proj-sub">WEB APP · REACT / NODE.JS / MONGODB / SOCKET.IO / AWS</div>
+          <div class="proj-name">Aegis ΓÇö Esports Management Platform</div>
+          <div class="proj-sub">WEB APP ┬╖ REACT / NODE.JS / MONGODB / SOCKET.IO / AWS</div>
           <div class="proj-desc">Comprehensive esports management platform with team recruitment, profile building,
-            tournament registration, and organization management portal — deployed on AWS.</div>
+            tournament registration, and organization management portal ΓÇö deployed on AWS.</div>
           <div class="proj-tags">
             <span class="proj-tag">REACT</span><span class="proj-tag">NODE.JS</span>
             <span class="proj-tag">MONGODB</span><span class="proj-tag">SOCKET.IO</span><span
@@ -1860,20 +1675,12 @@
           </ul>
           <div style="margin-top:1rem">
             <a href="https://github.com/swayamn72/Aegis3.0" target="_blank" class="btn btn-outline"
-              style="font-size:.75rem;padding:.45rem 1rem">GITHUB ↗</a>
+              style="font-size:.75rem;padding:.45rem 1rem">GITHUB Γåù</a>
           </div>
         </div>
-        <!-- Aegis Mobile -->
         <div class="project-card">
-          <!-- Phone mockup container -->
-          <div style="width:100%;background:rgba(0,0,0,0.3);border-radius:8px;margin-bottom:1rem;display:flex;align-items:center;justify-content:center;padding:16px;min-height:180px;border:1px solid var(--border);overflow:hidden;">
-            <div style="position:relative;width:100px;background:#111;border-radius:16px;border:3px solid #333;padding:6px;box-shadow:0 0 20px rgba(232,0,45,0.2);">
-              <div style="width:30px;height:4px;background:#222;border-radius:2px;margin:0 auto 4px;"></div>
-              <img src="./src/assets/aegismobile.png" alt="Aegis Mobile App" style="width:100%;border-radius:8px;display:block;">
-            </div>
-          </div>
-          <div class="proj-name">Aegis — Mobile App</div>
-          <div class="proj-sub">ANDROID · FLUTTER / DART / RIVERPOD</div>
+          <div class="proj-name">Aegis ΓÇö Mobile App</div>
+          <div class="proj-sub">ANDROID ┬╖ FLUTTER / DART / RIVERPOD</div>
           <div class="proj-desc">Companion Android app for the Aegis esports platform, featuring a responsive UI
             optimized for mobile interactions with full feature parity to the web client.</div>
           <div class="proj-tags">
@@ -1882,44 +1689,79 @@
           </div>
           <ul class="proj-highlights">
             <li>State management via Riverpod with clean architecture</li>
-            <li>Real-time live chat with Socket.io — seamless cross-platform communication</li>
+            <li>Real-time live chat with Socket.io ΓÇö seamless cross-platform communication</li>
             <li>Responsive UI optimized for various screen sizes &amp; mobile interactions</li>
           </ul>
           <div style="margin-top:1rem">
             <a href="https://github.com/swayamn72/Aegis3.0" target="_blank" class="btn btn-outline"
-              style="font-size:.75rem;padding:.45rem 1rem">GITHUB &#8599;</a>
-          </div>
-        </div>
-        <!-- CodeMortem -->
-        <div class="project-card">
-          <img src="./src/assets/codemortem.png" alt="CodeMortem" class="proj-img" style="width:100%;height:auto;border-radius:8px;margin-bottom:1rem;">
-          <div class="proj-name">CodeMortem — CP Learning Platform</div>
-          <div class="proj-sub">WEB APP · NEXT.JS / TYPESCRIPT / TAILWIND</div>
-          <div class="proj-desc">An interactive competitive programming learning platform with animated lesson modules,
-            MCQ checkpoints, and rating history graphs for multiple CP platforms.</div>
-          <div class="proj-tags">
-            <span class="proj-tag">NEXT.JS</span><span class="proj-tag">TYPESCRIPT</span>
-            <span class="proj-tag">TAILWIND</span>
-          </div>
-          <ul class="proj-highlights">
-            <li>Rich lesson primitives with animated diagrams and code blocks</li>
-            <li>Live CP rating graphs from Codeforces, LeetCode, CodeChef &amp; AtCoder</li>
-            <li>MCQ checkpoint system with detailed explanations</li>
-          </ul>
-          <div style="margin-top:1rem">
-            <a href="https://github.com/swayamn72/CodeMortem2.0" target="_blank" class="btn btn-outline"
-              style="font-size:.75rem;padding:.45rem 1rem">GITHUB ↗</a>
+              style="font-size:.75rem;padding:.45rem 1rem">GITHUB Γåù</a>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- RATING GRAPHS -->
-  <section id="cp-graphs">
+  <!-- CP -->
+  <section id="cp">
     <div class="section-wrap">
-      <span class="sec-label">// 05 — RATING GRAPHS</span>
-      <h2 class="sec-title">RATING <em>HISTORY</em></h2>
+      <span class="sec-label">// 04 ΓÇö COMPETITIVE PROGRAMMING</span>
+      <h2 class="sec-title">PROBLEM <em>SOLVING</em></h2>
+      <div class="cp-grid">
+        <a href="https://codeforces.com/profile/swayamnsn123" target="_blank" class="cp-card">
+          <div class="cp-icon" style="background:rgba(232,0,45,.12)">
+            <img src="/icons/codeforces.webp" alt="Codeforces">
+          </div>
+          <div style="flex:1">
+            <div class="cp-platform-name">CODEFORCES</div>
+            <div class="cp-handle" style="color:var(--red)">@swayamnsn123</div>
+            <div class="cp-rating-row">
+              <span class="cp-rating" id="cfCardRating" style="color:var(--red)">FETCHING</span>
+              <span class="cp-badge" id="cfCardBadge"
+                style="color:var(--red);border-color:rgba(232,0,45,.3);background:rgba(232,0,45,.07)">FETCHING</span>
+            </div>
+          </div>
+        </a>
+        <a href="https://www.codechef.com/users/swayamn73" target="_blank" class="cp-card">
+          <div class="cp-icon" style="background:rgba(255,214,0,.12)">
+            <img src="/icons/codechef.png" alt="CodeChef">
+          </div>
+          <div style="flex:1">
+            <div class="cp-platform-name">CODECHEF</div>
+            <div class="cp-handle" style="color:var(--gold)">@swayamn73</div>
+            <div class="cp-rating-row">
+              <span class="cp-rating" id="ccCardRating" style="color:var(--gold)">FETCHING</span>
+              <span class="cp-badge" id="ccCardBadge"
+                style="color:var(--gold);border-color:rgba(255,214,0,.3);background:rgba(255,214,0,.07)">FETCHING</span>
+            </div>
+          </div>
+        </a>
+        <a href="https://leetcode.com/swayamn" target="_blank" class="cp-card">
+          <div class="cp-icon" style="background:rgba(255,109,0,.12)">
+            <img src="/icons/leetcode.webp" alt="LeetCode">
+          </div>
+          <div style="flex:1">
+            <div class="cp-platform-name">LEETCODE</div>
+            <div class="cp-handle" style="color:var(--orange)">@swayamn</div>
+            <div class="cp-rating-row">
+              <span class="cp-rating" id="lcCardRating"
+                style="color:var(--orange);font-size:.9rem;font-family:'Share Tech Mono'">FETCHING</span>
+            </div>
+          </div>
+        </a>
+        <a href="https://atcoder.jp/users/swayamn72" target="_blank" class="cp-card">
+          <div class="cp-icon" style="background:rgba(0,230,118,.12)">
+            <img src="/icons/atcoder.png" alt="AtCoder" style="filter:invert(1) brightness(0.8)">
+          </div>
+          <div style="flex:1">
+            <div class="cp-platform-name">ATCODER</div>
+            <div class="cp-handle" style="color:var(--green)">@swayamn72</div>
+            <div class="cp-rating-row">
+              <span class="cp-rating" id="atCardRating"
+                style="color:var(--green);font-size:.9rem;font-family:'Share Tech Mono'">FETCHING</span>
+            </div>
+          </div>
+        </a>
+      </div>
 
       <!-- RATING HISTORY GRAPHS -->
       <div class="cp-graph-section" id="cpGraph">
@@ -1964,13 +1806,13 @@
           </div>
           <div class="cp-graph-box"><canvas id="ccChart"></canvas></div>
           <div class="cp-graph-bands">
-            <span class="cp-band-dot band-gray">1★ ≤1399</span>
-            <span class="cp-band-dot band-green">2★ 1400</span>
-            <span class="cp-band-dot band-blue">3★ 1600</span>
-            <span class="cp-band-dot band-violet">4★ 1800</span>
-            <span class="cp-band-dot band-gold">5★ 2000</span>
-            <span class="cp-band-dot band-orange">6★ 2200</span>
-            <span class="cp-band-dot band-red">7★ 2500+</span>
+            <span class="cp-band-dot band-gray">1Γÿà Γëñ1399</span>
+            <span class="cp-band-dot band-green">2Γÿà 1400</span>
+            <span class="cp-band-dot band-blue">3Γÿà 1600</span>
+            <span class="cp-band-dot band-violet">4Γÿà 1800</span>
+            <span class="cp-band-dot band-gold">5Γÿà 2000</span>
+            <span class="cp-band-dot band-orange">6Γÿà 2200</span>
+            <span class="cp-band-dot band-red">7Γÿà 2500+</span>
           </div>
         </div>
 
@@ -2008,7 +1850,7 @@
   <!-- SKILLS -->
   <section id="skills">
     <div class="section-wrap">
-      <span class="sec-label">// 05 — SKILLS</span>
+      <span class="sec-label">// 05 ΓÇö SKILLS</span>
       <h2 class="sec-title">TECH <em>STACK</em></h2>
       <div class="skills-cols">
         <div class="skill-group">
@@ -2036,37 +1878,37 @@
   <!-- EDUCATION -->
   <section id="education">
     <div class="section-wrap">
-      <span class="sec-label">// 06 — EDUCATION</span>
+      <span class="sec-label">// 06 ΓÇö EDUCATION</span>
       <h2 class="sec-title">WHERE I <em>LEARNED</em></h2>
       <div class="edu-list">
         <div class="edu-item">
           <div>
             <div class="edu-school">K.J. Somaiya School Of Engineering (KJSSE)</div>
-            <div class="edu-degree">B.Tech Computer Engineering · 3rd Year</div>
+            <div class="edu-degree">B.Tech Computer Engineering ┬╖ 3rd Year</div>
           </div>
           <div class="edu-right">
-            <div class="edu-score">8.9 CGPA</div>
-            <div class="edu-year">2023 — PRESENT</div>
+            <div class="edu-score">8.7 CGPA</div>
+            <div class="edu-year">2023 ΓÇö PRESENT</div>
           </div>
         </div>
         <div class="edu-item">
           <div>
             <div class="edu-school">K.C. College</div>
-            <div class="edu-degree">HSC · Science</div>
+            <div class="edu-degree">HSC ┬╖ Science</div>
           </div>
           <div class="edu-right">
             <div class="edu-score">75.17%</div>
-            <div class="edu-year">2021 — 2023</div>
+            <div class="edu-year">2021 ΓÇö 2023</div>
           </div>
         </div>
         <div class="edu-item">
           <div>
             <div class="edu-school">Scholar High School</div>
-            <div class="edu-degree">ICSE Board · Class 1–10</div>
+            <div class="edu-degree">ICSE Board ┬╖ Class 1ΓÇô10</div>
           </div>
           <div class="edu-right">
             <div class="edu-score">94.2%</div>
-            <div class="edu-year">2011 — 2021</div>
+            <div class="edu-year">2011 ΓÇö 2021</div>
           </div>
         </div>
       </div>
@@ -2076,18 +1918,18 @@
   <!-- ACHIEVEMENTS -->
   <section id="achievements">
     <div class="section-wrap">
-      <span class="sec-label">// 07 — ACHIEVEMENTS</span>
+      <span class="sec-label">// 07 ΓÇö ACHIEVEMENTS</span>
       <h2 class="sec-title">WINS &amp; <em>MILESTONES</em></h2>
       <div class="achieve-grid">
         <div class="achieve-card">
-          <div class="achieve-badge" style="background:rgba(255,214,0,.1)">🏆</div>
+          <div class="achieve-badge" style="background:rgba(255,214,0,.1)">≡ƒÅå</div>
           <div>
             <div class="achieve-title">Perfect 10 SGPA</div>
-            <div class="achieve-sub">Semester 4 — K.J. Somaiya School of Engineering</div>
+            <div class="achieve-sub">Semester 4 ΓÇö K.J. Somaiya School of Engineering</div>
           </div>
         </div>
         <div class="achieve-card">
-          <div class="achieve-badge" style="background:rgba(232,0,45,.1)">🧮</div>
+          <div class="achieve-badge" style="background:rgba(232,0,45,.1)">≡ƒº«</div>
           <div>
             <div class="achieve-title">Abacus State Runner-Up</div>
             <div class="achieve-sub">State Level Abacus Competition</div>
@@ -2100,7 +1942,7 @@
   <!-- CERTIFICATIONS -->
   <section id="certifications">
     <div class="section-wrap">
-      <span class="sec-label">// 08 — CERTIFICATIONS</span>
+      <span class="sec-label">// 08 ΓÇö CERTIFICATIONS</span>
       <h2 class="sec-title">CERTIFIED <em>SKILLS</em></h2>
       <div class="cert-grid">
         <div class="cert-card" id="cert-0">
@@ -2150,7 +1992,7 @@
   <section id="contact">
     <div class="contact-wrap">
       <h2 class="contact-big">LET'S<br><span style="color:var(--red)">TALK.</span></h2>
-      <p class="contact-sub">// OPEN TO INTERNSHIPS · COLLABORATIONS · COOL IDEAS</p>
+      <p class="contact-sub">// OPEN TO INTERNSHIPS ┬╖ COLLABORATIONS ┬╖ COOL IDEAS</p>
       <div class="contact-row">
         <a href="mailto:swayamsn123@gmail.com" class="btn btn-filled">swayamsn123@gmail.com</a>
         <a href="https://github.com/swayamn72/" target="_blank" class="btn btn-outline">GITHUB</a>
@@ -2161,15 +2003,15 @@
   </section>
 
   <footer>
-    <span>© 2025 SWAYAM NAKTE</span>
-    <span class="footer-spider">🕷️</span>
+    <span>┬⌐ 2025 SWAYAM NAKTE</span>
+    <span class="footer-spider">≡ƒò╖∩╕Å</span>
     <span>MUMBAI, IN</span>
   </footer>
 
   <script type="module">
-    /* ══════════════════════════════════════════
+    /* ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
        SPIDER WEB CURSOR SYSTEM
-    ══════════════════════════════════════════ */
+    ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ */
     const cur = document.getElementById('cursor');
     const trail = document.getElementById('cursor-trail');
     const wc = document.getElementById('web-canvas');
@@ -2186,11 +2028,11 @@
     let prevMx = 0, prevMy = 0;
     let isHovering = false;
 
-    /* ── Web thread segments left behind while hovering ── */
+    /* ΓöÇΓöÇ Web thread segments left behind while hovering ΓöÇΓöÇ */
     const webThreads = [];   // {x1,y1,x2,y2,alpha,age}
     const webNodes = [];   // anchor dots {x,y,alpha}
 
-    /* ── Shoot-web burst on click / hover-enter ── */
+    /* ΓöÇΓöÇ Shoot-web burst on click / hover-enter ΓöÇΓöÇ */
     const webBursts = [];   // {cx,cy,rays:[],age,maxAge}
 
     function shootWebBurst(cx, cy, numRays = 8, len = 70) {
@@ -2206,7 +2048,7 @@
       webBursts.push({ cx, cy, rays, age: 0, maxAge: 55 });
     }
 
-    /* ── Hover detect on interactive elements ── */
+    /* ΓöÇΓöÇ Hover detect on interactive elements ΓöÇΓöÇ */
     const hoverSelectors = 'a,button,.btn,.cp-card,.project-card,.cert-card,.info-card,.achieve-card,.skill-pill,.cp-graph-tab,.nav-links a';
 
     let lastHoverEl = null;
@@ -2245,7 +2087,7 @@
       webNodes.push({ x: e.clientX, y: e.clientY, alpha: 1 });
     });
 
-    /* ── Trail follow ── */
+    /* ΓöÇΓöÇ Trail follow ΓöÇΓöÇ */
     function animTrail() {
       tx += (mx - tx) * .12; ty += (my - ty) * .12;
       trail.style.left = tx + 'px'; trail.style.top = ty + 'px';
@@ -2253,7 +2095,7 @@
     }
     animTrail();
 
-    /* ── Draw web overlay every frame ── */
+    /* ΓöÇΓöÇ Draw web overlay every frame ΓöÇΓöÇ */
     let webCanvasNeedsClear = false;
     function drawWeb() {
       const hasActive = webThreads.length > 0 || webNodes.length > 0 || webBursts.length > 0 || (isHovering && webNodes.length > 0);
@@ -2320,7 +2162,7 @@
           wctx.lineWidth = 1;
           wctx.stroke();
 
-          /* cross-web arcs between rays — drawn at 30%,60%,90% of length */
+          /* cross-web arcs between rays ΓÇö drawn at 30%,60%,90% of length */
           if (ray.progress > .3) {
             const fracs = [.3, .6, .9];
             fracs.forEach((f, fi) => {
@@ -2372,7 +2214,7 @@
     }
     drawWeb();
 
-    /* ── SPIDER WEB CANVAS ── */
+    /* ΓöÇΓöÇ SPIDER WEB CANVAS ΓöÇΓöÇ */
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth; canvas.height = window.innerHeight;
@@ -2429,20 +2271,20 @@
     }
     requestAnimationFrame(drawFrame);
 
-    /* ── PROGRESS BAR ── */
+    /* ΓöÇΓöÇ PROGRESS BAR ΓöÇΓöÇ */
     const prog = document.getElementById('progress');
     window.addEventListener('scroll', () => {
       const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight);
       prog.style.width = (pct * 100) + '%';
     });
 
-    /* ── NAV SCROLL ── */
+    /* ΓöÇΓöÇ NAV SCROLL ΓöÇΓöÇ */
     const nav = document.getElementById('navbar');
     window.addEventListener('scroll', () => {
       nav.classList.toggle('scrolled', window.scrollY > 50);
     });
 
-    /* ── INTERSECTION OBSERVER (fade in) ── */
+    /* ΓöÇΓöÇ INTERSECTION OBSERVER (fade in) ΓöÇΓöÇ */
     const fadeEls = document.querySelectorAll('.info-card,.exp-item,.project-card,.cp-card,.cp-graph-section,.skill-group,.edu-item,.achieve-card,.cert-card');
     const obs = new IntersectionObserver(entries => {
       entries.forEach(e => {
@@ -2454,7 +2296,7 @@
     }, { threshold: .15 });
     fadeEls.forEach(el => obs.observe(el));
 
-    /* ── HERO ANIMATIONS — deferred to after first paint ── */
+    /* ΓöÇΓöÇ HERO ANIMATIONS ΓÇö deferred to after first paint ΓöÇΓöÇ */
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         anime.timeline({ easing: 'easeOutExpo' })
@@ -2466,7 +2308,7 @@
       });
     });
 
-    /* ── CONTACT ANIM ── */
+    /* ΓöÇΓöÇ CONTACT ANIM ΓöÇΓöÇ */
     const contactObs = new IntersectionObserver(entries => {
       entries.forEach(e => {
         if (e.isIntersecting) {
@@ -2480,7 +2322,7 @@
     }, { threshold: .3 });
     contactObs.observe(document.querySelector('.contact-big'));
 
-    /* ── CP GRAPH TABS ── */
+    /* ΓöÇΓöÇ CP GRAPH TABS ΓöÇΓöÇ */
     document.querySelectorAll('.cp-graph-tab').forEach(tab => {
       tab.addEventListener('click', () => {
         document.querySelectorAll('.cp-graph-tab').forEach(t => t.classList.remove('active'));
@@ -2490,7 +2332,7 @@
       });
     });
 
-    /* ── CHART.JS THEME ── */
+    /* ΓöÇΓöÇ CHART.JS THEME ΓöÇΓöÇ */
     const chartDefaults = {
       responsive: true, maintainAspectRatio: false,
       plugins: {
@@ -2623,14 +2465,14 @@
 
     const API_BASE = import.meta.env.VITE_API_BASE || '';
 
-    /* ── FETCH CODEFORCES ── */
+    /* ΓöÇΓöÇ FETCH CODEFORCES ΓöÇΓöÇ */
     async function fetchCF() {
       try {
         const r = await fetch(`${API_BASE}/api/codeforces`);
         const d = await r.json();
         if (!d.ok) throw new Error(d.error || 'CF API error');
         const rows = d.data;
-        const labels = rows.map(r => r.contestName.length > 20 ? r.contestName.slice(0, 20) + '…' : r.contestName);
+        const labels = rows.map(r => r.contestName.length > 20 ? r.contestName.slice(0, 20) + 'ΓÇª' : r.contestName);
         const data = rows.map(r => r.newRating);
         const current = rows.length ? rows[rows.length - 1].newRating : null;
         const maxRating = data.length ? Math.max(...data) : null;
@@ -2656,14 +2498,14 @@
     }
     fetchCF();
 
-    /* ── FETCH CODECHEF (server) ── */
+    /* ΓöÇΓöÇ FETCH CODECHEF (server) ΓöÇΓöÇ */
     async function fetchCC() {
       try {
         const r = await fetch(`${API_BASE}/api/codechef`);
         const d = await r.json();
         if (!d.ok) throw new Error(d.error || 'CC API error');
         const rows = d.data;
-        const labels = rows.map(r => r.contestName ? r.contestName.slice(0, 20) : '—');
+        const labels = rows.map(r => r.contestName ? r.contestName.slice(0, 20) : 'ΓÇö');
         const data = rows.map(r => {
           const rating = Number.parseInt(r.rating, 10);
           return Number.isFinite(rating) && rating > 0 ? rating : null;
@@ -2693,7 +2535,7 @@
     }
     fetchCC();
 
-    /* ── FETCH LEETCODE (server) ── */
+    /* ΓöÇΓöÇ FETCH LEETCODE (server) ΓöÇΓöÇ */
     async function fetchLC() {
       try {
         const r = await fetch(`${API_BASE}/api/leetcode`);
@@ -2701,7 +2543,7 @@
         if (!d.ok) throw new Error(d.error || 'LC API error');
         const rows = Array.isArray(d.data) ? d.data : [];
         if (!rows.length) throw new Error('No contest history');
-        const labels = rows.map(r => r.contest?.title?.slice(0, 15) || '—');
+        const labels = rows.map(r => r.contest?.title?.slice(0, 15) || 'ΓÇö');
         const data = rows.map(r => Number.isFinite(r.rating) ? r.rating : null);
         const numeric = data.filter(v => typeof v === 'number');
         if (!numeric.length) throw new Error('No ratings');
@@ -2717,7 +2559,7 @@
     }
     fetchLC();
 
-    /* ── FETCH ATCODER ── */
+    /* ΓöÇΓöÇ FETCH ATCODER ΓöÇΓöÇ */
     async function fetchAT() {
       try {
         const r = await fetch(`${API_BASE}/api/atcoder`);
@@ -2725,7 +2567,7 @@
         if (!d.ok) throw new Error(d.error || 'AT API error');
         const rows = d.data;
         if (!Array.isArray(rows)) throw new Error();
-        const labels = rows.map(r => r.ContestName?.slice(0, 15) || '—');
+        const labels = rows.map(r => r.ContestName?.slice(0, 15) || 'ΓÇö');
         const data = rows.map(r => Number.isFinite(r.NewRating) ? r.NewRating : null);
         const numeric = data.filter(v => typeof v === 'number');
         const cur = numeric.length ? numeric[numeric.length - 1] : null;
