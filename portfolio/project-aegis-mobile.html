@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aegis Mobile — Swayam Nakte</title>
+  <meta name="description" content="Aegis mobile companion: a Flutter app with full feature parity with the web client.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#000;--surface:rgba(255,255,255,.035);--border:rgba(255,255,255,.08);--text:#f0eeea;--muted:rgba(240,238,234,.45);--dim:rgba(240,238,234,.22);--accent:#34d399;--display:'Bricolage Grotesque',sans-serif;--body:'Instrument Sans',sans-serif;--mono:'JetBrains Mono',monospace;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}body{background:var(--bg);color:var(--text);font-family:var(--body);line-height:1.6;}a{color:inherit;}img{display:block;max-width:100%;}
+    .wrap{max-width:1080px;margin:0 auto;padding:0 32px;}
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;gap:20px;padding:18px 32px;border-bottom:1px solid var(--border);background:rgba(0,0,0,.8);backdrop-filter:blur(20px);}
+    .nav-back{display:inline-flex;align-items:center;gap:7px;font-size:.85rem;font-weight:600;color:var(--muted);text-decoration:none;transition:color .2s;}.nav-back:hover{color:var(--text);}.nav-back svg{transition:transform .2s;}.nav-back:hover svg{transform:translateX(-3px);}
+    .nav-sep{color:var(--dim);}.nav-proj-name{font-size:.85rem;color:var(--text);font-weight:600;}
+    .proj-hero{padding:140px 0 80px;border-bottom:1px solid var(--border);}
+    .proj-meta{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+    .proj-num{font-family:var(--mono);font-size:.72rem;color:var(--dim);letter-spacing:.12em;}
+    .proj-category{font-size:.78rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);}
+    .proj-hero h1{font-family:var(--display);font-size:clamp(2.2rem,5vw,3.8rem);font-weight:800;letter-spacing:-.035em;line-height:1.05;margin-bottom:20px;}
+    .proj-hero h1 em{font-style:normal;color:var(--accent);}
+    .proj-tagline{font-size:1.1rem;color:var(--muted);max-width:60ch;line-height:1.75;margin-bottom:32px;}
+    .proj-links{display:flex;gap:12px;flex-wrap:wrap;}
+    .btn{display:inline-flex;align-items:center;gap:7px;padding:10px 22px;border-radius:8px;font-size:.9rem;font-weight:600;text-decoration:none;transition:all .2s;}
+    .btn-primary{background:var(--accent);color:#000;}.btn-primary:hover{opacity:.9;}
+    .btn-ghost{border:1px solid var(--border);color:var(--muted);background:var(--surface);}.btn-ghost:hover{color:var(--text);border-color:rgba(255,255,255,.2);}
+    /* phone mockup */
+    .phone-section{padding:60px 0;border-bottom:1px solid var(--border);display:flex;justify-content:center;}
+    .phone-frame{width:240px;border-radius:36px;overflow:hidden;border:2px solid rgba(255,255,255,.15);box-shadow:0 40px 100px rgba(0,0,0,.9),0 0 60px rgba(52,211,153,.12);}
+    .phone-notch{background:#111;padding:10px 20px;display:flex;justify-content:space-between;align-items:center;}
+    .phone-notch span{font-size:10px;color:rgba(255,255,255,.55);font-family:var(--mono);}
+    .phone-frame img{width:100%;aspect-ratio:9/19;object-fit:cover;object-position:top;}
+    .proj-content{padding:80px 0;}
+    .content-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
+    .section-label{font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-bottom:16px;}
+    .section-title{font-family:var(--display);font-size:1.6rem;font-weight:800;letter-spacing:-.025em;margin-bottom:16px;}
+    .section-body p{color:var(--muted);line-height:1.8;margin-bottom:14px;}
+    .feat-list{list-style:none;display:flex;flex-direction:column;gap:12px;}
+    .feat-list li{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:10px;border:1px solid var(--border);background:var(--surface);}
+    .feat-icon{color:var(--accent);flex-shrink:0;margin-top:1px;}
+    .feat-text{font-size:.92rem;color:var(--muted);line-height:1.6;}
+    .tech-section{padding:60px 0;border-top:1px solid var(--border);}
+    .tech-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;}
+    .tech-pill{padding:6px 16px;border-radius:999px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);font-family:var(--mono);font-size:.8rem;color:var(--muted);}
+    .placeholder-notice{margin:40px 0;padding:28px 32px;border-radius:12px;border:1px dashed rgba(255,255,255,.15);background:rgba(255,255,255,.02);text-align:center;}
+    .placeholder-notice p{color:var(--muted);font-size:.9rem;}.placeholder-notice strong{color:var(--text);}
+    .proj-footer{padding:40px 0;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+    @media(max-width:760px){.content-grid{grid-template-columns:1fr;gap:48px;}.proj-footer{flex-direction:column;}}
+    @media(max-width:560px){nav{padding:16px 20px;}.wrap{padding:0 20px;}.proj-hero{padding:110px 0 60px;}}
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="./index.html#projects" class="nav-back">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      All projects
+    </a>
+    <span class="nav-sep">/</span>
+    <span class="nav-proj-name">Aegis Mobile</span>
+  </nav>
+  <div class="wrap">
+    <section class="proj-hero">
+      <div class="proj-meta">
+        <span class="proj-num">03 / 05</span>
+        <span class="proj-category">Android App</span>
+      </div>
+      <h1>Aegis: <em>mobile</em> companion</h1>
+      <p class="proj-tagline">Flutter app with full feature parity with the web client. Clean architecture with Riverpod state management and a UI tuned for touch interaction.</p>
+      <div class="proj-links">
+        <a href="https://github.com/swayamn72/Aegis3.0" target="_blank" rel="noopener" class="btn btn-primary">View Source</a>
+      </div>
+    </section>
+    <div class="phone-section">
+      <div class="phone-frame">
+        <div class="phone-notch"><span>9:41</span><span>▌▌ WiFi</span></div>
+        <img src="./src/assets/aegismobile.png" alt="Aegis mobile app">
+      </div>
+    </div>
+    <section class="proj-content">
+      <div class="content-grid">
+        <div class="section-body">
+          <p class="section-label">Overview</p>
+          <h2 class="section-title">Native mobile experience</h2>
+          <div class="placeholder-notice"><p><strong>Content coming soon.</strong> Add your detailed project description here.</p></div>
+        </div>
+        <div>
+          <p class="section-label">Key highlights</p>
+          <ul class="feat-list">
+            <li><span class="feat-icon">✦</span><span class="feat-text">Riverpod state management with clean architecture</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text">Real-time chat shared with the web client via Socket.io</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text">Responsive across all Android screen sizes</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <section class="tech-section">
+      <p class="section-label">Tech Stack</p>
+      <div class="tech-grid">
+        <span class="tech-pill">Flutter</span><span class="tech-pill">Dart</span>
+        <span class="tech-pill">Riverpod</span><span class="tech-pill">Socket.io</span>
+        <span class="tech-pill">REST APIs</span>
+      </div>
+    </section>
+    <footer class="proj-footer">
+      <a href="./project-aegis.html" class="btn btn-ghost">← Prev: Aegis Web</a>
+      <a href="./project-codemortem.html" class="btn btn-ghost">Next: CodeMortem →</a>
+    </footer>
+  </div>
+</body>
+</html>
