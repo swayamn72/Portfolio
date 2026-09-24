@@ -194,7 +194,7 @@
     <!-- HERO -->
     <section class="proj-hero">
       <div class="proj-meta">
-        <span class="proj-num">01 / 05</span>
+        <span class="proj-num">02 / 06</span>
         <span class="proj-category">Systems Programming</span>
       </div>
       <h1>Aquila: <em>quantitative</em> backtesting framework</h1>
@@ -220,25 +220,61 @@
 
     <!-- CONTENT -->
     <section class="proj-content">
-      <div class="content-grid">
+      
+      <!-- Grid 1: Motivation & Strategies -->
+      <div class="content-grid" style="margin-bottom: 80px;">
         <div class="section-body">
-          <p class="section-label">Overview</p>
-          <h2 class="section-title">Built for hardware-level performance</h2>
-          <!-- Add your detailed description here -->
-          <div class="placeholder-notice">
-            <p><strong>Content coming soon.</strong> Add your detailed project description here.</p>
-          </div>
+          <p class="section-label">Motivation</p>
+          <h2 class="section-title">Exploring Low-Latency Systems</h2>
+          <p>I built Aquila because I wanted to understand exactly how high-frequency, low-latency systems work under the hood. I wanted to see what it takes to strip away overhead, avoid the kernel, and push single-threaded C++ performance to the absolute hardware limit.</p>
+          <p>The result is a highly optimized pipeline designed to minimize CPU cache misses, kernel involvement, and memory allocation overhead during market data processing.</p>
         </div>
         <div>
-          <p class="section-label">Key highlights</p>
+          <p class="section-label">Built-in Strategies</p>
           <ul class="feat-list">
-            <li><span class="feat-icon">✦</span><span class="feat-text">Lock-free SPSC event bus with cache-line isolation at 1.15 ns/op</span></li>
-            <li><span class="feat-icon">✦</span><span class="feat-text">Custom std::pmr arena allocator cutting event allocation to 14 ns</span></li>
-            <li><span class="feat-icon">✦</span><span class="feat-text">CRTP instead of virtual dispatch, SoA layout, 2 MB huge pages</span></li>
-            <li><span class="feat-icon">✦</span><span class="feat-text">Hardware TSC profiling: p50 of 40 ns end-to-end tick dispatch</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>SMA Crossover:</strong> Uses a sliding window with running sums to compute the Simple Moving Average without O(N) recalculations.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Bollinger Bands:</strong> Implements Welford's online algorithm for numerically stable, O(1) rolling standard deviation variance updates.</span></li>
           </ul>
         </div>
       </div>
+
+      <!-- Grid 2: Core Architecture -->
+      <div class="content-grid" style="margin-bottom: 80px;">
+        <div class="section-body">
+          <p class="section-label">Core Architecture</p>
+          <h2 class="section-title">HFT-Grade System Primitives</h2>
+          <p>To achieve nanosecond precision, the engine completely bypasses standard heap allocations during the hot path by utilizing a custom <code>std::pmr::unsynchronized_pool_resource</code> (EventArena).</p>
+          <p>Instead of virtual functions which require vtable lookups and prevent inlining, the engine leverages <strong>Static Dispatch (CRTP)</strong> for strategy classes. Market data is explicitly packed using a <strong>Structure of Arrays (SoA)</strong> layout rather than AoS, perfectly optimizing it for SIMD vectorization (AVX2) and eliminating CPU cache misses.</p>
+        </div>
+        <div>
+          <p class="section-label">Performance Optimizations</p>
+          <ul class="feat-list">
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Lock-Free Event Bus:</strong> SPSC ring buffer with acquire/release fences to eliminate mutexes and false sharing.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Zero-Copy File I/O:</strong> Uses OS-level memory mapping (mmap) to parse CSV data directly from the OS page cache.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Hardware Timing:</strong> Utilizes <code>__rdtsc</code> with <code>_mm_lfence</code> for micro-benchmarking latency at the 3-nanosecond level.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>CPU Core Pinning:</strong> Prevents OS thread migration and L1/L2 cache invalidation.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Grid 3: Simulation & Dashboard -->
+      <div class="content-grid">
+        <div class="section-body">
+          <p class="section-label">Analytics & Simulation</p>
+          <h2 class="section-title">Realistic Execution & Reporting</h2>
+          <p>The execution simulator actively models real-world constraints such as slippage (in basis points) and commission rates. It computes advanced performance metrics including Sharpe Ratio, Sortino Ratio, Max Drawdown (MDD), and Profit Factor.</p>
+          <p>When a backtest finishes, Aquila instantly exports a <code>report.json</code>. This file can simply be dragged and dropped into the dedicated front-end application to visualize the backtest performance.</p>
+        </div>
+        <div>
+          <p class="section-label">The Dashboard</p>
+          <ul class="feat-list">
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Framework-less UI:</strong> Built with raw HTML/CSS/JS using a premium dark-mode aesthetic and glassmorphism.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Custom Canvas Rendering:</strong> An HTML5 Canvas plots the equity curve with buy/sell points directly overlaid.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Latency Profiling:</strong> Visualizes Time Stamp Counter (TSC) latency data (mean, p50, p95, p99).</span></li>
+          </ul>
+        </div>
+      </div>
+
     </section>
 
     <!-- TECH STACK -->
@@ -256,14 +292,9 @@
     </section>
 
     <!-- FOOTER NAV -->
-    <footer class="proj-footer">
-      <a href="./index.html#projects" class="btn btn-ghost">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-        Back to projects
-      </a>
-      <div class="proj-footer-nav">
-        <a href="./project-aegis.html" class="btn btn-ghost">Next: Aegis →</a>
-      </div>
+        <footer class="proj-footer">
+      <a href="./project-runsphere.html" class="btn btn-ghost">← Prev: RunSphere</a>
+      <a href="./project-codemortem.html" class="btn btn-ghost">Next: CodeMortem →</a>
     </footer>
 
   </div>

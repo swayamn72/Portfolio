@@ -50,7 +50,7 @@
     .frame-dots span:nth-child(3){background:#28c840;}
     .frame-url{flex:1;background:rgba(255,255,255,.06);border-radius:5px;height:20px;display:flex;align-items:center;justify-content:center;}
     .frame-url span{font-size:9px;color:rgba(255,255,255,.3);}
-    .frame-body img{width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top;}
+    .frame-body img{width:100%;height:auto;display:block;}
     .proj-content{padding:80px 0;}
     .content-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
     .section-label{font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-bottom:16px;}
@@ -84,7 +84,7 @@
   <div class="wrap">
     <section class="proj-hero">
       <div class="proj-meta">
-        <span class="proj-num">02 / 05</span>
+        <span class="proj-num">05 / 06</span>
         <span class="proj-category">Web Application</span>
       </div>
       <h1>Aegis: <em>esports</em> management platform</h1>
@@ -103,33 +103,81 @@
       </div>
     </section>
     <section class="proj-content">
-      <div class="content-grid">
+      <!-- Grid 1: Web Client & Admin Dashboard -->
+      <div class="content-grid" style="margin-bottom: 80px;">
         <div class="section-body">
-          <p class="section-label">Overview</p>
-          <h2 class="section-title">Full-stack esports infrastructure</h2>
-          <div class="placeholder-notice"><p><strong>Content coming soon.</strong> Add your detailed project description here.</p></div>
+          <p class="section-label">Frontend Ecosystem</p>
+          <h2 class="section-title">Web Client & Admin Dashboard</h2>
+          <p>The Aegis platform features two distinct frontend portals built for high performance using <strong>React 19</strong> and <strong>Vite</strong>. The main Web Client provides a seamless interface for players and tournament organizers, while the decoupled Admin Dashboard is tailored for platform moderators to oversee massive tournament brackets and user reports.</p>
+          <p>Both applications utilize <strong>Tailwind CSS v4</strong> for utility-first styling and rely heavily on <strong>TanStack Query</strong> for robust API data fetching, caching, and state synchronization. Real-time integration is achieved via <code>socket.io-client</code>, reflecting live changes in chats, scores, and notifications without requiring page reloads.</p>
         </div>
         <div>
-          <p class="section-label">Key highlights</p>
+          <p class="section-label">Key Client Features</p>
           <ul class="feat-list">
-            <li><span class="feat-icon">✦</span><span class="feat-text">Real-time live chat over Socket.io across web and mobile</span></li>
-            <li><span class="feat-icon">✦</span><span class="feat-text">Tournament registration and bracket management</span></li>
-            <li><span class="feat-icon">✦</span><span class="feat-text">Scalable cloud deployment on AWS EC2 with reverse proxy</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Real-Time UI:</strong> WebSockets eliminate page reloads for live match state updates.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Seamless SSO:</strong> <code>@react-oauth/google</code> integration for instantaneous onboarding.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Admin Oversight:</strong> Dedicated dashboard to manage roles, support tickets, and resolve reports.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Grid 2: Backend Server & Domain Logic -->
+      <div class="content-grid" style="margin-bottom: 80px;">
+        <div class="section-body">
+          <p class="section-label">Core Architecture</p>
+          <h2 class="section-title">Robust Backend Infrastructure</h2>
+          <p>The core of Aegis is a RESTful API built on <strong>Node.js</strong>, <strong>Express.js</strong>, and <strong>MongoDB</strong> (Mongoose). It handles the full lifecycle of esports tournaments, team rosters, and real-time communication.</p>
+          <p>The live chat and match state systems are powered by <strong>Socket.IO</strong> integrated with a <strong>Redis adapter</strong>, allowing WebSockets to scale horizontally across multiple instances. Security is strictly enforced using JWT for stateless sessions, helmet for HTTP headers, and express-rate-limit.</p>
+        </div>
+        <div>
+          <p class="section-label">Core Domain Modules</p>
+          <ul class="feat-list">
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Match Management:</strong> Tracks live match states and calculates phase standings automatically.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>LFP/LFT Recruitment:</strong> A swipe-based discovery system matching players to organizations.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Fantasy Esports:</strong> Draft players, build rosters, and compete in fantasy leagues.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Grid 3: Automated Processing & Cloud Integrations -->
+      <div class="content-grid">
+        <div class="section-body">
+          <p class="section-label">Automation</p>
+          <h2 class="section-title">Automated Score Processing via OCR</h2>
+          <p>To eliminate the most tedious part of esports management—manual data entry—Aegis includes a specialized microservice utilizing the <strong>AWS Rekognition SDK</strong> and <strong>Tesseract.js</strong>.</p>
+          <p>Organizers simply upload screenshots of end-of-match scoreboards. The OCR engine scans the images, extracts team names, placements, and eliminations, and automatically updates the tournament leaderboards.</p>
+        </div>
+        <div>
+          <p class="section-label">Cloud Integrations</p>
+          <ul class="feat-list">
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>AWS Rekognition:</strong> Drives the optical character recognition for scoreboards.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Cloudinary:</strong> Handles scalable image and media asset storage.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Firebase Admin SDK:</strong> Dispatches real-time push notifications.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>node-cron:</strong> Executes background tasks like bracket updates and matchmaking.</span></li>
           </ul>
         </div>
       </div>
     </section>
+
     <section class="tech-section">
       <p class="section-label">Tech Stack</p>
       <div class="tech-grid">
-        <span class="tech-pill">React</span><span class="tech-pill">Node.js</span>
-        <span class="tech-pill">Express</span><span class="tech-pill">MongoDB</span>
-        <span class="tech-pill">Socket.io</span><span class="tech-pill">AWS</span>
-        <span class="tech-pill">JWT</span>
+        <span class="tech-pill">React 19</span>
+        <span class="tech-pill">Vite</span>
+        <span class="tech-pill">Tailwind CSS v4</span>
+        <span class="tech-pill">TanStack Query</span>
+        <span class="tech-pill">Node.js</span>
+        <span class="tech-pill">Express.js</span>
+        <span class="tech-pill">MongoDB</span>
+        <span class="tech-pill">Redis</span>
+        <span class="tech-pill">Socket.IO</span>
+        <span class="tech-pill">AWS Rekognition</span>
+        <span class="tech-pill">Firebase</span>
+        <span class="tech-pill">Cloudinary</span>
       </div>
     </section>
-    <footer class="proj-footer">
-      <a href="./project-aquila.html" class="btn btn-ghost">← Prev: Aquila</a>
+        <footer class="proj-footer">
+      <a href="./project-vertexswarm.html" class="btn btn-ghost">← Prev: Vertex-Swarm</a>
       <a href="./project-aegis-mobile.html" class="btn btn-ghost">Next: Aegis Mobile →</a>
     </footer>
   </div>

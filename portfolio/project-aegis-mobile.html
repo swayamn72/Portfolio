@@ -64,7 +64,7 @@
   <div class="wrap">
     <section class="proj-hero">
       <div class="proj-meta">
-        <span class="proj-num">03 / 05</span>
+        <span class="proj-num">06 / 06</span>
         <span class="proj-category">Android App</span>
       </div>
       <h1>Aegis: <em>mobile</em> companion</h1>
@@ -75,38 +75,80 @@
     </section>
     <div class="phone-section">
       <div class="phone-frame">
-        <div class="phone-notch"><span>9:41</span><span>▌▌ WiFi</span></div>
         <img src="./src/assets/aegismobile.png" alt="Aegis mobile app">
       </div>
     </div>
     <section class="proj-content">
-      <div class="content-grid">
+      <!-- Grid 1: Overview & Architecture -->
+      <div class="content-grid" style="margin-bottom: 80px;">
         <div class="section-body">
-          <p class="section-label">Overview</p>
-          <h2 class="section-title">Native mobile experience</h2>
-          <div class="placeholder-notice"><p><strong>Content coming soon.</strong> Add your detailed project description here.</p></div>
+          <p class="section-label">Architecture</p>
+          <h2 class="section-title">A Native Mobile Experience</h2>
+          <p>Aegis Mobile is built using the <strong>Flutter (Dart)</strong> framework to serve as the counterpart to the Aegis React web app. It is tailored specifically for esports team and player management, offering full feature parity on the go.</p>
+          <p>The app relies on a clean architectural approach, strictly separating the UI screens, Riverpod state management, API service layers, and models. Real-time data is synced using <code>socket_io_client</code>, while persistent data is cached locally via <strong>Hive</strong> NoSQL storage and secured with <code>flutter_secure_storage</code>.</p>
         </div>
         <div>
-          <p class="section-label">Key highlights</p>
+          <p class="section-label">Core Implementations</p>
           <ul class="feat-list">
-            <li><span class="feat-icon">✦</span><span class="feat-text">Riverpod state management with clean architecture</span></li>
-            <li><span class="feat-icon">✦</span><span class="feat-text">Real-time chat shared with the web client via Socket.io</span></li>
-            <li><span class="feat-icon">✦</span><span class="feat-text">Responsive across all Android screen sizes</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>State Management:</strong> Powered entirely by <code>flutter_riverpod</code> for reactive UI updates.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Networking:</strong> Fast and reliable API requests utilizing the <code>dio</code> and <code>http</code> packages.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>SSO Authentication:</strong> Seamless OAuth integration via <code>google_sign_in</code>.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Grid 2: Team Management & UI -->
+      <div class="content-grid" style="margin-bottom: 80px;">
+        <div class="section-body">
+          <p class="section-label">Features</p>
+          <h2 class="section-title">Esports Team Management</h2>
+          <p>The app heavily focuses on comprehensive Team Management. Users can view detailed team profiles, check rosters, and manage private team permissions. Team captains have access to native modal bottom sheets to edit logos, send invites, and manage members.</p>
+          <p>The "My Teams" dashboard aggregates current teams and pending invitations, while a paginated search system allows users to seamlessly discover new players and organizations.</p>
+        </div>
+        <div>
+          <p class="section-label">Media & Notifications</p>
+          <ul class="feat-list">
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Native Media Pickers:</strong> Upload team logos via native gallery pickers (<code>image_cropper</code>).</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Image Caching:</strong> All assets are optimized and cached via <code>cached_network_image</code>.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Push Notifications:</strong> Full Firebase Cloud Messaging (FCM) integration for live alerts.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Grid 3: Design System & Roadmap -->
+      <div class="content-grid">
+        <div class="section-body">
+          <p class="section-label">Aesthetics</p>
+          <h2 class="section-title">Premium Dark Mode Design</h2>
+          <p>The UI is designed with a premium esports aesthetic. The primary theme uses a very dark grey background (#09090B) with dark zinc cards, elevated by vibrant accents of cyan, purple, and blue.</p>
+          <p>Modern glassmorphic cards, gradient accents, and icon-based navigation provide a sleek, gaming-focused user experience.</p>
+        </div>
+        <div>
+          <p class="section-label">Future Roadmap</p>
+          <ul class="feat-list">
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Tournament Integration:</strong> Match history and tournament results pending backend readiness.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Social Expansion:</strong> "Follow Team" and "Share Team" functionality.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>UX Refinements:</strong> Pull-to-refresh on dashboards and backend-driven achievement syncing.</span></li>
           </ul>
         </div>
       </div>
     </section>
+
     <section class="tech-section">
       <p class="section-label">Tech Stack</p>
       <div class="tech-grid">
-        <span class="tech-pill">Flutter</span><span class="tech-pill">Dart</span>
-        <span class="tech-pill">Riverpod</span><span class="tech-pill">Socket.io</span>
-        <span class="tech-pill">REST APIs</span>
+        <span class="tech-pill">Flutter</span>
+        <span class="tech-pill">Dart</span>
+        <span class="tech-pill">Riverpod</span>
+        <span class="tech-pill">Dio</span>
+        <span class="tech-pill">Socket.io</span>
+        <span class="tech-pill">Hive NoSQL</span>
+        <span class="tech-pill">Firebase Cloud Messaging</span>
       </div>
     </section>
-    <footer class="proj-footer">
+        <footer class="proj-footer">
       <a href="./project-aegis.html" class="btn btn-ghost">← Prev: Aegis Web</a>
-      <a href="./project-codemortem.html" class="btn btn-ghost">Next: CodeMortem →</a>
+      <a href="./index.html#projects" class="btn btn-ghost">All Projects →</a>
     </footer>
   </div>
 </body>

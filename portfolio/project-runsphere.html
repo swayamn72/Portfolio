@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RunSphere — Swayam Nakte</title>
+  <meta name="description" content="RunSphere: A privacy-first outdoor running app that gamifies movement through adaptive quests and H3 territory-claim seasons.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0B1A14;--surface:rgba(255,255,255,.035);--border:rgba(255,255,255,.08);--text:#f0eeea;--muted:rgba(240,238,234,.45);--dim:rgba(240,238,234,.22);--accent:#3DDC7E;--display:'Bricolage Grotesque',sans-serif;--body:'Instrument Sans',sans-serif;--mono:'JetBrains Mono',monospace;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}body{background:var(--bg);color:var(--text);font-family:var(--body);line-height:1.6;}a{color:inherit;}img{display:block;max-width:100%;}
+    .wrap{max-width:1080px;margin:0 auto;padding:0 32px;}
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;gap:20px;padding:18px 32px;border-bottom:1px solid var(--border);background:rgba(11,26,20,.8);backdrop-filter:blur(20px);}
+    .nav-back{display:inline-flex;align-items:center;gap:7px;font-size:.85rem;font-weight:600;color:var(--muted);text-decoration:none;transition:color .2s;}.nav-back:hover{color:var(--text);}.nav-back svg{transition:transform .2s;}.nav-back:hover svg{transform:translateX(-3px);}
+    .nav-sep{color:var(--dim);}.nav-proj-name{font-size:.85rem;color:var(--text);font-weight:600;}
+    .proj-hero{padding:140px 0 80px;border-bottom:1px solid var(--border);}
+    .proj-meta{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+    .proj-num{font-family:var(--mono);font-size:.72rem;color:var(--dim);letter-spacing:.12em;}
+    .proj-category{font-size:.78rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);}
+    .proj-hero h1{font-family:var(--display);font-size:clamp(2.2rem,5vw,3.8rem);font-weight:800;letter-spacing:-.035em;line-height:1.05;margin-bottom:20px;}
+    .proj-hero h1 em{font-style:normal;color:var(--accent);}
+    .proj-tagline{font-size:1.1rem;color:var(--muted);max-width:60ch;line-height:1.75;margin-bottom:32px;}
+    .proj-links{display:flex;gap:12px;flex-wrap:wrap;}
+    .btn{display:inline-flex;align-items:center;gap:7px;padding:10px 22px;border-radius:8px;font-size:.9rem;font-weight:600;text-decoration:none;transition:all .2s;}
+    .btn-primary{background:var(--accent);color:#0B1A14;}.btn-primary:hover{opacity:.9;}
+    .btn-ghost{border:1px solid var(--border);color:var(--muted);background:var(--surface);}.btn-ghost:hover{color:var(--text);border-color:rgba(255,255,255,.2);}
+    /* phone mockup */
+    .phone-section{padding:60px 0;border-bottom:1px solid var(--border);display:flex;justify-content:center;gap:40px;flex-wrap:wrap;}
+    .phone-frame{width:240px;border-radius:36px;overflow:hidden;border:2px solid rgba(255,255,255,.15);box-shadow:0 40px 100px rgba(0,0,0,.9),0 0 60px rgba(61,220,126,.12);}
+    .phone-notch{background:#111;padding:10px 20px;display:flex;justify-content:space-between;align-items:center;}
+    .phone-notch span{font-size:10px;color:rgba(255,255,255,.55);font-family:var(--mono);}
+    .phone-frame img{width:100%;aspect-ratio:9/19.5;object-fit:cover;object-position:top;}
+    .proj-content{padding:80px 0;}
+    .content-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
+    .section-label{font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-bottom:16px;}
+    .section-title{font-family:var(--display);font-size:1.6rem;font-weight:800;letter-spacing:-.025em;margin-bottom:16px;}
+    .section-body p{color:var(--muted);line-height:1.8;margin-bottom:14px;}
+    .feat-list{list-style:none;display:flex;flex-direction:column;gap:12px;}
+    .feat-list li{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:10px;border:1px solid var(--border);background:var(--surface);}
+    .feat-icon{color:var(--accent);flex-shrink:0;margin-top:1px;}
+    .feat-text{font-size:.92rem;color:var(--muted);line-height:1.6;}
+    .tech-section{padding:60px 0;border-top:1px solid var(--border);}
+    .tech-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;}
+    .tech-pill{padding:6px 16px;border-radius:999px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);font-family:var(--mono);font-size:.8rem;color:var(--muted);}
+    .proj-footer{padding:40px 0;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+    @media(max-width:760px){.content-grid{grid-template-columns:1fr;gap:48px;}.proj-footer{flex-direction:column;}}
+    @media(max-width:560px){nav{padding:16px 20px;}.wrap{padding:0 20px;}.proj-hero{padding:110px 0 60px;}}
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="./index.html#projects" class="nav-back">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      All projects
+    </a>
+    <span class="nav-sep">/</span>
+    <span class="nav-proj-name">RunSphere</span>
+  </nav>
+  <div class="wrap">
+    <section class="proj-hero">
+      <div class="proj-meta">
+        <span class="proj-num">01 / 06</span>
+        <span class="proj-category">Mobile Application</span>
+      </div>
+      <h1>RunSphere: <em>privacy-first</em> running</h1>
+      <p class="proj-tagline">An outdoor running app that gamifies movement through adaptive quests and H3 territory-claim seasons, entirely pace-neutral. Built as a pnpm/Turbo monorepo.</p>
+    </section>
+    <div class="phone-section">
+      <div class="phone-frame">
+        <img src="./src/assets/runsphere/img1.png" alt="RunSphere App">
+      </div>
+      <div class="phone-frame" style="margin-top: 20px;">
+        <img src="./src/assets/runsphere/img2.png" alt="RunSphere Map">
+      </div>
+      <div class="phone-frame">
+        <img src="./src/assets/runsphere/img3.png" alt="RunSphere Territories">
+      </div>
+    </div>
+    <section class="proj-content">
+      <!-- Grid 1: Philosophy & Scoring -->
+      <div class="content-grid" style="margin-bottom: 80px;">
+        <div class="section-body">
+          <p class="section-label">Philosophy</p>
+          <h2 class="section-title">Pace-Neutral Gamification</h2>
+          <p>RunSphere completely reimagines outdoor movement gamification by removing pace as a performance signal. The core philosophy: outdoor movement should feel exploratory, not competitive in a harmful way.</p>
+          <p>Instead of measuring who runs fastest, the app uses <strong>H3 hexagonal cell grids</strong> for territory-claim seasons, scoring runners based on their best contiguous 60 minutes per day. This ensures a level playing field, with newcomer divisions and winner concentration guardrails limiting top players' dominance.</p>
+        </div>
+        <div>
+          <p class="section-label">Key Features</p>
+          <ul class="feat-list">
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Adaptive Quests:</strong> Server-generated loops (1-10km) adapting to load, time of day, and completion history.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Territory Seasons (Turf):</strong> Optional 6-8 week seasons resetting weekly with immutable snapshots.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>No Pace Pressures:</strong> Route suggestions never adapt by demanding a faster pace.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Grid 2: Tech & Monorepo Architecture -->
+      <div class="content-grid" style="margin-bottom: 80px;">
+        <div class="section-body">
+          <p class="section-label">Architecture</p>
+          <h2 class="section-title">Turbo Monorepo Infrastructure</h2>
+          <p>The project is orchestrated using <strong>Turbo 2</strong> and <strong>pnpm</strong> across several packages. The mobile client leverages <strong>Expo (React Native)</strong> and <strong>MapLibre</strong> (OpenGL native variant on Android) for fluid, highly responsive map rendering.</p>
+          <p>The backend is powered by a blazing fast <strong>Fastify 5</strong> API server running on Node 22, backed by <strong>PostgreSQL 18 + PostGIS</strong> managed locally via Docker Compose. Data contracts are strictly typed using TypeBox across the monorepo.</p>
+        </div>
+        <div>
+          <p class="section-label">Under the Hood</p>
+          <ul class="feat-list">
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Activity Ingestion:</strong> Chunked idempotent uploads with offline queuing and GPS sampling.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Encrypted Storage:</strong> <code>expo-sqlite</code> with SQLCipher for local database caching.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Custom ORM:</strong> Independent <code>@runsphere/db</code> package handling PostGIS interactions.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Grid 3: Safety & Privacy -->
+      <div class="content-grid">
+        <div class="section-body">
+          <p class="section-label">Security</p>
+          <h2 class="section-title">Privacy-First Design</h2>
+          <p>Targeting adults (18+) in the Mumbai Metropolitan Region, privacy is an architectural guarantee. The server actively enforces a <strong>200 m privacy blur</strong> on all saved routes.</p>
+          <p>Safety contacts use delayed and coarse location sharing with auto-expiry. Raw coordinates are never exposed in analytics or logs—only derived counters are kept. Nominatim geocoding is strictly proxied server-side to prevent exposing client IPs.</p>
+        </div>
+        <div>
+          <p class="section-label">Privacy Measures</p>
+          <ul class="feat-list">
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>200m Privacy Blurs:</strong> Server-side route trimming masks exact start/end locations.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Coordinate Scrubbing:</strong> Crash reports and analytics contain absolutely no raw location data.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>GPS Quality Gates:</strong> Validates accuracy (≤50 m) and rejects spoofing (≤25 km/h limit).</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="tech-section">
+      <p class="section-label">Tech Stack</p>
+      <div class="tech-grid">
+        <span class="tech-pill">Expo</span>
+        <span class="tech-pill">React Native</span>
+        <span class="tech-pill">Fastify</span>
+        <span class="tech-pill">PostGIS</span>
+        <span class="tech-pill">MapLibre</span>
+        <span class="tech-pill">Turbo</span>
+        <span class="tech-pill">TypeBox</span>
+        <span class="tech-pill">Docker</span>
+      </div>
+    </section>
+    <footer class="proj-footer">
+      <a href="./index.html#projects" class="btn btn-ghost">← All Projects</a>
+      <a href="./project-aquila.html" class="btn btn-ghost">Next: Aquila →</a>
+    </footer>
+  </div>
+</body>
+</html>

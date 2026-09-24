@@ -32,7 +32,7 @@
     .frame-dots{display:flex;gap:5px;}.frame-dots span{width:10px;height:10px;border-radius:50%;}
     .frame-dots span:nth-child(1){background:#ff5f57;}.frame-dots span:nth-child(2){background:#febc2e;}.frame-dots span:nth-child(3){background:#28c840;}
     .frame-url{flex:1;background:rgba(255,255,255,.06);border-radius:5px;height:20px;display:flex;align-items:center;justify-content:center;}.frame-url span{font-size:9px;color:rgba(255,255,255,.3);}
-    .frame-body img{width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top;}
+    .frame-body img{width:100%;height:auto;display:block;}
     .proj-content{padding:80px 0;}.content-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
     .section-label{font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-bottom:16px;}
     .section-title{font-family:var(--display);font-size:1.6rem;font-weight:800;letter-spacing:-.025em;margin-bottom:16px;}
@@ -62,14 +62,16 @@
   <div class="wrap">
     <section class="proj-hero">
       <div class="proj-meta">
-        <span class="proj-num">05 / 05</span>
+        <span class="proj-num">04 / 06</span>
         <span class="proj-category">Fintech · AI</span>
       </div>
-      <h1>Vertex-Swarm: <em>fraud</em> intelligence</h1>
-      <p class="proj-tagline">Graph-native fraud detection that treats fraud as a network problem. Bridge-finder and density agents flag coordinated attacks with sub-20 ms latency during live POS transactions.</p>
+      <h1>Vertex-Swarm: <em>fraud detection</em> engine</h1>
+      <p class="proj-tagline">A real-time, agentic graph-intelligence engine designed to unmask organized dealer collusion and synthetic-identity fraud rings in two-wheeler financing.</p>
       <div class="proj-links">
         <a href="https://vertex-swarm-murex.vercel.app/console" target="_blank" rel="noopener" class="btn btn-primary">Live Demo</a>
         <a href="https://github.com/swayamn72/VertexSwarm" target="_blank" rel="noopener" class="btn btn-ghost">View Source</a>
+        <a href="https://drive.google.com/file/d/1qFCISuoj4wLkTiI3TEbRwxkkUhKVRjA7/view?usp=sharing" target="_blank" rel="noopener" class="btn btn-ghost">Solution Doc</a>
+        <a href="https://docs.google.com/presentation/d/1i16JMXoeZwOz9at-S49IdwloOF4-C1t0/edit?usp=sharing&ouid=111894342371219174163&rtpof=true&sd=true" target="_blank" rel="noopener" class="btn btn-ghost">Presentation PPT</a>
       </div>
     </section>
     <section class="proj-screenshot">
@@ -82,18 +84,56 @@
       </div>
     </section>
     <section class="proj-content">
-      <div class="content-grid">
+      <div class="content-grid" style="margin-bottom: 80px;">
         <div class="section-body">
-          <p class="section-label">Overview</p>
-          <h2 class="section-title">Graph-native fraud as a network problem</h2>
-          <div class="placeholder-notice"><p><strong>Content coming soon.</strong> Add your detailed project description here.</p></div>
+          <p class="section-label">The Challenge</p>
+          <h2 class="section-title">Why I built Vertex-Swarm</h2>
+          <p>This project was built as my proposed solution for the <strong>TVS Raider</strong> challenge. The goal was to solve a real-world case study by providing a framework and proof of concept to address complex synthetic-identity fraud rings in two-wheeler financing.</p>
+          <p>Traditional fraud detection checks individuals in isolation, completely missing rings of seemingly "clean" applicants who share underlying attributes (like a device, a guarantor, or a dealer). I built Vertex-Swarm to reframe fraud detection as a <strong>graph topology problem</strong>, analyzing relationships in under 20 milliseconds.</p>
         </div>
         <div>
-          <p class="section-label">Key highlights</p>
+          <p class="section-label">Core Mechanism</p>
           <ul class="feat-list">
-            <li><span class="feat-icon">✦</span><span class="feat-text">Bridge-finder and density agents flag shared-device bridges and unnatural cliques</span></li>
-            <li><span class="feat-icon">✦</span><span class="feat-text">Loop and burst agents catch guarantor cycles and velocity spikes</span></li>
-            <li><span class="feat-icon">✦</span><span class="feat-text">Fraud Ecosystem Score blocks coordinated attacks before disbursement</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Temporal Graph:</strong> Every incoming application is tokenized and added to a continuously updating graph.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Swarm Agents:</strong> A layer of lightweight autonomous agents crawl the graph to identify shapes characteristic of fraud rings.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Sub-20ms Latency:</strong> Designed for live Point-of-Sale (POS) transaction speeds.</span></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="content-grid" style="margin-bottom: 80px;">
+        <div class="section-body">
+          <p class="section-label">Agentic Intelligence</p>
+          <h2 class="section-title">The Swarm Agents</h2>
+          <p>Rather than relying on static rules, Vertex-Swarm deploys specific agents to hunt for distinct fraud topologies:</p>
+          <ul style="color: var(--muted); padding-left: 20px; line-height: 1.8;">
+            <li style="margin-bottom: 8px;"><strong>Bridge-Finder Agents:</strong> Look for single edges connecting otherwise-separate clusters (e.g., a shared device among disconnected groups).</li>
+            <li style="margin-bottom: 8px;"><strong>Density Agents:</strong> Measure local subgraph density. Unusually dense neighborhoods indicate high attribute-sharing.</li>
+            <li><strong>Loop Agents:</strong> Detect repeating guarantor or co-applicant cycles indicative of ring behavior.</li>
+          </ul>
+        </div>
+        <div>
+          <p class="section-label">Outcome</p>
+          <ul class="feat-list">
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Fraud Ecosystem Score (FES):</strong> Dense, cyclical clusters receive a higher FES to instantly block coordinated attacks.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>D3 Physics Engine:</strong> The frontend uses <code>react-force-graph-2d</code> to render complex entity relationships visually in real-time.</span></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="content-grid">
+        <div class="section-body">
+          <p class="section-label">Architecture</p>
+          <h2 class="section-title">Tech Stack & DevOps</h2>
+          <p>The backend is built in <strong>Python with FastAPI</strong> for high-performance API endpoints, utilizing <strong>NetworkX</strong> for in-memory graph operations and topological analysis. The frontend is a fast, modern UI powered by <strong>React, TypeScript, and Vite</strong>.</p>
+          <p>The entire environment is containerized using Docker. Cloud deployment is seamless: the backend is configured for zero-config deployment on <strong>Render</strong>, while the static React app is deployed on <strong>Vercel</strong>.</p>
+        </div>
+        <div>
+          <p class="section-label">Key Modules</p>
+          <ul class="feat-list">
+            <li><span class="feat-icon">✦</span><span class="feat-text"><code>graph_store.py</code>: Manages the temporal graph topology.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><code>agents/</code>: Contains the logic for the different swarm agents crawling the network.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><code>scoring.py</code>: Calculates the final Fraud Ecosystem Score.</span></li>
           </ul>
         </div>
       </div>
@@ -101,14 +141,21 @@
     <section class="tech-section">
       <p class="section-label">Tech Stack</p>
       <div class="tech-grid">
-        <span class="tech-pill">Graph DB</span><span class="tech-pill">Python</span>
-        <span class="tech-pill">Next.js</span><span class="tech-pill">Swarm AI</span>
+        <span class="tech-pill">Python</span>
         <span class="tech-pill">FastAPI</span>
+        <span class="tech-pill">NetworkX</span>
+        <span class="tech-pill">React</span>
+        <span class="tech-pill">TypeScript</span>
+        <span class="tech-pill">Vite</span>
+        <span class="tech-pill">D3 Physics Engine</span>
+        <span class="tech-pill">Docker</span>
+        <span class="tech-pill">Vercel</span>
+        <span class="tech-pill">Render</span>
       </div>
     </section>
-    <footer class="proj-footer">
+        <footer class="proj-footer">
       <a href="./project-codemortem.html" class="btn btn-ghost">← Prev: CodeMortem</a>
-      <a href="./index.html#projects" class="btn btn-ghost">Back to all projects</a>
+      <a href="./project-aegis.html" class="btn btn-ghost">Next: Aegis Web →</a>
     </footer>
   </div>
 </body>

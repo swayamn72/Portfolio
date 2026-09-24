@@ -278,7 +278,7 @@
       position: relative;
     }
     .vs-sticky {
-      position: fixed;
+      position: absolute;
       top: 0; left: 0; right: 0;
       height: 100vh;
       overflow: hidden;
@@ -286,13 +286,7 @@
       display: flex;
       flex-direction: column;
       z-index: 50;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity .3s;
-    }
-    .vs-sticky.visible {
-      opacity: 1;
-      pointer-events: auto;
+      /* Dynamic JS will switch this between absolute and fixed */
     }
     /* Ambient glow orbs */
     .vs-glow-r, .vs-glow-l {
@@ -757,11 +751,80 @@
     .edu-r { text-align: right; flex-shrink: 0; }
     .edu-r b { display: block; font-family: var(--display); font-size: 1.3rem; font-weight: 800; letter-spacing: -.02em; }
     .edu-r small { color: var(--dim); font-size: .78rem; }
-    .ach-list { display: flex; flex-direction: column; gap: 12px; }
-    .ach { padding: 22px 26px; display: flex; gap: 16px; align-items: center; }
-    .ach-ico { width: 46px; height: 46px; border-radius: 13px; display: grid; place-items: center; font-size: 1.4rem; background: var(--surface-2); flex-shrink: 0; }
-    .ach h4 { font-family: var(--display); font-size: 1.02rem; font-weight: 700; line-height: 1.25; }
-    .ach p { color: var(--muted); font-size: .86rem; margin-top: 2px; }
+    /* ── achievements slider ── */
+    .ach-slider-wrap {
+      position: relative; display: flex; align-items: center; gap: 20px;
+    }
+    .ach-nav-btn {
+      width: 50px; height: 50px; flex-shrink: 0; border-radius: 50%;
+      border: 1px solid var(--border); background: var(--surface); color: var(--text);
+      font-size: 1.5rem; display: grid; place-items: center; cursor: pointer;
+      transition: all 0.2s; z-index: 10;
+    }
+    .ach-nav-btn:hover { background: var(--surface-2); border-color: var(--border-hi); }
+    .ach-nav-btn:active { transform: scale(0.94); }
+    
+    .ach-slider {
+      flex: 1; display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
+      scrollbar-width: none; scroll-behavior: smooth; border-radius: 24px;
+      border: 1px solid var(--border); background: var(--surface);
+    }
+    .ach-slider::-webkit-scrollbar { display: none; }
+    
+    .ach-pane {
+      scroll-snap-align: center; flex: 0 0 100%; display: grid; grid-template-columns: 1fr 1fr;
+    }
+    .ach-pane-text {
+      padding: 48px; display: flex; flex-direction: column; justify-content: center;
+      border-right: 1px solid var(--border);
+    }
+    .ach-pane-text .ach-tag {
+      font-size: .75rem; font-weight: 600; letter-spacing: .16em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 16px;
+    }
+    .ach-pane-text h3 {
+      font-family: var(--display); font-size: 2rem; font-weight: 800;
+      letter-spacing: -.03em; margin-bottom: 20px; line-height: 1.1;
+    }
+    .ach-pane-text p { color: var(--muted); font-size: 1rem; line-height: 1.7; margin-bottom: 32px; }
+    .ach-pane-text .btn { align-self: flex-start; }
+    
+    .ach-pane-visual {
+      padding: 32px; background: #09090b; display: flex; flex-direction: column;
+    }
+    .ach-collage {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; height: 100%;
+    }
+    .ach-collage img {
+      width: 100%; height: 100%; object-fit: cover; border-radius: 12px;
+      cursor: zoom-in; transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .ach-collage img:hover { transform: scale(1.03); box-shadow: 0 8px 24px rgba(0,0,0,0.6); }
+    .ach-collage img:first-child { grid-column: 1 / -1; aspect-ratio: 16/9; }
+
+    /* Modal */
+    .img-modal {
+      margin: auto; border: 0; background: transparent; padding: 0;
+      max-width: 90vw; max-height: 90vh;
+    }
+    .img-modal::backdrop { background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); }
+    .img-modal-content { position: relative; }
+    .img-modal-content img { max-width: 90vw; max-height: 90vh; border-radius: 12px; display: block; }
+    .img-modal-close {
+      position: absolute; top: -16px; right: -16px; width: 36px; height: 36px;
+      border-radius: 50%; background: var(--surface); color: var(--text);
+      border: 1px solid var(--border-hi); cursor: pointer; display: grid;
+      place-items: center; font-size: 1.2rem; transition: background 0.2s;
+    }
+    .img-modal-close:hover { background: var(--surface-2); }
+    
+    @media (max-width: 900px) {
+      .ach-slider-wrap { flex-direction: column; }
+      .ach-nav-btn { display: none; }
+      .ach-pane { grid-template-columns: 1fr; }
+      .ach-pane-text { border-right: none; border-bottom: 1px solid var(--border); padding: 32px; }
+      .ach-pane-visual { padding: 24px; }
+    }
 
     /* ── certifications ── */
     .certs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
@@ -867,7 +930,7 @@
         <div>
           <div class="status rise d1"><b></b>Open to internships and collaborations</div>
           <h1 class="hero-name rise d2">Swayam<br>Nakte</h1>
-          <p class="hero-line rise d3">I build <span id="rot">full-stack apps</span></p>
+          <p class="hero-line rise d3">I <span id="rot">build full-stack apps</span></p>
           <p class="hero-desc rise d4">
             Computer Engineering student at <strong>K.J. Somaiya School of Engineering</strong>, Mumbai. I ship
             production-grade web and mobile apps, write systems code in C++, Go, and Python, and compete on
@@ -984,12 +1047,32 @@
             <div class="vs-info-panel">
               <div class="vs-info-wrap" style="position:relative; height:420px;">
 
-                <!-- Slot 0: Aquila -->
+                                <!-- Slot 0: RunSphere -->
                 <div class="vs-proj-slot active" data-slot="0">
+                  <div class="vs-title-row">
+                    <div class="vs-dash" style="background:#3DDC7E"></div>
+                    <span class="vs-proj-name">RunSphere</span>
+                    <span class="vs-proj-counter">01 / 06</span>
+                  </div>
+                  <p class="vs-category-label" style="color:#3DDC7E">Mobile Application</p>
+                  <p class="vs-proj-desc">A privacy-first outdoor running app that gamifies movement through adaptive quests and H3 territory-claim seasons, entirely pace-neutral.</p>
+                  <div class="vs-features">
+                    <div class="vs-feat"><svg class="vs-feat-spark" width="12" height="12" viewBox="0 0 24 24" fill="#3DDC7E"><path d="M12 2L13.5 9L20 10.5L13.5 12L12 19L10.5 12L4 10.5L10.5 9L12 2Z"/></svg><span>Adaptive MMR POI quest generation</span></div>
+                    <div class="vs-feat"><svg class="vs-feat-spark" width="12" height="12" viewBox="0 0 24 24" fill="#3DDC7E"><path d="M12 2L13.5 9L20 10.5L13.5 12L12 19L10.5 12L4 10.5L10.5 9L12 2Z"/></svg><span>Pace-neutral H3 territory scoring</span></div>
+                    <div class="vs-feat"><svg class="vs-feat-spark" width="12" height="12" viewBox="0 0 24 24" fill="#3DDC7E"><path d="M12 2L13.5 9L20 10.5L13.5 12L12 19L10.5 12L4 10.5L10.5 9L12 2Z"/></svg><span>Server-side 200m privacy blurring</span></div>
+                  </div>
+                  <div class="vs-pills">
+                    <span class="vs-pill">React Native</span><span class="vs-pill">Fastify</span><span class="vs-pill">PostGIS</span><span class="vs-pill">H3</span>
+                  </div>
+                  <a class="vs-case-link" href="./project-runsphere.html" style="color:#3DDC7E">View detailed project info <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></a>
+                </div>
+
+                <!-- Slot 1: Aquila -->
+                <div class="vs-proj-slot" data-slot="1">
                   <div class="vs-title-row">
                     <div class="vs-dash" style="background:#7c5cff"></div>
                     <span class="vs-proj-name">Aquila</span>
-                    <span class="vs-proj-counter">01 / 05</span>
+                    <span class="vs-proj-counter">01 / 06</span>
                   </div>
                   <p class="vs-category-label" style="color:#7c5cff">Systems Programming</p>
                   <p class="vs-proj-desc">An event-driven trading simulator that replays historical market data with nanosecond precision, removing OOP overhead to push single-thread performance to the hardware limit.</p>
@@ -1004,12 +1087,12 @@
                   <a class="vs-case-link" href="./project-aquila.html" style="color:#7c5cff">View detailed project info <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></a>
                 </div>
 
-                <!-- Slot 1: Aegis Web -->
-                <div class="vs-proj-slot" data-slot="1">
+                <!-- Slot 2: Aegis Web -->
+                <div class="vs-proj-slot" data-slot="2">
                   <div class="vs-title-row">
                     <div class="vs-dash" style="background:#38bdf8"></div>
                     <span class="vs-proj-name">Aegis</span>
-                    <span class="vs-proj-counter">02 / 05</span>
+                    <span class="vs-proj-counter">02 / 06</span>
                   </div>
                   <p class="vs-category-label" style="color:#38bdf8">Web Application</p>
                   <p class="vs-proj-desc">Team recruitment, profile building, tournament registration and an organisation portal with real-time live chat, deployed on AWS.</p>
@@ -1024,12 +1107,12 @@
                   <a class="vs-case-link" href="./project-aegis.html" style="color:#38bdf8">View detailed project info <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></a>
                 </div>
 
-                <!-- Slot 2: Aegis Mobile -->
-                <div class="vs-proj-slot" data-slot="2">
+                <!-- Slot 3: Aegis Mobile -->
+                <div class="vs-proj-slot" data-slot="3">
                   <div class="vs-title-row">
                     <div class="vs-dash" style="background:#34d399"></div>
                     <span class="vs-proj-name">Aegis Mobile</span>
-                    <span class="vs-proj-counter">03 / 05</span>
+                    <span class="vs-proj-counter">03 / 06</span>
                   </div>
                   <p class="vs-category-label" style="color:#34d399">Android App</p>
                   <p class="vs-proj-desc">Flutter app with full feature parity with the web client. Clean architecture with Riverpod state management and a UI tuned for touch.</p>
@@ -1044,12 +1127,12 @@
                   <a class="vs-case-link" href="./project-aegis-mobile.html" style="color:#34d399">View detailed project info <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></a>
                 </div>
 
-                <!-- Slot 3: CodeMortem -->
-                <div class="vs-proj-slot" data-slot="3">
+                <!-- Slot 4: CodeMortem -->
+                <div class="vs-proj-slot" data-slot="4">
                   <div class="vs-title-row">
                     <div class="vs-dash" style="background:#f97316"></div>
                     <span class="vs-proj-name">CodeMortem</span>
-                    <span class="vs-proj-counter">04 / 05</span>
+                    <span class="vs-proj-counter">04 / 06</span>
                   </div>
                   <p class="vs-category-label" style="color:#f97316">Web Application</p>
                   <p class="vs-proj-desc">Interactive lessons with animated diagrams, MCQ checkpoints and live rating graphs fetched from Codeforces, LeetCode, CodeChef and AtCoder.</p>
@@ -1064,12 +1147,12 @@
                   <a class="vs-case-link" href="./project-codemortem.html" style="color:#f97316">View detailed project info <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></a>
                 </div>
 
-                <!-- Slot 4: Vertex-Swarm -->
-                <div class="vs-proj-slot" data-slot="4">
+                <!-- Slot 5: Vertex-Swarm -->
+                <div class="vs-proj-slot" data-slot="5">
                   <div class="vs-title-row">
                     <div class="vs-dash" style="background:#e879f9"></div>
                     <span class="vs-proj-name">Vertex-Swarm</span>
-                    <span class="vs-proj-counter">05 / 05</span>
+                    <span class="vs-proj-counter">05 / 06</span>
                   </div>
                   <p class="vs-category-label" style="color:#e879f9">Fintech · AI</p>
                   <p class="vs-proj-desc">Graph-native fraud detection that treats fraud as a network problem. Bridge-finder and density agents flag coordinated attacks with sub-20 ms latency.</p>
@@ -1094,10 +1177,11 @@
                 <div class="vs-tl-fill" id="vsTlFill"></div>
                 <!-- Dots -->
                 <div class="vs-tl-dot" id="vsDot0" style="top:0%"></div>
-                <div class="vs-tl-dot" id="vsDot1" style="top:25%"></div>
-                <div class="vs-tl-dot" id="vsDot2" style="top:50%"></div>
-                <div class="vs-tl-dot" id="vsDot3" style="top:75%"></div>
-                <div class="vs-tl-dot" id="vsDot4" style="top:100%"></div>
+                <div class="vs-tl-dot" id="vsDot1" style="top:20%"></div>
+                <div class="vs-tl-dot" id="vsDot2" style="top:40%"></div>
+                <div class="vs-tl-dot" id="vsDot3" style="top:60%"></div>
+                <div class="vs-tl-dot" id="vsDot4" style="top:80%"></div>
+                <div class="vs-tl-dot" id="vsDot5" style="top:100%"></div>
                 <!-- Moving marker -->
                 <div class="vs-tl-marker" id="vsTlMarker" style="top:0%">
                   <div class="vs-tl-marker-inner">
@@ -1114,8 +1198,15 @@
             <div class="vs-mockup-panel">
               <div class="vs-mockup-wrap">
 
-                <!-- Mockup 0: Aquila -->
-                <div class="vs-mockup-slot active" data-mslot="0">
+                                <!-- Mockup 0: RunSphere -->
+                <div class="vs-mockup-slot active" data-mslot="0" style="justify-content:center">
+                  <div class="vs-frame-phone">
+                    <img src="./src/assets/runsphere/img1.png" alt="RunSphere" loading="lazy">
+                  </div>
+                </div>
+
+                <!-- Mockup 1: Aquila -->
+                <div class="vs-mockup-slot" data-mslot="1">
                   <div class="vs-frame-desktop">
                     <div class="vs-frame-chrome">
                       <div class="vs-frame-dots"><span></span><span></span><span></span></div>
@@ -1125,8 +1216,8 @@
                   </div>
                 </div>
 
-                <!-- Mockup 1: Aegis Web -->
-                <div class="vs-mockup-slot" data-mslot="1">
+                <!-- Mockup 2: Aegis Web -->
+                <div class="vs-mockup-slot" data-mslot="2">
                   <div class="vs-frame-desktop">
                     <div class="vs-frame-chrome">
                       <div class="vs-frame-dots"><span></span><span></span><span></span></div>
@@ -1136,15 +1227,15 @@
                   </div>
                 </div>
 
-                <!-- Mockup 2: Aegis Mobile -->
-                <div class="vs-mockup-slot" data-mslot="2" style="justify-content:center">
+                <!-- Mockup 3: Aegis Mobile -->
+                <div class="vs-mockup-slot" data-mslot="3" style="justify-content:center">
                   <div class="vs-frame-phone">
                     <img src="./src/assets/aegismobile.png" alt="Aegis Mobile" loading="lazy">
                   </div>
                 </div>
 
-                <!-- Mockup 3: CodeMortem -->
-                <div class="vs-mockup-slot" data-mslot="3">
+                <!-- Mockup 4: CodeMortem -->
+                <div class="vs-mockup-slot" data-mslot="4">
                   <div class="vs-frame-desktop">
                     <div class="vs-frame-chrome">
                       <div class="vs-frame-dots"><span></span><span></span><span></span></div>
@@ -1154,8 +1245,8 @@
                   </div>
                 </div>
 
-                <!-- Mockup 4: Vertex-Swarm -->
-                <div class="vs-mockup-slot" data-mslot="4">
+                <!-- Mockup 5: Vertex-Swarm -->
+                <div class="vs-mockup-slot" data-mslot="5">
                   <div class="vs-frame-desktop">
                     <div class="vs-frame-chrome">
                       <div class="vs-frame-dots"><span></span><span></span><span></span></div>
@@ -1176,10 +1267,21 @@
       <div class="vs-mobile" style="padding: 84px 0 0;">
         <div class="wrap">
           <div class="sec-head"><h2>Things I've built</h2><p>From a nanosecond-level trading simulator to a real-time esports platform.</p></div>
+                    <div class="vs-mob-card">
+            <div class="vs-mob-top-bar" style="background:#3DDC7E"></div>
+            <div class="vs-mob-info">
+              <div class="vs-mob-meta"><span class="vs-mob-cat" style="color:#3DDC7E">Mobile Application</span><span class="vs-mob-num">01 / 06</span></div>
+              <h3 class="vs-mob-title">RunSphere</h3>
+              <p class="vs-mob-desc">A privacy-first outdoor running app that gamifies movement through adaptive quests and H3 territory-claim seasons, entirely pace-neutral.</p>
+              <div class="vs-mob-pills"><span class="vs-mob-pill">React Native</span><span class="vs-mob-pill">Fastify</span><span class="vs-mob-pill">H3</span></div>
+            </div>
+            <div class="vs-mob-image"><img src="./src/assets/runsphere/img1.png" alt="RunSphere" loading="lazy" style="aspect-ratio:9/16;object-fit:cover"></div>
+            <a class="vs-mob-link" href="./project-runsphere.html" style="color:#3DDC7E">View case study →</a>
+          </div>
           <div class="vs-mob-card">
             <div class="vs-mob-top-bar" style="background:#7c5cff"></div>
             <div class="vs-mob-info">
-              <div class="vs-mob-meta"><span class="vs-mob-cat" style="color:#7c5cff">Systems Programming</span><span class="vs-mob-num">01 / 05</span></div>
+              <div class="vs-mob-meta"><span class="vs-mob-cat" style="color:#7c5cff">Systems Programming</span><span class="vs-mob-num">01 / 06</span></div>
               <h3 class="vs-mob-title">Aquila</h3>
               <p class="vs-mob-desc">An event-driven trading simulator with nanosecond precision, removing OOP overhead for hardware-limit performance.</p>
               <div class="vs-mob-pills"><span class="vs-mob-pill">C++23</span><span class="vs-mob-pill">CRTP</span><span class="vs-mob-pill">Lock-free</span></div>
@@ -1190,7 +1292,7 @@
           <div class="vs-mob-card">
             <div class="vs-mob-top-bar" style="background:#38bdf8"></div>
             <div class="vs-mob-info">
-              <div class="vs-mob-meta"><span class="vs-mob-cat" style="color:#38bdf8">Web Application</span><span class="vs-mob-num">02 / 05</span></div>
+              <div class="vs-mob-meta"><span class="vs-mob-cat" style="color:#38bdf8">Web Application</span><span class="vs-mob-num">02 / 06</span></div>
               <h3 class="vs-mob-title">Aegis</h3>
               <p class="vs-mob-desc">Team recruitment, tournament registration and an organisation portal with real-time live chat, deployed on AWS.</p>
               <div class="vs-mob-pills"><span class="vs-mob-pill">React</span><span class="vs-mob-pill">Node.js</span><span class="vs-mob-pill">Socket.io</span><span class="vs-mob-pill">AWS</span></div>
@@ -1201,7 +1303,7 @@
           <div class="vs-mob-card">
             <div class="vs-mob-top-bar" style="background:#34d399"></div>
             <div class="vs-mob-info">
-              <div class="vs-mob-meta"><span class="vs-mob-cat" style="color:#34d399">Android App</span><span class="vs-mob-num">03 / 05</span></div>
+              <div class="vs-mob-meta"><span class="vs-mob-cat" style="color:#34d399">Android App</span><span class="vs-mob-num">03 / 06</span></div>
               <h3 class="vs-mob-title">Aegis Mobile</h3>
               <p class="vs-mob-desc">Flutter companion app with full feature parity, Riverpod state management and Socket.io real-time chat.</p>
               <div class="vs-mob-pills"><span class="vs-mob-pill">Flutter</span><span class="vs-mob-pill">Dart</span><span class="vs-mob-pill">Riverpod</span></div>
@@ -1212,7 +1314,7 @@
           <div class="vs-mob-card">
             <div class="vs-mob-top-bar" style="background:#f97316"></div>
             <div class="vs-mob-info">
-              <div class="vs-mob-meta"><span class="vs-mob-cat" style="color:#f97316">Web Application</span><span class="vs-mob-num">04 / 05</span></div>
+              <div class="vs-mob-meta"><span class="vs-mob-cat" style="color:#f97316">Web Application</span><span class="vs-mob-num">04 / 06</span></div>
               <h3 class="vs-mob-title">CodeMortem</h3>
               <p class="vs-mob-desc">Interactive CP lessons with animated diagrams, MCQ checkpoints and live rating graphs.</p>
               <div class="vs-mob-pills"><span class="vs-mob-pill">Next.js</span><span class="vs-mob-pill">TypeScript</span><span class="vs-mob-pill">Tailwind</span></div>
@@ -1223,7 +1325,7 @@
           <div class="vs-mob-card">
             <div class="vs-mob-top-bar" style="background:#e879f9"></div>
             <div class="vs-mob-info">
-              <div class="vs-mob-meta"><span class="vs-mob-cat" style="color:#e879f9">Fintech · AI</span><span class="vs-mob-num">05 / 05</span></div>
+              <div class="vs-mob-meta"><span class="vs-mob-cat" style="color:#e879f9">Fintech · AI</span><span class="vs-mob-num">05 / 06</span></div>
               <h3 class="vs-mob-title">Vertex-Swarm</h3>
               <p class="vs-mob-desc">Graph-native fraud detection with swarm AI agents and sub-20 ms latency on live POS transactions.</p>
               <div class="vs-mob-pills"><span class="vs-mob-pill">Graph DB</span><span class="vs-mob-pill">Python</span><span class="vs-mob-pill">Swarm AI</span></div>
@@ -1392,41 +1494,86 @@
       </div>
     </section>
 
-    <!-- EDUCATION + ACHIEVEMENTS -->
-    <section class="block" id="education">
+    <!-- ACHIEVEMENTS -->
+    <section class="block" id="achievements">
       <div class="wrap">
         <div class="sec-head">
-          <h2>Education and achievements</h2>
+          <h2>Achievements</h2>
+          <p>Milestones, competitions, and records.</p>
         </div>
-        <div class="two-col">
-          <div>
-            <h3 class="col-title">Education</h3>
-            <div class="edu-list">
-              <div class="card edu">
-                <div><h4>K.J. Somaiya School of Engineering</h4><p>B.Tech Computer Engineering, 4th year</p></div>
-                <div class="edu-r"><b>8.9 CGPA</b><small>2023 to present</small></div>
+        
+        <div class="ach-slider-wrap">
+          <button class="ach-nav-btn prev" id="achPrevBtn" aria-label="Previous">‹</button>
+          
+          <div class="ach-slider" id="achSlider">
+            <!-- Slide 1 -->
+            <div class="ach-pane">
+              <div class="ach-pane-text">
+                <span class="ach-tag">Competitive Programming</span>
+                <h3>46th in the finals of Code UnCode</h3>
+                <p>Participated in my first-ever offline competitive programming contest, Code UnCode. Missed the 5th problem — and a medal — due to a small binary search implementation bug. More importantly, the contest taught me how to manage time, pressure, and debugging in an offline competitive environment.</p>
+                <a href="./src/assets/Final_Leaderboard_Code_Uncode_2026.pdf" target="_blank" rel="noopener" class="btn btn-primary">View full leaderboard</a>
               </div>
-              <div class="card edu">
-                <div><h4>K.C. College</h4><p>HSC, Science</p></div>
-                <div class="edu-r"><b>75.17%</b><small>2021 to 2023</small></div>
+              <div class="ach-pane-visual">
+                <div class="ach-collage">
+                  <img src="./src/assets/codeuncodebanner.jpeg" alt="Code UnCode Banner" class="modal-trigger">
+                  <img src="./src/assets/codeuncodeleaderoard.png" alt="Code UnCode Leaderboard" class="modal-trigger">
+                  <img src="./src/assets/codeuncodetshirt.jpeg" alt="Code UnCode T-shirt" class="modal-trigger">
+                </div>
               </div>
-              <div class="card edu">
-                <div><h4>Scholar High School</h4><p>ICSE Board, Class 1 to 10</p></div>
-                <div class="edu-r"><b>94.2%</b><small>2011 to 2021</small></div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="ach-pane">
+              <div class="ach-pane-text">
+                <span class="ach-tag">Competition</span>
+                <h3>Abacus state runner-up</h3>
+                <p>Secured the runner-up position in the state-level abacus competition.</p>
+              </div>
+              <div class="ach-pane-visual" style="display: grid; place-items: center; font-size: 5rem; background: rgba(52,211,153,0.06); margin: 32px; border-radius: 16px; border: 1px solid rgba(52,211,153,0.1);">
+                🧮
+              </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="ach-pane">
+              <div class="ach-pane-text">
+                <span class="ach-tag">Competitive Programming</span>
+                <h3>Rank 820 in IICPC Quantfest 2026</h3>
+                <p>Secured rank 820 among 5,000+ participants. I missed qualifying for the regionals by a mere time penalty of 40 minutes. Solving just one more problem would have secured my spot at the regionals.</p>
+              </div>
+              <div class="ach-pane-visual">
+                <img src="./src/assets/iicpc_quantfest.png" alt="IICPC Quantfest 2026" class="modal-trigger" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px; cursor: zoom-in;">
               </div>
             </div>
           </div>
-          <div id="achievements">
-            <h3 class="col-title">Achievements</h3>
-            <div class="ach-list">
-              <div class="card ach">
-                <div class="ach-ico">🏆</div>
-                <div><h4>Perfect 10 SGPA</h4><p>Semester 4, K.J. Somaiya School of Engineering</p></div>
-              </div>
-              <div class="card ach">
-                <div class="ach-ico">🧮</div>
-                <div><h4>Abacus state runner-up</h4><p>State-level abacus competition</p></div>
-              </div>
+
+          <button class="ach-nav-btn next" id="achNextBtn" aria-label="Next">›</button>
+        </div>
+      </div>
+      
+
+    </section>
+
+    <!-- EDUCATION -->
+    <section class="block" id="education">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2>Education</h2>
+        </div>
+        <div style="max-width: 700px;">
+          <div class="edu-list">
+            <div class="card edu">
+              <div><h4>K.J. Somaiya School of Engineering</h4><p>B.Tech Computer Engineering, 4th year</p></div>
+              <div class="edu-r"><b>8.9 CGPA</b><small>2023 to present</small></div>
+            </div>
+            <div class="card edu">
+              <div><h4>K.C. College</h4><p>HSC, Science</p></div>
+              <div class="edu-r"><b>75.17%</b><small>2021 to 2023</small></div>
+            </div>
+            <div class="card edu">
+              <div><h4>Scholar High School</h4><p>ICSE Board, Class 1 to 10</p></div>
+              <div class="edu-r"><b>94.2%</b><small>2011 to 2021</small></div>
             </div>
           </div>
         </div>
@@ -1442,17 +1589,17 @@
         <div class="certs">
           <div class="card cert">
             <div class="cert-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 4.5 3.4 7.7 8 9 4.6-1.3 8-4.5 8-9V6l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg></div>
-            <div><small>Google · 2024</small><h4>Google Cloud Cybersecurity</h4></div>
+            <div><small>Google · 2025</small><h4>Google Cloud Cybersecurity</h4></div>
             <a class="btn btn-sm" href="/certifications/zs1jCD63.pdf" target="_blank" rel="noopener">View certificate ↗</a>
           </div>
           <div class="card cert">
             <div class="cert-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="9" r="2.5"/><path d="M6 8.5v7M18 11.5c0 3-6 2-12 4.5"/></svg></div>
-            <div><small>CodeChef · 2024</small><h4>Git / GitHub</h4></div>
+            <div><small>CodeChef · 2026</small><h4>Git / GitHub</h4></div>
             <a class="btn btn-sm" href="/certifications/swayamn73-Git_Github.pdf" target="_blank" rel="noopener">View certificate ↗</a>
           </div>
           <div class="card cert">
             <div class="cert-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M19 5l-3 3M8 16l-3 3"/></svg></div>
-            <div><small>CodeChef · 2024</small><h4>Machine Learning</h4></div>
+            <div><small>CodeChef · 2025</small><h4>Machine Learning</h4></div>
             <a class="btn btn-sm" href="/certifications/swayamn73-Machine%20Learning%20(1).pdf" target="_blank" rel="noopener">View certificate ↗</a>
           </div>
         </div>
@@ -1473,10 +1620,17 @@
     </section>
   </main>
 
+  <!-- Image Modal -->
+  <dialog id="imageModal" class="img-modal">
+    <div class="img-modal-content">
+      <button class="img-modal-close" id="imgModalCloseBtn">✕</button>
+      <img id="imgModalSrc" src="" alt="Fullscreen image">
+    </div>
+  </dialog>
+
   <footer>
     <div class="wrap">
       <span>© <span id="yr">2026</span> Swayam Nakte</span>
-      <span>Designed and built in Mumbai</span>
     </div>
   </footer>
 
@@ -1553,7 +1707,7 @@
 
     /* ── rotating hero line ── */
     const rot = $('#rot');
-    const words = ['full-stack apps', 'systems in C++', 'algorithms for competitive programming', 'fast solutions to hard problems'];
+    const words = ['build full-stack apps', 'build systems in C++', 'like spending time on competitive programming', 'build fast solutions to hard problems'];
     let wi = 0;
     if (!reduceMotion) {
       setInterval(() => {
@@ -1745,7 +1899,7 @@
     const pickBand = (v, bands) => bands.find(b => v >= b.min && v <= b.max) || bands[0];
     const bandColor = (v, bands, fallback) => Number.isFinite(v) ? (pickBand(v, bands)?.color || fallback) : fallback;
 
-    const API_BASE = import.meta.env.VITE_API_BASE || '';
+    const API_BASE = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_API_BASE) || '';
 
     async function fetchCF() {
       try {
@@ -1821,14 +1975,59 @@
     }
 
     fetchCF(); fetchCC(); fetchLC(); fetchAT();
+
+    /* ── achievements slider ── */
+    const achSlider = $('#achSlider');
+    const achPrevBtn = $('#achPrevBtn');
+    const achNextBtn = $('#achNextBtn');
+    if (achSlider && achPrevBtn && achNextBtn) {
+      const slides = Array.from(achSlider.children);
+      const getIndex = () => Math.round(achSlider.scrollLeft / achSlider.clientWidth);
+      
+      achPrevBtn.addEventListener('click', () => {
+        let i = getIndex() - 1;
+        if (i < 0) i = slides.length - 1; // wrap around
+        achSlider.scrollTo({ left: slides[i].offsetLeft, behavior: 'smooth' });
+      });
+      
+      achNextBtn.addEventListener('click', () => {
+        let i = getIndex() + 1;
+        if (i >= slides.length) i = 0; // wrap around
+        achSlider.scrollTo({ left: slides[i].offsetLeft, behavior: 'smooth' });
+      });
+    }
+    
+    /* ── image modal ── */
+    const imageModal = document.getElementById('imageModal');
+    const imgModalSrc = document.getElementById('imgModalSrc');
+    const imgModalCloseBtn = document.getElementById('imgModalCloseBtn');
+    
+    document.querySelectorAll('.modal-trigger').forEach(img => {
+      img.addEventListener('click', () => {
+        if (imageModal && imgModalSrc) {
+          imgModalSrc.src = img.src;
+          imageModal.showModal();
+        }
+      });
+    });
+    
+    if (imgModalCloseBtn) {
+      imgModalCloseBtn.addEventListener('click', () => imageModal.close());
+    }
+    if (imageModal) {
+      imageModal.addEventListener('click', e => {
+        if (e.target === imageModal) imageModal.close();
+      });
+    }
   </script>
 
   <!-- ── Venture Showcase: sticky scroll timeline controller ── -->
   <script>
   (function () {
-    const TOTAL = 5;
-    const COLORS = ['#7c5cff', '#38bdf8', '#34d399', '#f97316', '#e879f9'];
+    const TOTAL = 6;
+    const COLORS = ['#3DDC7E', '#7c5cff', '#38bdf8', '#34d399', '#f97316', '#e879f9'];
     const GLOWS = [
+      'radial-gradient(ellipse,rgba(61,220,126,.12) 0%,transparent 68%)',
       'radial-gradient(ellipse,rgba(124,92,255,.12) 0%,transparent 68%)',
       'radial-gradient(ellipse,rgba(56,189,248,.12) 0%,transparent 68%)',
       'radial-gradient(ellipse,rgba(52,211,153,.12) 0%,transparent 68%)',
@@ -1904,13 +2103,29 @@
       const wrapBottom = rect.bottom;
       const inRange    = wrapTop < vh && wrapBottom > 0;
 
-      if (inRange) {
-        sticky.classList.add('visible');
+      // Emulate position: sticky perfectly, regardless of whether it's in the viewport
+      if (wrapTop > 0) {
+        // Wrapper hasn't reached the top of the viewport yet
+        sticky.style.position = 'absolute';
+        sticky.style.top = '0px';
+        sticky.style.bottom = 'auto';
+      } else if (wrapBottom < vh) {
+        // Wrapper has scrolled entirely past the viewport
+        sticky.style.position = 'absolute';
+        sticky.style.top = 'auto';
+        sticky.style.bottom = '0px';
+      } else {
+        // Wrapper is actively scrolling through the viewport
+        sticky.style.position = 'fixed';
+        sticky.style.top = '0px';
+        sticky.style.bottom = 'auto';
+      }
 
+      if (inRange) {
         // Progress: 0 when wrapper top hits viewport top, 1 when wrapper bottom hits viewport bottom
         const scrollable = rect.height - vh;
         if (scrollable <= 0) return;
-        const scrolled = -rect.top;  // how far past the wrapper's start
+        const scrolled = Math.max(0, -rect.top); // how far past the wrapper's start
         const raw      = scrolled / scrollable;
         const clamped  = Math.min(1, Math.max(0, raw));
         const idx      = Math.min(TOTAL - 1, Math.round(clamped * (TOTAL - 1)));
@@ -1920,17 +2135,18 @@
         marker.style.top = pct + '%';
         fill.style.height = pct + '%';
 
-        if (clamped > 0.03 && hint) hint.classList.add('hidden');
-        else if (clamped <= 0.01 && hint) hint.classList.remove('hidden');
+        if (hint) {
+          if (clamped > 0.05) hint.style.opacity = '0';
+          else hint.style.opacity = '1';
+        }
 
         setActive(idx);
-      } else {
-        sticky.classList.remove('visible');
       }
     }
 
     setActive(0);
     window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
     window.addEventListener('resize', onScroll, { passive: true });
     // Also listen on Lenis scroll if available
     requestAnimationFrame(function tick() {

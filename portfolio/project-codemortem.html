@@ -32,7 +32,7 @@
     .frame-dots{display:flex;gap:5px;}.frame-dots span{width:10px;height:10px;border-radius:50%;}
     .frame-dots span:nth-child(1){background:#ff5f57;}.frame-dots span:nth-child(2){background:#febc2e;}.frame-dots span:nth-child(3){background:#28c840;}
     .frame-url{flex:1;background:rgba(255,255,255,.06);border-radius:5px;height:20px;display:flex;align-items:center;justify-content:center;}.frame-url span{font-size:9px;color:rgba(255,255,255,.3);}
-    .frame-body img{width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top;}
+    .frame-body img{width:100%;height:auto;display:block;}
     .proj-content{padding:80px 0;}.content-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
     .section-label{font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-bottom:16px;}
     .section-title{font-family:var(--display);font-size:1.6rem;font-weight:800;letter-spacing:-.025em;margin-bottom:16px;}
@@ -62,50 +62,110 @@
   <div class="wrap">
     <section class="proj-hero">
       <div class="proj-meta">
-        <span class="proj-num">04 / 05</span>
+        <span class="proj-num">03 / 06</span>
         <span class="proj-category">Web Application</span>
       </div>
-      <h1>CodeMortem: <em>competitive</em> programming lessons</h1>
-      <p class="proj-tagline">Interactive lessons with animated diagrams, MCQ checkpoints and live rating graphs fetched from Codeforces, LeetCode, CodeChef and AtCoder.</p>
+      <h1>CodeMortem 2.0: <em>1v1 Duels & Learning</em></h1>
+      <p class="proj-tagline">A competitive programming platform featuring real-time matchmaking, Glicko-2 ratings, and a highly polished interactive learning engine.</p>
       <div class="proj-links">
         <a href="https://github.com/swayamn72/CodeMortem2.0" target="_blank" rel="noopener" class="btn btn-primary">View Source</a>
       </div>
     </section>
+    
     <section class="proj-screenshot">
       <div class="screenshot-frame">
         <div class="frame-chrome">
           <div class="frame-dots"><span></span><span></span><span></span></div>
           <div class="frame-url"><span>codemortem.dev</span></div>
         </div>
-        <div class="frame-body"><img src="./src/assets/codemortem.png" alt="CodeMortem"></div>
+        <div class="frame-body"><img src="./src/assets/codemortem.png" alt="CodeMortem Overview"></div>
       </div>
     </section>
+    
     <section class="proj-content">
-      <div class="content-grid">
+      <div class="content-grid" style="margin-bottom: 80px;">
         <div class="section-body">
-          <p class="section-label">Overview</p>
-          <h2 class="section-title">Learning platform for competitive programmers</h2>
-          <div class="placeholder-notice"><p><strong>Content coming soon.</strong> Add your detailed project description here.</p></div>
+          <p class="section-label">The Motivation</p>
+          <h2 class="section-title">Why I built CodeMortem</h2>
+          <p>I have a deep interest in competitive programming, but when I was learning advanced algorithms, I noticed a recurring problem: the resources were plentiful, but they were rarely structured or interactive.</p>
+          <p>I wanted to build a platform that didn't just dump walls of text on the user. CodeMortem 2.0 was designed to bridge this gap by combining <strong>interactive, structured learning modules</strong> with the thrill of <strong>real-time 1v1 algorithmic duels</strong>.</p>
         </div>
         <div>
-          <p class="section-label">Key highlights</p>
+          <p class="section-label">Core Features</p>
           <ul class="feat-list">
-            <li><span class="feat-icon">✦</span><span class="feat-text">Lesson building blocks with animated diagrams and code walkthroughs</span></li>
-            <li><span class="feat-icon">✦</span><span class="feat-text">Live rating graphs from Codeforces, LeetCode, CodeChef and AtCoder</span></li>
-            <li><span class="feat-icon">✦</span><span class="feat-text">Checkpoint quizzes with detailed explanations</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Real-time Matchmaking:</strong> Fast queues powered by Redis and Go WebSockets.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Live Arena:</strong> Integrated @monaco-editor/react with Judge0 CE Cloud API for secure multi-language code execution.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Competitive Ratings:</strong> Glicko-2 rating system to accurately rank players based on 1v1 duel outcomes.</span></li>
           </ul>
         </div>
       </div>
+
+      <div class="screenshot-frame" style="margin-bottom: 80px;">
+        <div class="frame-body"><img src="./src/assets/codemortem/img1.png" alt="CodeMortem Interface"></div>
+      </div>
+
+      <div class="screenshot-frame" style="margin-bottom: 80px;">
+        <div class="frame-body"><img src="./src/assets/codemortem/img2.png" alt="CodeMortem Learning Modules"></div>
+      </div>
+
+      <div class="content-grid" style="margin-bottom: 80px;">
+        <div class="section-body">
+          <p class="section-label">Learning Engine</p>
+          <h2 class="section-title">Interactive & Rich Lesson Primitives</h2>
+          <p>Lessons in CodeMortem are not standard text. I built a custom <code>RichLessonPrimitives</code> system to teach complex concepts like Segment Trees or Heavy-Light Decomposition.</p>
+          <p>Content is authored in specialized blocks supporting diagrams, code, and callouts (insights, warnings). I also wrote a custom markdown parser that dynamically handles syntax like <code>base^exp</code> to correctly render math superscripts directly inside React components using KaTeX.</p>
+        </div>
+        <div>
+          <p class="section-label">Module Highlights</p>
+          <ul class="feat-list">
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Custom Formatter:</strong> Inline markdown and dynamic math parsing (react-markdown + katex).</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>MCQ Checkpoints:</strong> Interactive multiple-choice questions integrated directly into the reading flow.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Avoids "Walls of Text":</strong> Uses dynamic callouts, rules, and gotchas to keep engagement high.</span></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="screenshot-frame" style="margin-bottom: 80px;">
+        <div class="frame-body"><img src="./src/assets/codemortem/img3.png" alt="CodeMortem Architecture"></div>
+      </div>
+
+      <div class="content-grid">
+        <div class="section-body">
+          <p class="section-label">Architecture</p>
+          <h2 class="section-title">High-Concurrency Backend</h2>
+          <p>The platform demands extreme speed for live duels. The backend is written in <strong>Go 1.26</strong> using the Fiber framework, which provides a massive performance boost and a low memory footprint.</p>
+          <p>Real-time communication is handled by <code>gofiber/contrib/websocket</code>. The system is containerized with Docker, utilizing <strong>PostgreSQL</strong> for persistent storage and <strong>Redis</strong> for caching, session management, and fast matchmaking queues.</p>
+        </div>
+        <div>
+          <p class="section-label">Infrastructure</p>
+          <ul class="feat-list">
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Stateless Auth:</strong> Handled securely via JWT and bcrypt password hashing.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Database Migrations:</strong> Managed seamlessly using the golang-migrate CLI.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Containerized:</strong> Full docker-compose setup for local development.</span></li>
+          </ul>
+        </div>
+      </div>
+
     </section>
     <section class="tech-section">
       <p class="section-label">Tech Stack</p>
       <div class="tech-grid">
-        <span class="tech-pill">Next.js</span><span class="tech-pill">TypeScript</span>
-        <span class="tech-pill">Tailwind CSS</span><span class="tech-pill">Chart.js</span>
+        <span class="tech-pill">Next.js 16.2</span>
+        <span class="tech-pill">React 19</span>
+        <span class="tech-pill">TypeScript</span>
+        <span class="tech-pill">Zustand</span>
+        <span class="tech-pill">Framer Motion</span>
+        <span class="tech-pill">Go 1.26</span>
+        <span class="tech-pill">Fiber</span>
+        <span class="tech-pill">WebSockets</span>
+        <span class="tech-pill">PostgreSQL</span>
+        <span class="tech-pill">Redis</span>
+        <span class="tech-pill">Docker</span>
+        <span class="tech-pill">Judge0 CE</span>
       </div>
     </section>
-    <footer class="proj-footer">
-      <a href="./project-aegis-mobile.html" class="btn btn-ghost">← Prev: Aegis Mobile</a>
+        <footer class="proj-footer">
+      <a href="./project-aquila.html" class="btn btn-ghost">← Prev: Aquila</a>
       <a href="./project-vertexswarm.html" class="btn btn-ghost">Next: Vertex-Swarm →</a>
     </footer>
   </div>
