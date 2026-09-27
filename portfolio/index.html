@@ -168,8 +168,8 @@
       -webkit-background-clip: text; background-clip: text; color: transparent;
     }
 
-    .hero-line { font-size: clamp(1.1rem, 2vw, 1.4rem); color: var(--muted); max-width: 30ch; line-height: 1.45; }
-    .hero-line #rot { color: var(--text); display: inline-block; transition: opacity .3s, transform .3s; }
+    .hero-line { font-size: clamp(1.1rem, 2vw, 1.4rem); color: var(--muted); max-width: 45ch; line-height: 1.45; position: relative; }
+    .hero-line #rot { color: var(--text); transition: opacity .3s, transform .3s; position: absolute; top: 0; left: 0; }
     .hero-line #rot.out { opacity: 0; transform: translateY(6px); }
 
     .hero-desc { margin-top: 22px; color: var(--muted); max-width: 54ch; }
@@ -930,7 +930,10 @@
         <div>
           <div class="status rise d1"><b></b>Open to internships and collaborations</div>
           <h1 class="hero-name rise d2">Swayam<br>Nakte</h1>
-          <p class="hero-line rise d3">I <span id="rot">build full-stack apps</span></p>
+          <p class="hero-line rise d3">
+            <span style="visibility: hidden; pointer-events: none;">I like spending time on competitive programming</span>
+            <span id="rot">I build full-stack apps</span>
+          </p>
           <p class="hero-desc rise d4">
             Computer Engineering student at <strong>K.J. Somaiya School of Engineering</strong>, Mumbai. I ship
             production-grade web and mobile apps, write systems code in C++, Go, and Python, and compete on
@@ -1512,7 +1515,7 @@
                 <span class="ach-tag">Competitive Programming</span>
                 <h3>46th in the finals of Code UnCode</h3>
                 <p>Participated in my first-ever offline competitive programming contest, Code UnCode. Missed the 5th problem — and a medal — due to a small binary search implementation bug. More importantly, the contest taught me how to manage time, pressure, and debugging in an offline competitive environment.</p>
-                <a href="./src/assets/Final_Leaderboard_Code_Uncode_2026.pdf" target="_blank" rel="noopener" class="btn btn-primary">View full leaderboard</a>
+                <a href="/Final_Leaderboard_Code_Uncode_2026.pdf" target="_blank" rel="noopener" class="btn btn-primary">View full leaderboard</a>
               </div>
               <div class="ach-pane-visual">
                 <div class="ach-collage">
@@ -1707,7 +1710,7 @@
 
     /* ── rotating hero line ── */
     const rot = $('#rot');
-    const words = ['build full-stack apps', 'build systems in C++', 'like spending time on competitive programming', 'build fast solutions to hard problems'];
+    const words = ['I build full-stack apps', 'I build systems in C++', 'I like spending time on competitive programming', 'I build fast solutions to hard problems'];
     let wi = 0;
     if (!reduceMotion) {
       setInterval(() => {
