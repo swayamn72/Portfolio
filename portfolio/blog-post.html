@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="pageTitle">Blog — Swayam Nakte</title>
+  <meta name="description" id="pageDesc" content="Blog post by Swayam Nakte.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <!-- Marked.js for Markdown rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    :root {
+      --bg: #000;
+      --surface: rgba(255,255,255,.035);
+      --border: rgba(255,255,255,.08);
+      --text: #f0eeea;
+      --muted: rgba(240,238,234,.45);
+      --dim: rgba(240,238,234,.22);
+      --accent: #7c5cff;
+      --display: 'Bricolage Grotesque', sans-serif;
+      --body: 'Instrument Sans', sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--body); line-height: 1.6; }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 0 32px; }
+
+    /* nav */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; gap: 20px;
+      padding: 18px 32px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(0,0,0,.8);
+      backdrop-filter: blur(20px);
+    }
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: .85rem; font-weight: 600; color: var(--muted);
+      transition: color .2s;
+    }
+    .nav-back:hover { color: var(--text); }
+    .nav-back svg { transition: transform .2s; }
+    .nav-back:hover svg { transform: translateX(-3px); }
+    .nav-sep { color: var(--dim); }
+    .nav-title { font-size: .85rem; color: var(--text); font-weight: 600; }
+
+    /* hero */
+    .post-hero {
+      padding: 140px 0 60px;
+      border-bottom: 1px solid var(--border);
+    }
+    .post-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+    .post-date-label {
+      font-family: var(--mono); font-size: .72rem; color: var(--dim); letter-spacing: .12em;
+    }
+    .post-tag {
+      font-size: .78rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase;
+      color: var(--accent);
+    }
+    .post-hero h1 {
+      font-family: var(--display); font-size: clamp(2rem, 5vw, 3.4rem);
+      font-weight: 800; letter-spacing: -.035em; line-height: 1.08; margin-bottom: 20px;
+    }
+    .post-hero h1 em { font-style: normal; color: var(--accent); }
+    .post-tagline {
+      font-size: 1.05rem; color: var(--muted); max-width: 65ch; line-height: 1.75;
+    }
+
+    /* article body */
+    .post-body {
+      padding: 72px 0 80px;
+      border-bottom: 1px solid var(--border);
+    }
+    .prose {
+      max-width: 68ch;
+      font-size: 1.02rem;
+      line-height: 1.85;
+      color: var(--muted);
+    }
+    .prose p { margin-bottom: 1.4em; }
+    .prose p:last-child { margin-bottom: 0; }
+    .prose h2 {
+      font-family: var(--display); font-size: 1.55rem; font-weight: 800;
+      letter-spacing: -.025em; color: var(--text);
+      margin: 2.2em 0 .7em;
+    }
+    .prose h3 {
+      font-family: var(--display); font-size: 1.2rem; font-weight: 700;
+      letter-spacing: -.02em; color: var(--text);
+      margin: 1.8em 0 .6em;
+    }
+    .prose strong { color: var(--text); font-weight: 600; }
+    .prose em { color: rgba(240,238,234,.7); font-style: italic; }
+    .prose a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+    .prose a:hover { color: #9070ff; }
+
+    .prose ul, .prose ol {
+      padding-left: 1.5em; margin-bottom: 1.4em;
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .prose li { color: var(--muted); }
+    .prose li::marker { color: var(--accent); }
+
+    .prose blockquote {
+      border-left: 3px solid var(--accent);
+      padding: 14px 20px;
+      margin: 1.6em 0;
+      background: rgba(124,92,255,.05);
+      border-radius: 0 8px 8px 0;
+    }
+    .prose blockquote p { margin-bottom: 0; color: rgba(240,238,234,.6); font-style: italic; }
+
+    .prose code {
+      font-family: var(--mono); font-size: .85em;
+      background: rgba(255,255,255,.07);
+      padding: 2px 7px; border-radius: 5px;
+      color: #c4b5fd;
+    }
+    .prose pre {
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin: 1.6em 0;
+    }
+    .prose pre code {
+      background: none; padding: 0;
+      font-size: .88em; color: rgba(240,238,234,.75);
+    }
+    .prose hr {
+      border: none; border-top: 1px solid var(--border);
+      margin: 2.5em 0;
+    }
+
+    /* footer */
+    .post-footer {
+      padding: 40px 0;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 16px;
+    }
+    .post-footer a {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: .85rem; font-weight: 600; color: var(--muted);
+      transition: color .2s;
+    }
+    .post-footer a:hover { color: var(--text); }
+    .post-footer a svg { transition: transform .2s; }
+    .post-footer .back:hover svg { transform: translateX(-3px); }
+
+    /* skeleton / loading */
+    .loading-state { padding: 80px 0; color: var(--dim); font-family: var(--mono); font-size: .85rem; }
+    .error-state { padding: 80px 0; }
+    .error-state h2 { font-family: var(--display); font-size: 2rem; font-weight: 800; margin-bottom: 16px; }
+    .error-state p { color: var(--muted); }
+
+    /* responsive */
+    @media (max-width: 900px) {
+      .prose { max-width: 100%; }
+    }
+    @media (max-width: 640px) {
+      nav { padding: 14px 18px; gap: 12px; }
+      .nav-title { display: none; }
+      .wrap { padding: 0 18px; }
+      .post-hero { padding: 100px 0 40px; }
+      .post-hero h1 { font-size: 1.9rem; }
+      .post-tagline { font-size: .95rem; }
+      .post-body { padding: 48px 0 56px; }
+      .prose { font-size: .95rem; line-height: 1.8; }
+      .prose pre { padding: 14px 16px; }
+      .prose blockquote { padding: 10px 16px; }
+      .post-footer { flex-direction: column; gap: 12px; align-items: flex-start; }
+    }
+    @media (max-width: 400px) {
+      .post-hero h1 { font-size: 1.65rem; }
+      .prose h2 { font-size: 1.3rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="./blog.html" class="nav-back">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      All posts
+    </a>
+    <span class="nav-sep">/</span>
+    <span class="nav-title" id="navTitle">Loading…</span>
+  </nav>
+
+  <div class="wrap" id="mainWrap">
+    <div class="loading-state">Loading post…</div>
+  </div>
+
+  <script>
+    marked.setOptions({ breaks: true, gfm: true });
+
+    const id = new URLSearchParams(location.search).get('id');
+
+    async function loadPost() {
+      const wrap = document.getElementById('mainWrap');
+      if (!id) { renderError(wrap, 'No post specified.'); return; }
+
+      try {
+        const res = await fetch(`http://localhost:3001/api/blogs/${id}`);
+        const json = await res.json();
+        if (!json.ok) { renderError(wrap, json.error || 'Post not found.'); return; }
+        renderPost(wrap, json.data);
+      } catch (e) {
+        renderError(wrap, 'Could not load post. Is the server running?');
+      }
+    }
+
+    function renderPost(wrap, post) {
+      document.title = `${post.title} — Swayam Nakte`;
+      document.getElementById('pageDesc').content = post.summary || '';
+      document.getElementById('navTitle').textContent = post.title;
+
+      const html = marked.parse(post.content);
+
+      wrap.innerHTML = `
+        <section class="post-hero">
+          <div class="post-meta">
+            <span class="post-date-label">${post.date}</span>
+            <span class="post-tag">Blog</span>
+          </div>
+          <h1>${post.title}</h1>
+          ${post.summary ? `<p class="post-tagline">${post.summary}</p>` : ''}
+        </section>
+
+        <article class="post-body">
+          <div class="prose">${html}</div>
+        </article>
+
+        <footer class="post-footer">
+          <a href="./blog.html" class="back">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            All posts
+          </a>
+          <a href="./index.html">
+            Back to portfolio
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+          </a>
+        </footer>
+      `;
+    }
+
+    function renderError(wrap, msg) {
+      wrap.innerHTML = `
+        <div class="error-state" style="padding-top:140px">
+          <h2>Post not found</h2>
+          <p>${msg}</p>
+          <a href="./blog.html" style="display:inline-flex;align-items:center;gap:8px;margin-top:24px;font-weight:600;color:var(--accent)">← Back to all posts</a>
+        </div>
+      `;
+    }
+
+    loadPost();
+  </script>
+
+</body>
+</html>

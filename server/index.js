@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import { blogs } from './blogsData.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -116,9 +117,25 @@ app.get('/api/atcoder', async (_req, res) => {
     }
 });
 
+// ── Blogs ──────────────────────────────────────────────────────────
+app.get('/api/blogs', (_req, res) => {
+    // Return all blogs without the full content for the listing page
+    const list = blogs.map(({ id, title, date, summary }) => ({ id, title, date, summary }));
+    res.json({ ok: true, data: list });
+});
+
+app.get('/api/blogs/:id', (req, res) => {
+    const blog = blogs.find(b => b.id === req.params.id);
+    if (blog) {
+        res.json({ ok: true, data: blog });
+    } else {
+        res.status(404).json({ ok: false, error: 'Blog not found' });
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`\n✓  Portfolio API  →  http://localhost:${PORT}`);
     console.log(
-        '   /api/codeforces  /api/codechef  /api/leetcode  /api/atcoder\n'
+        '   /api/codeforces  /api/codechef  /api/leetcode  /api/atcoder  /api/blogs\n'
     );
 });
