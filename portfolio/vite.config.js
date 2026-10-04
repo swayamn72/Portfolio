@@ -19,7 +19,9 @@ export default defineConfig({
         aegisMobile: resolve(__dirname, 'project-aegis-mobile.html'),
         codemortem: resolve(__dirname, 'project-codemortem.html'),
         vertexswarm: resolve(__dirname, 'project-vertexswarm.html'),
-        runsphere: resolve(__dirname, 'project-runsphere.html')
+        runsphere: resolve(__dirname, 'project-runsphere.html'),
+        blog: resolve(__dirname, 'blog.html'),
+        blogpost: resolve(__dirname, 'blog-post.html')
       }
     }
   }
