@@ -108,7 +108,7 @@ Now comes the 6th problem which probably could've secured our regionals slot if 
 
 So the problem goes like : 
 
-> Given n points, sort the points according to their x coordinates.
+> Given n points on a 2d plane.
 > You have 2 options for each point : 
 > either extend 2 lines towards the left and bottom
 > or extend 2 lines towards the top and right
