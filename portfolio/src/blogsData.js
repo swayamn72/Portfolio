@@ -38,7 +38,12 @@ Now as the submission was being processed by the server judge or rather overload
 
 > Given an array a which we can do a cyclic shift on any number of times and we need to minimize max( |b<sub>i</sub> - b<sub>i+1</sub>| ) i from 1 to n-1 over all cyclic shifts.
 
-Read the problem statement and I came up with the solution two minutes in. Explained it to AB and KT in short and started implementing it. Meanwhile, we received the AC verdict of the first problem. Was ready with the implementation for the second by then and submitted it which eventually ACed.
+Read the problem statement and I came up with the solution two minutes in. Explained it to AB and KT in short and started implementing it. 
+
+The solution goes like: 
+Find all values resulting from the absolute difference of adjacent elements considering all cyclic shifts so we get n values and we can exclude one value from the set of n values so the answer is simply the second highest of these n values.
+
+Meanwhile, we received the AC verdict of the first problem. Was ready with the implementation for the second by then and submitted it which eventually ACed.
 
 Now, We moved on to our third question which goes like this:
 
@@ -91,7 +96,7 @@ Go through all the cycles and for each cycle making the entire cycle perfect wou
 profit would be sum of a<sub>i</sub> of all elements in the cycle
 or we could select the top elements such that we maximize the profit
 
-So I started the implementation and was done with it in like 10 minutes. Now comes our **mistake 4**. Not really a mistake but I would count it as one because it costed us a good 10-15 minutes finding it.
+So I started the implementation and was done with it in like 10 minutes. Now comes our **mistake 4**. Not really a mistake but I would count it as one because it costed us a good 15-20 minutes finding it.
 
 So the bug was a line in the nested for loop where I was accessing arr[i] instead of arr[j] and silly me though there was some issue in the way I implemented the cycle finding algorithm.
 
@@ -111,7 +116,7 @@ So the problem goes like :
 
 Don't want to discuss much of the wrong solution we came up with but it goes like 
 Sort the points according to the x axis, 
-The sequential y coordinates we get, we try to create 2 ascending arrays. If possible, we output YES or NO
+The sequential y coordinates we get, we try to create 2 ascending arrays. If possible, we output YES or NO and then checking the min and max of those 2 arrays and applying some conditional checks on those.
 
 In between trying to brainstorm the 6th question, I visited the 7th question to get an idea if it was solvable but the first impression of the problem was that it was some complex dp with tricky transitions and here comes our last mistake ( pretty much debatable but according to me it was a mistake ). 
 We all 3 kept thinking about the 6th problem. I felt completely stuck at one point but still kept on scribbling a bunch of random points on a graph and testing our solution on it. Maybe moving on to the next problem would've worked maybe it wouldn't. Anyways all 3 of us kept on working on the 6th problem. Though a debatable point, after the contest I felt I should've explored problem 7 a bit more because even though it felt tricky, it was a similar problem to one I solved in one of the past contests so maybe I could've let AB and KT work on problem 6 while I worked on problem 7.
