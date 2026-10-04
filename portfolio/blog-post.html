@@ -199,23 +199,21 @@
     <div class="loading-state">Loading post…</div>
   </div>
 
-  <script>
+  <script type="module">
+    import { blogs } from './src/blogsData.js';
+
     marked.setOptions({ breaks: true, gfm: true });
 
     const id = new URLSearchParams(location.search).get('id');
 
-    async function loadPost() {
+    function loadPost() {
       const wrap = document.getElementById('mainWrap');
       if (!id) { renderError(wrap, 'No post specified.'); return; }
 
-      try {
-        const res = await fetch(`http://localhost:3001/api/blogs/${id}`);
-        const json = await res.json();
-        if (!json.ok) { renderError(wrap, json.error || 'Post not found.'); return; }
-        renderPost(wrap, json.data);
-      } catch (e) {
-        renderError(wrap, 'Could not load post. Is the server running?');
-      }
+      const post = blogs.find(b => b.id === id);
+      if (!post) { renderError(wrap, 'Post not found.'); return; }
+      
+      renderPost(wrap, post);
     }
 
     function renderPost(wrap, post) {

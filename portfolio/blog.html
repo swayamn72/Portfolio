@@ -176,7 +176,9 @@
 
   </div>
 
-  <script>
+  <script type="module">
+    import { blogs } from './src/blogsData.js';
+
     // Card shimmer effect
     document.querySelectorAll('.post-card').forEach(card => {
       card.addEventListener('mousemove', e => {
@@ -186,38 +188,32 @@
       });
     });
 
-    async function loadPosts() {
+    function loadPosts() {
       const grid = document.getElementById('postGrid');
-      try {
-        const res = await fetch('http://localhost:3001/api/blogs');
-        const json = await res.json();
-        if (!json.ok || !json.data.length) {
-          grid.innerHTML = '<p class="empty">No posts yet.</p>';
-          return;
-        }
-        grid.innerHTML = json.data.map(post => `
-          <a class="post-card" href="./blog-post.html?id=${post.id}">
-            <div class="post-date">${post.date}</div>
-            <div class="post-title">${post.title}</div>
-            <p class="post-summary">${post.summary}</p>
-            <span class="post-cta">
-              Read article
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
-            </span>
-          </a>
-        `).join('');
-
-        // re-apply shimmer to dynamically created cards
-        grid.querySelectorAll('.post-card').forEach(card => {
-          card.addEventListener('mousemove', e => {
-            const r = card.getBoundingClientRect();
-            card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
-            card.style.setProperty('--my', (e.clientY - r.top) + 'px');
-          });
-        });
-      } catch (e) {
-        grid.innerHTML = '<p class="empty">Could not load posts. Is the server running?</p>';
+      if (!blogs.length) {
+        grid.innerHTML = '<p class="empty">No posts yet.</p>';
+        return;
       }
+      grid.innerHTML = blogs.map(post => `
+        <a class="post-card" href="./blog-post.html?id=${post.id}">
+          <div class="post-date">${post.date}</div>
+          <div class="post-title">${post.title}</div>
+          <p class="post-summary">${post.summary}</p>
+          <span class="post-cta">
+            Read article
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+          </span>
+        </a>
+      `).join('');
+
+      // re-apply shimmer to dynamically created cards
+      grid.querySelectorAll('.post-card').forEach(card => {
+        card.addEventListener('mousemove', e => {
+          const r = card.getBoundingClientRect();
+          card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+          card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+        });
+      });
     }
 
     loadPosts();
