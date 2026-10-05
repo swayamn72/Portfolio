@@ -819,11 +819,17 @@
     .img-modal-close:hover { background: var(--surface-2); }
     
     @media (max-width: 900px) {
-      .ach-slider-wrap { flex-direction: column; }
+      .ach-slider-wrap { flex-direction: column; width: 100%; }
       .ach-nav-btn { display: none; }
-      .ach-pane { grid-template-columns: 1fr; }
-      .ach-pane-text { border-right: none; border-bottom: 1px solid var(--border); padding: 32px; }
-      .ach-pane-visual { padding: 24px; }
+      .ach-slider { width: 100%; border-radius: 16px; }
+      .ach-pane { grid-template-columns: 1fr; width: 100%; }
+      .ach-pane-text { border-right: none; border-bottom: 1px solid var(--border); padding: 24px; }
+      .ach-pane-text h3 { font-size: 1.5rem; margin-bottom: 12px; }
+      .ach-pane-visual { padding: 16px; }
+      .ach-collage { grid-template-columns: 1fr; gap: 8px; }
+      .ach-collage img:first-child { grid-column: 1 / -1; aspect-ratio: auto; }
+      
+      .certs { grid-template-columns: 1fr !important; }
     }
 
     /* ── certifications ── */
@@ -1620,6 +1626,21 @@
             <div class="cert-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M19 5l-3 3M8 16l-3 3"/></svg></div>
             <div><small>CodeChef · 2025</small><h4>Machine Learning</h4></div>
             <a class="btn btn-sm" href="/certifications/swayamn73-Machine%20Learning%20(1).pdf" target="_blank" rel="noopener">View certificate ↗</a>
+          </div>
+          <div class="card cert">
+            <div class="cert-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div>
+            <div><small>Coursera</small><h4>IO</h4></div>
+            <a class="btn btn-sm" href="/certifications/IO_Coursera.pdf" target="_blank" rel="noopener">View certificate ↗</a>
+          </div>
+          <div class="card cert">
+            <div class="cert-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div>
+            <div><small>Coursera</small><h4>Approximation</h4></div>
+            <a class="btn btn-sm" href="/certifications/approximation_Coursera.pdf" target="_blank" rel="noopener">View certificate ↗</a>
+          </div>
+          <div class="card cert">
+            <div class="cert-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div>
+            <div><small>Coursera</small><h4>Geometric</h4></div>
+            <a class="btn btn-sm" href="/certifications/Geometric_Coursera.pdf" target="_blank" rel="noopener">View certificate ↗</a>
           </div>
         </div>
       </div>

@@ -61,7 +61,7 @@ Now for the movement, we move to the shorter side of the two gaps (left, right) 
 so the answer was : 
 
 \`\`\`cpp
-left + right + max(0LL, largest-(left+right)) 
+2*min(left,right) + max(left,right) + max(0LL, largest-(left+right)) 
 \`\`\`
 
 We burned roughly around 40 minutes on this problem, which could've taken around 20 minutes if we hadn't immediately started coding instead of brainstorming and discussing all our approaches 
