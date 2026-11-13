@@ -309,7 +309,7 @@
           <p>When a runner completes a valid loop, the GPS trace is discretized into <strong>Uber H3 Resolution 11</strong> hexagonal cells — each covering roughly <strong>≈ 24.9 m edge length</strong> and <strong>≈ 2,161 m²</strong> of real-world area. This resolution aligns perfectly with city-block scale pedestrian movement without excessive memory consumption.</p>
           <p>Hexagons are chosen over bounding boxes and quad-trees for a critical reason: <strong>all 6 neighbors share equidistant centers</strong>, giving uniform adjacency that eliminates the diagonal-distance distortion of square grids. This makes area and boundary calculations far more geographically honest.</p>
           <p>Once the loop's H3 cells are captured, the system runs a <strong>Breadth-First Search (BFS) graph traversal</strong> over the neighbor adjacency matrix whenever a rival carves through existing territory. It detects all resulting connected subgraphs, retains only the <strong>Largest Connected Component</strong>, and discards isolated fragments — preventing fragmented "islands" from cluttering the map.</p>
-          <p>Geodesic loop area is computed on the <strong>WGS-84 reference sphere</strong> using the spherical excess formula — not flat-plane Euclidean geometry — so area calculations remain accurate over real-world distances.</p>
+
         </div>
         <div>
           <p class="section-label">Loop Validation Pipeline</p>
@@ -317,7 +317,6 @@
             <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Minimum 4 GPS points</strong> required for a valid loop submission.</span></li>
             <li><span class="feat-icon">✦</span><span class="feat-text"><strong>60 m closure gate:</strong> start and finish fixes must be within 60 m of each other.</span></li>
             <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Area bounds:</strong> minimum 5,000 m² (filters roundabouts / GPS drift), maximum 5,000,000 m² (flags vehicle use).</span></li>
-            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Douglas-Peucker simplification</strong> compresses the boundary to ≤ 128 coordinate pairs before storage.</span></li>
             <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Lexical cell sort:</strong> the H3 index array is stored in lexical order — not traversal order — erasing start/finish chronology and preventing residential doxxing.</span></li>
           </ul>
         </div>
