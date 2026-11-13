@@ -296,7 +296,7 @@
 <span class="hl">packages/observability</span> <span class="dim">Structured JSON logging + metric instrumentation</span>
 <span class="hl">packages/ui</span>          <span class="dim">Shared design tokens, primitives, styling</span>
 
-<span class="hl">infra/db</span>             <span class="dim">PostgreSQL 18 + PostGIS — 46 migrations, Martin vector tile server</span>
+<span class="hl">infra/db</span>             <span class="dim">PostgreSQL 18 + PostGIS — Martin vector tile server</span>
         </div>
       </div>
       <hr class="divider">
@@ -429,7 +429,6 @@ Effective Speed = Base Speed × (1 + Grace)
           <ul class="feat-list">
             <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Chunked SHA-256 uploads:</strong> Sync coordinator chunks the GPS trace as canonical JSON, computes a deterministic SHA-256 checksum per chunk, and retries idempotently across network drops — zero data loss.</span></li>
             <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Offline-first:</strong> SQLCipher-encrypted local queue buffers pending submissions; chunks are replayed on reconnect with full idempotency guarantees.</span></li>
-            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>46-migration PostGIS schema</strong> managing spatial polygons, cell lineages, activity submissions, and immutable competition state.</span></li>
             <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Nominatim caching proxy:</strong> Rate-limits and caches geocoding results server-side — eliminates third-party API costs and prevents client IP exposure.</span></li>
           </ul>
         </div>
