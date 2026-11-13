@@ -4,53 +4,237 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RunSphere — Swayam Nakte</title>
-  <meta name="description" content="RunSphere: A privacy-first outdoor running app that gamifies movement through adaptive quests and H3 territory-claim seasons.">
+  <meta name="description" content="RunSphere: an end-to-end privacy-first outdoor territory conquest platform — Turbo monorepo, Expo New Architecture, Fastify 5, PostGIS, Isolation Forest anti-cheat, and ALS quest recommendations.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
-    :root{--bg:#0B1A14;--surface:rgba(255,255,255,.035);--border:rgba(255,255,255,.08);--text:#f0eeea;--muted:rgba(240,238,234,.45);--dim:rgba(240,238,234,.22);--accent:#3DDC7E;--display:'Bricolage Grotesque',sans-serif;--body:'Instrument Sans',sans-serif;--mono:'JetBrains Mono',monospace;}
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-    html{scroll-behavior:smooth;}body{background:var(--bg);color:var(--text);font-family:var(--body);line-height:1.6;}a{color:inherit;}img{display:block;max-width:100%;}
-    .wrap{max-width:1080px;margin:0 auto;padding:0 32px;}
-    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;gap:20px;padding:18px 32px;border-bottom:1px solid var(--border);background:rgba(11,26,20,.8);backdrop-filter:blur(20px);}
-    .nav-back{display:inline-flex;align-items:center;gap:7px;font-size:.85rem;font-weight:600;color:var(--muted);text-decoration:none;transition:color .2s;}.nav-back:hover{color:var(--text);}.nav-back svg{transition:transform .2s;}.nav-back:hover svg{transform:translateX(-3px);}
-    .nav-sep{color:var(--dim);}.nav-proj-name{font-size:.85rem;color:var(--text);font-weight:600;}
-    .proj-hero{padding:140px 0 80px;border-bottom:1px solid var(--border);}
-    .proj-meta{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
-    .proj-num{font-family:var(--mono);font-size:.72rem;color:var(--dim);letter-spacing:.12em;}
-    .proj-category{font-size:.78rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);}
-    .proj-hero h1{font-family:var(--display);font-size:clamp(2.2rem,5vw,3.8rem);font-weight:800;letter-spacing:-.035em;line-height:1.05;margin-bottom:20px;}
-    .proj-hero h1 em{font-style:normal;color:var(--accent);}
-    .proj-tagline{font-size:1.1rem;color:var(--muted);max-width:60ch;line-height:1.75;margin-bottom:32px;}
-    .proj-links{display:flex;gap:12px;flex-wrap:wrap;}
-    .btn{display:inline-flex;align-items:center;gap:7px;padding:10px 22px;border-radius:8px;font-size:.9rem;font-weight:600;text-decoration:none;transition:all .2s;}
-    .btn-primary{background:var(--accent);color:#0B1A14;}.btn-primary:hover{opacity:.9;}
-    .btn-ghost{border:1px solid var(--border);color:var(--muted);background:var(--surface);}.btn-ghost:hover{color:var(--text);border-color:rgba(255,255,255,.2);}
-    /* phone mockup */
-    .phone-section{padding:60px 0;border-bottom:1px solid var(--border);display:flex;justify-content:center;gap:40px;flex-wrap:wrap;}
-    .phone-frame{width:240px;border-radius:36px;overflow:hidden;border:2px solid rgba(255,255,255,.15);box-shadow:0 40px 100px rgba(0,0,0,.9),0 0 60px rgba(61,220,126,.12);}
-    .phone-notch{background:#111;padding:10px 20px;display:flex;justify-content:space-between;align-items:center;}
-    .phone-notch span{font-size:10px;color:rgba(255,255,255,.55);font-family:var(--mono);}
-    .phone-frame img{width:100%;aspect-ratio:9/19.5;object-fit:cover;object-position:top;}
-    .proj-content{padding:80px 0;}
-    .content-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
-    .section-label{font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-bottom:16px;}
-    .section-title{font-family:var(--display);font-size:1.6rem;font-weight:800;letter-spacing:-.025em;margin-bottom:16px;}
-    .section-body p{color:var(--muted);line-height:1.8;margin-bottom:14px;}
-    .feat-list{list-style:none;display:flex;flex-direction:column;gap:12px;}
-    .feat-list li{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:10px;border:1px solid var(--border);background:var(--surface);}
-    .feat-icon{color:var(--accent);flex-shrink:0;margin-top:1px;}
-    .feat-text{font-size:.92rem;color:var(--muted);line-height:1.6;}
-    .tech-section{padding:60px 0;border-top:1px solid var(--border);}
-    .tech-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;}
-    .tech-pill{padding:6px 16px;border-radius:999px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);font-family:var(--mono);font-size:.8rem;color:var(--muted);}
-    .proj-footer{padding:40px 0;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
-    @media(max-width:760px){.content-grid{grid-template-columns:1fr;gap:48px;}.proj-footer{flex-direction:column;}}
-    @media(max-width:560px){nav{padding:16px 20px;}.wrap{padding:0 20px;}.proj-hero{padding:110px 0 60px;}}
+    :root {
+      --bg: #000;
+      --surface: rgba(255,255,255,.035);
+      --surface-2: rgba(255,255,255,.06);
+      --border: rgba(255,255,255,.08);
+      --border-hi: rgba(255,255,255,.18);
+      --text: #f0eeea;
+      --muted: rgba(240,238,234,.45);
+      --dim: rgba(240,238,234,.22);
+      --accent: #3DDC7E;
+      --accent-dim: rgba(61,220,126,.12);
+      --display: 'Bricolage Grotesque', sans-serif;
+      --body: 'Instrument Sans', sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--body); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; }
+    img { display: block; max-width: 100%; }
+    code { font-family: var(--mono); font-size: .85em; color: var(--accent); background: var(--accent-dim); padding: 2px 7px; border-radius: 5px; }
+
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 0 32px; }
+
+    /* nav */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; gap: 20px;
+      padding: 18px 32px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(0,0,0,.8);
+      backdrop-filter: blur(20px);
+    }
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: .85rem; font-weight: 600; color: var(--muted);
+      text-decoration: none; transition: color .2s;
+    }
+    .nav-back:hover { color: var(--text); }
+    .nav-back svg { transition: transform .2s; }
+    .nav-back:hover svg { transform: translateX(-3px); }
+    .nav-sep { color: var(--dim); }
+    .nav-proj-name { font-size: .85rem; color: var(--text); font-weight: 600; }
+
+    /* hero */
+    .proj-hero { padding: 140px 0 80px; border-bottom: 1px solid var(--border); }
+    .proj-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+    .proj-num { font-family: var(--mono); font-size: .72rem; color: var(--dim); letter-spacing: .12em; }
+    .proj-category { font-size: .78rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--accent); }
+    .proj-hero h1 { font-family: var(--display); font-size: clamp(2.2rem,5vw,3.8rem); font-weight: 800; letter-spacing: -.035em; line-height: 1.05; margin-bottom: 20px; }
+    .proj-hero h1 em { font-style: normal; color: var(--accent); }
+    .proj-tagline { font-size: 1.1rem; color: var(--muted); max-width: 60ch; line-height: 1.75; margin-bottom: 32px; }
+    .proj-links { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 10px 22px; border-radius: 8px; font-size: .9rem; font-weight: 600;
+      text-decoration: none; transition: all .2s;
+    }
+    .btn-primary { background: var(--accent); color: #000; }
+    .btn-primary:hover { opacity: .88; }
+    .btn-ghost { border: 1px solid var(--border); color: var(--muted); background: var(--surface); }
+    .btn-ghost:hover { color: var(--text); border-color: var(--border-hi); }
+
+    /* phone strip */
+    .phone-section {
+      padding: 60px 0; border-bottom: 1px solid var(--border);
+      display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;
+      background: radial-gradient(ellipse 60% 40% at 50% 50%, rgba(61,220,126,.06), transparent);
+    }
+    .phone-frame {
+      width: 230px; border-radius: 38px; overflow: hidden;
+      border: 2px solid rgba(255,255,255,.12);
+      box-shadow: 0 40px 100px rgba(0,0,0,.85), 0 0 50px rgba(61,220,126,.1);
+    }
+    .phone-frame img { width: 100%; aspect-ratio: 9/19.5; object-fit: cover; object-position: top; }
+
+    /* content */
+    .proj-content { padding: 80px 0; }
+    .content-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; margin-bottom: 80px; }
+    .content-grid:last-child { margin-bottom: 0; }
+    .section-label {
+      font-family: var(--mono); font-size: .72rem; letter-spacing: .18em;
+      text-transform: uppercase; color: var(--dim); margin-bottom: 16px;
+    }
+    .section-title {
+      font-family: var(--display); font-size: 1.6rem; font-weight: 800;
+      letter-spacing: -.025em; margin-bottom: 16px;
+    }
+    .section-body p { color: var(--muted); line-height: 1.8; margin-bottom: 14px; }
+    .section-body p:last-child { margin-bottom: 0; }
+    .section-body strong { color: var(--text); font-weight: 600; }
+
+    /* feat list */
+    .feat-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .feat-list li {
+      display: flex; gap: 12px; align-items: flex-start;
+      padding: 14px 16px; border-radius: 10px;
+      border: 1px solid var(--border); background: var(--surface);
+    }
+    .feat-icon { color: var(--accent); font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+    .feat-text { font-size: .92rem; color: var(--muted); line-height: 1.6; }
+    .feat-text strong { color: var(--text); }
+
+    /* pipeline steps */
+    .pipeline {
+      display: flex; flex-direction: column; gap: 0;
+      border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+    }
+    .pipe-step {
+      display: flex; gap: 16px; align-items: flex-start;
+      padding: 16px 20px; border-bottom: 1px solid var(--border);
+    }
+    .pipe-step:last-child { border-bottom: none; }
+    .pipe-num {
+      font-family: var(--mono); font-size: .72rem; color: var(--accent);
+      background: var(--accent-dim); padding: 3px 8px; border-radius: 5px;
+      flex-shrink: 0; margin-top: 1px; letter-spacing: .05em;
+    }
+    .pipe-body { font-size: .9rem; color: var(--muted); line-height: 1.65; }
+    .pipe-body strong { color: var(--text); }
+
+    /* feature table */
+    .feat-table {
+      width: 100%; border-collapse: collapse;
+      font-size: .88rem;
+    }
+    .feat-table th {
+      text-align: left; font-family: var(--mono); font-size: .7rem;
+      letter-spacing: .14em; text-transform: uppercase;
+      color: var(--dim); padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .feat-table td {
+      padding: 10px 14px; color: var(--muted); line-height: 1.5;
+      border-bottom: 1px solid rgba(255,255,255,.04);
+    }
+    .feat-table tr:last-child td { border-bottom: none; }
+    .feat-table td:first-child { color: var(--accent); font-family: var(--mono); font-size: .78rem; }
+
+    /* formula block */
+    .formula-block {
+      background: rgba(61,220,126,.05); border: 1px solid rgba(61,220,126,.18);
+      border-radius: 10px; padding: 18px 20px; margin: 14px 0;
+      font-family: var(--mono); font-size: .82rem; color: var(--text);
+      line-height: 1.9;
+    }
+    .formula-block .comment { color: var(--dim); }
+
+    /* monorepo topology */
+    .topo-block {
+      background: #0a0a0a; border: 1px solid var(--border);
+      border-radius: 12px; padding: 28px 24px;
+      font-family: var(--mono); font-size: .78rem; color: var(--muted);
+      line-height: 1.8; overflow-x: auto;
+    }
+    .topo-block .hl { color: var(--accent); }
+    .topo-block .dim { color: var(--dim); }
+
+    /* grace table */
+    .grace-table {
+      width: 100%; border-collapse: collapse; font-size: .88rem;
+      border: 1px solid var(--border); border-radius: 10px; overflow: hidden;
+    }
+    .grace-table th {
+      background: var(--surface); font-family: var(--mono); font-size: .7rem;
+      letter-spacing: .12em; text-transform: uppercase; color: var(--dim);
+      padding: 10px 16px; text-align: center;
+    }
+    .grace-table td {
+      padding: 10px 16px; color: var(--muted); text-align: center;
+      border-top: 1px solid var(--border);
+    }
+    .grace-table td:first-child { text-align: left; font-family: var(--mono); color: var(--text); }
+    .grace-table td.hi { color: var(--accent); font-weight: 600; }
+
+    /* wide section */
+    .wide-section { margin-bottom: 80px; }
+    .wide-section .section-label { margin-bottom: 8px; }
+    .wide-section .section-title { margin-bottom: 20px; }
+
+    /* security grid */
+    .sec-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .sec-card {
+      border: 1px solid var(--border); border-radius: 12px;
+      background: var(--surface); padding: 20px;
+    }
+    .sec-card-icon { font-size: 1.3rem; margin-bottom: 10px; }
+    .sec-card h4 { font-family: var(--display); font-size: .95rem; font-weight: 700; margin-bottom: 6px; }
+    .sec-card p { font-size: .84rem; color: var(--muted); line-height: 1.6; }
+
+    /* tech section */
+    .tech-section { padding: 60px 0; border-top: 1px solid var(--border); }
+    .tech-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+    .tech-pill {
+      padding: 6px 16px; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.1);
+      background: rgba(255,255,255,.04);
+      font-family: var(--mono); font-size: .8rem; color: var(--muted);
+    }
+
+    /* divider */
+    .divider { border: none; border-top: 1px solid var(--border); margin: 0 0 80px; }
+
+    /* footer */
+    .proj-footer {
+      padding: 40px 0; border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 16px;
+    }
+
+    @media (max-width: 860px) {
+      .content-grid { grid-template-columns: 1fr; gap: 48px; }
+      .sec-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 560px) {
+      nav { padding: 16px 20px; }
+      .wrap { padding: 0 20px; }
+      .proj-hero { padding: 110px 0 60px; }
+      .sec-grid { grid-template-columns: 1fr; }
+      .phone-section { gap: 20px; }
+      .phone-frame { width: 160px; }
+    }
   </style>
 </head>
 <body>
+
   <nav>
     <a href="./index.html#projects" class="nav-back">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
@@ -59,99 +243,275 @@
     <span class="nav-sep">/</span>
     <span class="nav-proj-name">RunSphere</span>
   </nav>
+
   <div class="wrap">
+
+    <!-- ── HERO ── -->
     <section class="proj-hero">
       <div class="proj-meta">
         <span class="proj-num">01 / 06</span>
-        <span class="proj-category">Mobile Application</span>
+        <span class="proj-category">Mobile · Backend · ML · Geospatial</span>
       </div>
-      <h1>RunSphere: <em>privacy-first</em> running</h1>
-      <p class="proj-tagline">An outdoor running app that gamifies movement through adaptive quests and H3 territory-claim seasons, entirely pace-neutral. Built as a pnpm/Turbo monorepo.</p>
+      <h1>RunSphere: <em>privacy-first</em> territory conquest</h1>
+      <p class="proj-tagline">An end-to-end outdoor running platform that turns real-world movement into competitive territory control — engineered with Uber H3 spatial indexing, Isolation Forest anti-cheat, ALS quest recommendations, and strict privacy-by-design across an 11-package Turbo 2 monorepo.</p>
+      <div class="proj-links">
+        <a href="https://github.com/swayamn72" target="_blank" rel="noopener" class="btn btn-primary">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5A11.5 11.5 0 0 0 .5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2c-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.76 2.69 1.25 3.35.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.47.11-3.06 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.62 1.59.23 2.77.11 3.06.74.81 1.18 1.84 1.18 3.1 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.79.56A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5Z"/></svg>
+          View Source
+        </a>
+      </div>
     </section>
+
+    <!-- ── PHONE MOCKUPS ── -->
     <div class="phone-section">
       <div class="phone-frame">
         <img src="./src/assets/runsphere/img1.png" alt="RunSphere App">
       </div>
-      <div class="phone-frame" style="margin-top: 20px;">
+      <div class="phone-frame" style="margin-top:28px;">
         <img src="./src/assets/runsphere/img2.png" alt="RunSphere Map">
       </div>
       <div class="phone-frame">
         <img src="./src/assets/runsphere/img3.png" alt="RunSphere Territories">
       </div>
     </div>
+
+    <!-- ── CONTENT ── -->
     <section class="proj-content">
-      <!-- Grid 1: Philosophy & Scoring -->
-      <div class="content-grid" style="margin-bottom: 80px;">
-        <div class="section-body">
-          <p class="section-label">Philosophy</p>
-          <h2 class="section-title">Pace-Neutral Gamification</h2>
-          <p>RunSphere completely reimagines outdoor movement gamification by removing pace as a performance signal. The core philosophy: outdoor movement should feel exploratory, not competitive in a harmful way.</p>
-          <p>Instead of measuring who runs fastest, the app uses <strong>H3 hexagonal cell grids</strong> for territory-claim seasons, scoring runners based on their best contiguous 60 minutes per day. This ensures a level playing field, with newcomer divisions and winner concentration guardrails limiting top players' dominance.</p>
-        </div>
-        <div>
-          <p class="section-label">Key Features</p>
-          <ul class="feat-list">
-            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Adaptive Quests:</strong> Server-generated loops (1-10km) adapting to load, time of day, and completion history.</span></li>
-            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Territory Seasons (Turf):</strong> Optional 6-8 week seasons resetting weekly with immutable snapshots.</span></li>
-            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>No Pace Pressures:</strong> Route suggestions never adapt by demanding a faster pace.</span></li>
-          </ul>
+
+      <!-- ── 1. Monorepo Architecture ── -->
+      <div class="wide-section">
+        <p class="section-label">Architecture</p>
+        <h2 class="section-title">Turbo 2 Monorepo — 11 Packages</h2>
+        <div class="topo-block">
+<span class="hl">apps/mobile</span>          <span class="dim">Expo 57 / React Native 0.86 (Fabric + Bridgeless New Architecture)</span>
+<span class="hl">apps/admin</span>           <span class="dim">Vite + React — Staff RBAC & ops dashboard</span>
+
+<span class="hl">services/api</span>         <span class="dim">Fastify 5 + TypeBox — idempotent REST, auth, territory routing</span>
+<span class="hl">services/worker</span>      <span class="dim">Async job cluster — season resets, weekly snapshots, outbox fan-out</span>
+<span class="hl">services/ml</span>          <span class="dim">FastAPI + scikit-learn — Isolation Forest & ALS inference</span>
+
+<span class="hl">packages/domain</span>      <span class="dim">Pure TS — geospatial math, scoring, anti-cheat heuristics, verification</span>
+<span class="hl">packages/contracts</span>   <span class="dim">TypeBox schemas — compile-time + runtime type parity across API ↔ client</span>
+<span class="hl">packages/config</span>      <span class="dim">Unified env-var loading and validation</span>
+<span class="hl">packages/observability</span> <span class="dim">Structured JSON logging + metric instrumentation</span>
+<span class="hl">packages/ui</span>          <span class="dim">Shared design tokens, primitives, styling</span>
+
+<span class="hl">infra/db</span>             <span class="dim">PostgreSQL 18 + PostGIS — 46 migrations, Martin vector tile server</span>
         </div>
       </div>
+      <hr class="divider">
 
-      <!-- Grid 2: Tech & Monorepo Architecture -->
-      <div class="content-grid" style="margin-bottom: 80px;">
-        <div class="section-body">
-          <p class="section-label">Architecture</p>
-          <h2 class="section-title">Turbo Monorepo Infrastructure</h2>
-          <p>The project is orchestrated using <strong>Turbo 2</strong> and <strong>pnpm</strong> across several packages. The mobile client leverages <strong>Expo (React Native)</strong> and <strong>MapLibre</strong> (OpenGL native variant on Android) for fluid, highly responsive map rendering.</p>
-          <p>The backend is powered by a blazing fast <strong>Fastify 5</strong> API server running on Node 22, backed by <strong>PostgreSQL 18 + PostGIS</strong> managed locally via Docker Compose. Data contracts are strictly typed using TypeBox across the monorepo.</p>
-        </div>
-        <div>
-          <p class="section-label">Under the Hood</p>
-          <ul class="feat-list">
-            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Activity Ingestion:</strong> Chunked idempotent uploads with offline queuing and GPS sampling.</span></li>
-            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Encrypted Storage:</strong> <code>expo-sqlite</code> with SQLCipher for local database caching.</span></li>
-            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Custom ORM:</strong> Independent <code>@runsphere/db</code> package handling PostGIS interactions.</span></li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Grid 3: Safety & Privacy -->
+      <!-- ── 2. Territory Capture & H3 Carving ── -->
       <div class="content-grid">
         <div class="section-body">
-          <p class="section-label">Security</p>
-          <h2 class="section-title">Privacy-First Design</h2>
-          <p>Targeting adults (18+) in the Mumbai Metropolitan Region, privacy is an architectural guarantee. The server actively enforces a <strong>200 m privacy blur</strong> on all saved routes.</p>
-          <p>Safety contacts use delayed and coarse location sharing with auto-expiry. Raw coordinates are never exposed in analytics or logs—only derived counters are kept. Nominatim geocoding is strictly proxied server-side to prevent exposing client IPs.</p>
+          <p class="section-label">Geospatial Engine</p>
+          <h2 class="section-title">Territory Capture & H3 Carving</h2>
+          <p>When a runner completes a valid loop, the GPS trace is discretized into <strong>Uber H3 Resolution 11</strong> hexagonal cells — each covering roughly <strong>≈ 24.9 m edge length</strong> and <strong>≈ 2,161 m²</strong> of real-world area. This resolution aligns perfectly with city-block scale pedestrian movement without excessive memory consumption.</p>
+          <p>Hexagons are chosen over bounding boxes and quad-trees for a critical reason: <strong>all 6 neighbors share equidistant centers</strong>, giving uniform adjacency that eliminates the diagonal-distance distortion of square grids. This makes area and boundary calculations far more geographically honest.</p>
+          <p>Once the loop's H3 cells are captured, the system runs a <strong>Breadth-First Search (BFS) graph traversal</strong> over the neighbor adjacency matrix whenever a rival carves through existing territory. It detects all resulting connected subgraphs, retains only the <strong>Largest Connected Component</strong>, and discards isolated fragments — preventing fragmented "islands" from cluttering the map.</p>
+          <p>Geodesic loop area is computed on the <strong>WGS-84 reference sphere</strong> using the spherical excess formula — not flat-plane Euclidean geometry — so area calculations remain accurate over real-world distances.</p>
         </div>
         <div>
-          <p class="section-label">Privacy Measures</p>
+          <p class="section-label">Loop Validation Pipeline</p>
           <ul class="feat-list">
-            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>200m Privacy Blurs:</strong> Server-side route trimming masks exact start/end locations.</span></li>
-            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Coordinate Scrubbing:</strong> Crash reports and analytics contain absolutely no raw location data.</span></li>
-            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>GPS Quality Gates:</strong> Validates accuracy (≤50 m) and rejects spoofing (≤25 km/h limit).</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Minimum 4 GPS points</strong> required for a valid loop submission.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>60 m closure gate:</strong> start and finish fixes must be within 60 m of each other.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Area bounds:</strong> minimum 5,000 m² (filters roundabouts / GPS drift), maximum 5,000,000 m² (flags vehicle use).</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Douglas-Peucker simplification</strong> compresses the boundary to ≤ 128 coordinate pairs before storage.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Lexical cell sort:</strong> the H3 index array is stored in lexical order — not traversal order — erasing start/finish chronology and preventing residential doxxing.</span></li>
           </ul>
         </div>
       </div>
-    </section>
 
+      <!-- ── 3. Effort-Grace Scoring ── -->
+      <div class="content-grid">
+        <div class="section-body">
+          <p class="section-label">Scoring Algorithm</p>
+          <h2 class="section-title">Effort-Grace Speed Comparison</h2>
+          <p>A naive speed comparison would let a sprinter running a tiny 200 m loop trivially conquer a 10 km endurance loop simply by running faster. The <strong>Effort-Grace</strong> algorithm prevents this by rewarding larger perimeter efforts with a non-linear speed bonus applied to the challenger's effective speed before comparison.</p>
+          <div class="formula-block">
+<span class="comment">// Perimeter ratio of challenger vs current holder</span>
+Effort Ratio  = Perimeter_challenger / Perimeter_holder
+
+<span class="comment">// Grace bonus: capped at +15%, starts accruing above 1× perimeter</span>
+Grace         = min(0.15, max(0, (Effort Ratio − 1) × 0.05))
+
+<span class="comment">// Final speed used in the conquest comparison</span>
+Effective Speed = Base Speed × (1 + Grace)
+          </div>
+          <p>The result is a system where effort and exploration are intrinsically rewarded — not raw pace.</p>
+        </div>
+        <div>
+          <p class="section-label">Grace Scale</p>
+          <table class="grace-table">
+            <thead>
+              <tr><th>Challenger Perimeter</th><th>Grace Bonus</th><th>Effective Multiplier</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>1× holder</td><td>+0%</td><td>1.00×</td></tr>
+              <tr><td>2× holder</td><td>+5%</td><td>1.05×</td></tr>
+              <tr><td>3× holder</td><td>+10%</td><td>1.10×</td></tr>
+              <tr><td>≥ 4× holder</td><td class="hi">+15% (cap)</td><td class="hi">1.15×</td></tr>
+            </tbody>
+          </table>
+          <div style="margin-top:12px;">
+            <ul class="feat-list">
+              <li><span class="feat-icon">✦</span><span class="feat-text">Clockwise and counter-clockwise loops award <strong>identical territory</strong> — signed geodesic area is discarded.</span></li>
+              <li><span class="feat-icon">✦</span><span class="feat-text">Score is fully <strong>pace-neutral</strong> — a 6 min/km runner can out-score a 4 min/km runner by exploring more ground.</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 4. Anti-Cheat Pipeline ── -->
+      <div class="content-grid">
+        <div class="section-body">
+          <p class="section-label">Machine Learning — System 1</p>
+          <h2 class="section-title">Anti-Cheat Detection Pipeline</h2>
+          <p>The pipeline operates in two stages. First a <strong>rule-based hard filter</strong> in TypeScript applies deterministic hard limits on the raw GPS trace. Only activities that pass this gate are forwarded to the ML layer — keeping inference costs low.</p>
+          <p>The ML layer runs an <strong>unsupervised Isolation Forest</strong> (<code>n_estimators=200</code>, <code>contamination=0.03</code>) over 19 kinematic features. Isolation Forest is ideal here because anomalous movements — vehicle rides, e-bikes, GPS spoofing — require <em>fewer random partition splits</em> to isolate than the dense cluster of normal human running distributions.</p>
+          <p>Critically: the model <strong>never auto-bans or rejects a user</strong>. High anomaly scores flag the activity for <strong>human moderator review</strong> in the Admin panel, keeping the system fair and auditable.</p>
+        </div>
+        <div>
+          <p class="section-label">Pipeline Stages</p>
+          <div class="pipeline">
+            <div class="pipe-step">
+              <span class="pipe-num">01</span>
+              <span class="pipe-body"><strong>Rule-Based Filter (TypeScript):</strong> Hard limits — peak speed > 12.5 m/s, sustained speed > 7.0 m/s, acceleration > 5.0 m/s², or teleportation jumps > 200 m immediately reject the trace.</span>
+            </div>
+            <div class="pipe-step">
+              <span class="pipe-num">02</span>
+              <span class="pipe-body"><strong>Feature Extraction (19 dimensions):</strong> Kinematic stats (mean/max/p95 speed, speed variance, skew), jitter & signal quality (accuracy variance, lateral deviation from smoothed spline, signal loss gaps), cornering (turn rate, sharp turn count > 90° at > 3 m/s), and loop geometry (closure gap, area, perimeter, isoperimetric ratio 4πA/P²).</span>
+            </div>
+            <div class="pipe-step">
+              <span class="pipe-num">03</span>
+              <span class="pipe-body"><strong>Isolation Forest Inference (Python / FastAPI):</strong> Returns a continuous anomaly score. No raw GPS coordinates are present in the feature vector — only derived statistics.</span>
+            </div>
+            <div class="pipe-step">
+              <span class="pipe-num">04</span>
+              <span class="pipe-body"><strong>Human Review Queue:</strong> Activities crossing the anomaly threshold surface in the staff Admin panel for moderator decision. The model flags — it never bans.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 5. Quest Recommendations (ALS) ── -->
+      <div class="content-grid">
+        <div class="section-body">
+          <p class="section-label">Machine Learning — System 2</p>
+          <h2 class="section-title">Quest Recommendation Engine</h2>
+          <p>Quest discovery uses an <strong>implicit-feedback Alternating Least Squares (ALS)</strong> matrix factorization model (<code>factors=64</code>, <code>iterations=20</code>) over a user-quest interaction matrix.</p>
+          <p>The interaction values are intentionally simple: <code>0</code> = unseen, <code>1</code> = accepted, <code>2</code> = completed. This keeps the signal honest without requiring explicit ratings — users express preference through action, not reflection.</p>
+          <p>At serving time, latent factor dot-product scores are computed for all candidate quests, then filtered to only those whose centroids fall within a <strong>20 km Haversine bounding radius</strong> of the user's current coordinates. The user's location is passed at inference time and <strong>never stored in the training set</strong>.</p>
+        </div>
+        <div>
+          <p class="section-label">ALS Design Decisions</p>
+          <ul class="feat-list">
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Implicit feedback:</strong> No explicit ratings — engagement signal is derived from acceptance and completion events.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Haversine bounding:</strong> 20 km spatial filter at serving time — geography shapes recommendations without geography entering training.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Zero location in training data:</strong> The model learns behavioral patterns, never movement patterns.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Cold-start fallback:</strong> Popularity-ranked quests within the bounding radius serve new users before enough interaction data accrues.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ── 6. Backend Systems ── -->
+      <div class="content-grid">
+        <div class="section-body">
+          <p class="section-label">Backend Engineering</p>
+          <h2 class="section-title">Event-Driven API & Worker Cluster</h2>
+          <p>The Fastify 5 API enforces end-to-end type safety through <strong>TypeBox</strong> schemas shared from <code>packages/contracts</code> — the same schema validates HTTP request bodies at runtime and generates TypeScript types at compile time, eliminating a whole class of drift bugs.</p>
+          <p>Verified run activities fan out to downstream workers via a <strong>transactional outbox pattern</strong> — the activity and its outbox event are written in the same Postgres transaction, then an async worker processes and delivers to progression, leaderboard, and push notification handlers. No external message broker required.</p>
+          <p>The worker cluster handles <strong>weekly immutable leaderboard snapshots</strong> (Asia/Kolkata timezone-aligned), <strong>monthly season resets</strong>, and a <strong>21-day rolling window collusion detector</strong> that flags A↔B↔A reciprocal claim-trading pairs sharing ≥ 90% of territory.</p>
+        </div>
+        <div>
+          <p class="section-label">Activity Ingestion</p>
+          <ul class="feat-list">
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Chunked SHA-256 uploads:</strong> Sync coordinator chunks the GPS trace as canonical JSON, computes a deterministic SHA-256 checksum per chunk, and retries idempotently across network drops — zero data loss.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Offline-first:</strong> SQLCipher-encrypted local queue buffers pending submissions; chunks are replayed on reconnect with full idempotency guarantees.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>46-migration PostGIS schema</strong> managing spatial polygons, cell lineages, activity submissions, and immutable competition state.</span></li>
+            <li><span class="feat-icon">✦</span><span class="feat-text"><strong>Nominatim caching proxy:</strong> Rate-limits and caches geocoding results server-side — eliminates third-party API costs and prevents client IP exposure.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ── 7. Privacy & Security ── -->
+      <div class="wide-section">
+        <p class="section-label">Security & Privacy</p>
+        <h2 class="section-title">Privacy-by-Design — Every Layer</h2>
+        <div class="sec-grid">
+          <div class="sec-card">
+            <div class="sec-card-icon">🔐</div>
+            <h4>SQLCipher AES-256</h4>
+            <p>Local SQLite database encrypted on-device via <code>expo-sqlite</code> + SQLCipher. GPS buffers and tokens never exist in plaintext at rest — prevents unauthorized root-access extraction.</p>
+          </div>
+          <div class="sec-card">
+            <div class="sec-card-icon">🧬</div>
+            <h4>Biometric Attestation</h4>
+            <p>OS <code>BiometricPrompt</code> / Secure Enclave invoked at run ignition. The app only ever receives a boolean — biometric data is never accessed or persisted. Prevents device hand-off fraud.</p>
+          </div>
+          <div class="sec-card">
+            <div class="sec-card-icon">📍</div>
+            <h4>200 m Residential Trimming</h4>
+            <p>Automatic server-side clipping removes 200 m from both ends of any published trace (Ghost Race, shared routes) — home and workplace addresses remain unexposed.</p>
+          </div>
+          <div class="sec-card">
+            <div class="sec-card-icon">🗂️</div>
+            <h4>Lexical Cell Hashing</h4>
+            <p>H3 indexes are stored in lexical sort order — never in traversal sequence. The time-series of movement is completely stripped; nobody can infer where a run started or ended.</p>
+          </div>
+          <div class="sec-card">
+            <div class="sec-card-icon">🤝</div>
+            <h4>Collusion Detection</h4>
+            <p>A 21-day rolling window evaluates A↔B↔A reciprocal claim-trade patterns. Pairs sharing ≥ 90% of territory flag for review as artificial leaderboard boosting.</p>
+          </div>
+          <div class="sec-card">
+            <div class="sec-card-icon">🔒</div>
+            <h4>Zero Raw Coordinates in Analytics</h4>
+            <p>Crash reports, logs, and analytics contain only derived counters — never raw GPS coordinates. Nominatim geocoding is proxied server-side to prevent client IP exposure.</p>
+          </div>
+        </div>
+      </div>
+
+    </section><!-- end proj-content -->
+
+    <!-- ── TECH STACK ── -->
     <section class="tech-section">
-      <p class="section-label">Tech Stack</p>
+      <p class="section-label">Full Tech Stack</p>
       <div class="tech-grid">
-        <span class="tech-pill">Expo</span>
-        <span class="tech-pill">React Native</span>
-        <span class="tech-pill">Fastify</span>
-        <span class="tech-pill">PostGIS</span>
-        <span class="tech-pill">MapLibre</span>
-        <span class="tech-pill">Turbo</span>
+        <span class="tech-pill">React Native 0.86</span>
+        <span class="tech-pill">Expo SDK 57</span>
+        <span class="tech-pill">Fabric + Bridgeless</span>
+        <span class="tech-pill">MapLibre (OpenGL)</span>
+        <span class="tech-pill">SQLCipher</span>
+        <span class="tech-pill">expo-local-authentication</span>
+        <span class="tech-pill">Fastify 5</span>
+        <span class="tech-pill">Node.js 22</span>
         <span class="tech-pill">TypeBox</span>
-        <span class="tech-pill">Docker</span>
+        <span class="tech-pill">TypeScript 5.8</span>
+        <span class="tech-pill">PostgreSQL 18</span>
+        <span class="tech-pill">PostGIS</span>
+        <span class="tech-pill">Uber H3 (h3-js 4.1)</span>
+        <span class="tech-pill">Martin tile server</span>
+        <span class="tech-pill">Python 3.12</span>
+        <span class="tech-pill">FastAPI</span>
+        <span class="tech-pill">scikit-learn</span>
+        <span class="tech-pill">Isolation Forest</span>
+        <span class="tech-pill">ALS (implicit)</span>
+        <span class="tech-pill">Turbo 2</span>
+        <span class="tech-pill">pnpm 10</span>
+        <span class="tech-pill">Docker Compose</span>
+        <span class="tech-pill">GitHub Actions</span>
+        <span class="tech-pill">Vitest</span>
       </div>
     </section>
+
+    <!-- ── FOOTER NAV ── -->
     <footer class="proj-footer">
       <a href="./index.html#projects" class="btn btn-ghost">← All Projects</a>
       <a href="./project-aquila.html" class="btn btn-ghost">Next: Aquila →</a>
     </footer>
+
   </div>
 </body>
 </html>
